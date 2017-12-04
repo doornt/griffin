@@ -9,23 +9,22 @@
 import UIKit
 
 
-class BaseViewController : UIViewController,UIGestureRecognizerDelegate{
+public class BaseViewController : UIViewController,UIGestureRecognizerDelegate{
     
     
-    override func viewDidAppear(_ animated: Bool) {
+    override public func viewDidAppear(_ animated: Bool) {
         
     }
     
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
+    override public func viewDidDisappear(_ animated: Bool) {
         
     }
     
-    override func didReceiveMemoryWarning() {
+    override public func didReceiveMemoryWarning() {
         
     }
-
 }
