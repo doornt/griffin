@@ -122,7 +122,7 @@
 					};
 				};
 			};
-			buildConfigurationList = DBA513A21FD437DA007AEE1E /* Build configuration list for PBXProject "GriffinSDK" */;
+			buildConfigurationList = DBA513A21FD437DA007AEE1E /* Build configuration list for PBXProject "griffinSDK" */;
 			compatibilityVersion = "Xcode 8.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -287,6 +287,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = GriffinSDK/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.doornt.GriffinSDK;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -309,6 +310,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = GriffinSDK/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.doornt.GriffinSDK;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -321,7 +323,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		DBA513A21FD437DA007AEE1E /* Build configuration list for PBXProject "GriffinSDK" */ = {
+		DBA513A21FD437DA007AEE1E /* Build configuration list for PBXProject "griffinSDK" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DBA513AE1FD437DA007AEE1E /* Debug */,
