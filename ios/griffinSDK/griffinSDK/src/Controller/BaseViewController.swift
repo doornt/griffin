@@ -23,8 +23,12 @@ public class BaseViewController : UIViewController,UIGestureRecognizerDelegate{
         if sourceUrl == nil{
             return
         }
-        
-        
+        if let jsSourcePath = Bundle.main.path(forResource: "js-bundle", ofType: "js"){
+            do{
+                let jsSourceContents = try String(contentsOfFile:jsSourcePath)
+                JSCoreBridge.instance.executeJavascript(script: jsSourceContents)
+            }
+        }
     }
     
     
