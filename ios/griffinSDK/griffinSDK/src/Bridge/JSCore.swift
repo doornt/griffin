@@ -20,7 +20,8 @@ public class JSCoreBridge: NSObject {
     let _jsContext:JSContext
     
     private override init() {
-        self._jsContext = JSContext()
+        let jsVirtualMachine = JSVirtualMachine()
+        self._jsContext = JSContext(virtualMachine: jsVirtualMachine)
         self._jsContext.name = "Griffin Context"
         super.init()
     }
@@ -33,8 +34,12 @@ public class JSCoreBridge: NSObject {
         _jsContext.globalObject.invokeMethod(method, withArguments: args)
     }
     
+    public func getContext()->JSContext{
+        return self._jsContext
+    }
+    
     public func registerHanler(){
-        
+//        _jsContext.
     }
     
 }

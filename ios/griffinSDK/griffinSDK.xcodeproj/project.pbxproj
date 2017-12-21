@@ -14,6 +14,7 @@
 		DBC78B2A1FEA6632008EE450 /* JSCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC78B291FEA6632008EE450 /* JSCore.swift */; };
 		DBC78B2C1FEB87C3008EE450 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC78B2B1FEB87C3008EE450 /* RootViewController.swift */; };
 		DBC78B301FEB9490008EE450 /* Engine.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC78B2F1FEB9490008EE450 /* Engine.swift */; };
+		DBC78B331FEBA0F0008EE450 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC78B321FEBA0F0008EE450 /* View.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		DBC78B291FEA6632008EE450 /* JSCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = JSCore.swift; path = ../../../../GriffinSDK/GriffinSDK/src/Bridge/JSCore.swift; sourceTree = "<group>"; };
 		DBC78B2B1FEB87C3008EE450 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RootViewController.swift; path = ../../../../GriffinSDK/GriffinSDK/src/Controller/RootViewController.swift; sourceTree = "<group>"; };
 		DBC78B2F1FEB9490008EE450 /* Engine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Engine.swift; path = ../../../../GriffinSDK/GriffinSDK/src/Engine/Engine.swift; sourceTree = "<group>"; };
+		DBC78B321FEBA0F0008EE450 /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = View.swift; path = ../../../../GriffinSDK/GriffinSDK/src/View/View.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +71,7 @@
 		DBA513B51FD438A9007AEE1E /* src */ = {
 			isa = PBXGroup;
 			children = (
+				DBC78B311FEBA0E0008EE450 /* View */,
 				DBC78B2D1FEB945E008EE450 /* Engine */,
 				DBC78B281FEA65A5008EE450 /* Bridge */,
 				DBA513B91FDA7F76007AEE1E /* Manager */,
@@ -108,6 +111,14 @@
 				DBC78B2F1FEB9490008EE450 /* Engine.swift */,
 			);
 			path = Engine;
+			sourceTree = "<group>";
+		};
+		DBC78B311FEBA0E0008EE450 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				DBC78B321FEBA0F0008EE450 /* View.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -195,6 +206,7 @@
 				DBA513B41FD4388F007AEE1E /* sdk.swift in Sources */,
 				DBC78B2A1FEA6632008EE450 /* JSCore.swift in Sources */,
 				DBA513BB1FDA7F9B007AEE1E /* RenderManager.swift in Sources */,
+				DBC78B331FEBA0F0008EE450 /* View.swift in Sources */,
 				DBA513B81FD43912007AEE1E /* BaseViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -25,5 +25,5 @@ children:[
 }
 
 
-//runWithModule(DemoView)
+runWithModule(DemoView)
 

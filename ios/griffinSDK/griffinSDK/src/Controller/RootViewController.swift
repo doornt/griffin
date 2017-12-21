@@ -11,7 +11,9 @@ import UIKit
 public class RootViewController : UINavigationController{
     
     public convenience init(url:URL?){
-        self.init(rootViewController: BaseViewController.init(url: url))
+        let root = BaseViewController.init(url: url)
+        self.init(rootViewController: root)
+        RenderManager.instance.setRootController(root: root)
     }
     
     

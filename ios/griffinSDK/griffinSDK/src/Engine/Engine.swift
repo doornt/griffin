@@ -13,16 +13,17 @@ public class Engine: NSObject {
     public static let instance:Engine = {
         return Engine()
     }()
-    
-    let _engine:Engine
-    
+        
     private override init() {
-        self._engine = Engine()
         super.init()
     }
     
     public func initSDK(){
-        JSCoreBridge.instance.registerHanler()
+        let runWithModuleScript:@convention(block)(Dictionary<String,Any>)-> Void = {
+            obj in
+            RenderManager.instance.runWithModule(obj:obj)
+        }
+        JSCoreBridge.instance.getContext().setObject(unsafeBitCast(runWithModuleScript,to: AnyObject.self) , forKeyedSubscript: "runWithModule" as NSCopying & NSObjectProtocol)
     }
     
    
