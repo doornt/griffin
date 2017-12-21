@@ -1,0 +1,18 @@
+//
+//  RootViewController.swift
+//  GriffinSDK
+//
+//  Created by sampson on 2017/12/21.
+//  Copyright © 2017年 com.doornt. All rights reserved.
+//
+
+import UIKit
+
+public class RootViewController : UINavigationController{
+    
+    public convenience init(url:URL?){
+        self.init(rootViewController: BaseViewController.init(url: url))
+    }
+    
+    
+}

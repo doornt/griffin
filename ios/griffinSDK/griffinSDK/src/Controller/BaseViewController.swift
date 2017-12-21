@@ -11,9 +11,9 @@ import UIKit
 
 public class BaseViewController : UIViewController,UIGestureRecognizerDelegate{
     
-    var sourceUrl:NSURL?
+    var sourceUrl:URL?
     
-    convenience init(url:NSURL){
+    convenience init(url:URL?){
         self.init(nibName:nil,bundle:nil)
         
         self.sourceUrl = url
@@ -23,12 +23,17 @@ public class BaseViewController : UIViewController,UIGestureRecognizerDelegate{
         if sourceUrl == nil{
             return
         }
-        if let jsSourcePath = Bundle.main.path(forResource: "js-bundle", ofType: "js"){
+        if FileManager.default.fileExists(atPath:sourceUrl!.path){
             do{
-                let jsSourceContents = try String(contentsOfFile:jsSourcePath)
+                let jsSourceContents = try String(contentsOfFile:sourceUrl!.path)
                 JSCoreBridge.instance.executeJavascript(script: jsSourceContents)
             }
+            catch{
+                print(error.localizedDescription)
+            }
+           
         }
+    
     }
     
     
@@ -38,7 +43,7 @@ public class BaseViewController : UIViewController,UIGestureRecognizerDelegate{
     
     override public func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = UIColor.white
+        self.view.backgroundColor = UIColor.yellow
         self.renderWithUrl()
     }
     

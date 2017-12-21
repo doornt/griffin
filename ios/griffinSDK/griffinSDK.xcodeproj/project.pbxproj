@@ -12,6 +12,8 @@
 		DBA513B81FD43912007AEE1E /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA513B71FD43912007AEE1E /* BaseViewController.swift */; };
 		DBA513BB1FDA7F9B007AEE1E /* RenderManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA513BA1FDA7F9B007AEE1E /* RenderManager.swift */; };
 		DBC78B2A1FEA6632008EE450 /* JSCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC78B291FEA6632008EE450 /* JSCore.swift */; };
+		DBC78B2C1FEB87C3008EE450 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC78B2B1FEB87C3008EE450 /* RootViewController.swift */; };
+		DBC78B301FEB9490008EE450 /* Engine.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC78B2F1FEB9490008EE450 /* Engine.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +24,8 @@
 		DBA513B71FD43912007AEE1E /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		DBA513BA1FDA7F9B007AEE1E /* RenderManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RenderManager.swift; path = ../../../../GriffinSDK/GriffinSDK/src/Manager/RenderManager.swift; sourceTree = "<group>"; };
 		DBC78B291FEA6632008EE450 /* JSCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = JSCore.swift; path = ../../../../GriffinSDK/GriffinSDK/src/Bridge/JSCore.swift; sourceTree = "<group>"; };
+		DBC78B2B1FEB87C3008EE450 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RootViewController.swift; path = ../../../../GriffinSDK/GriffinSDK/src/Controller/RootViewController.swift; sourceTree = "<group>"; };
+		DBC78B2F1FEB9490008EE450 /* Engine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Engine.swift; path = ../../../../GriffinSDK/GriffinSDK/src/Engine/Engine.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +69,7 @@
 		DBA513B51FD438A9007AEE1E /* src */ = {
 			isa = PBXGroup;
 			children = (
+				DBC78B2D1FEB945E008EE450 /* Engine */,
 				DBC78B281FEA65A5008EE450 /* Bridge */,
 				DBA513B91FDA7F76007AEE1E /* Manager */,
 				DBA513B61FD438F9007AEE1E /* Controller */,
@@ -76,6 +81,7 @@
 			isa = PBXGroup;
 			children = (
 				DBA513B71FD43912007AEE1E /* BaseViewController.swift */,
+				DBC78B2B1FEB87C3008EE450 /* RootViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -94,6 +100,14 @@
 				DBC78B291FEA6632008EE450 /* JSCore.swift */,
 			);
 			path = Bridge;
+			sourceTree = "<group>";
+		};
+		DBC78B2D1FEB945E008EE450 /* Engine */ = {
+			isa = PBXGroup;
+			children = (
+				DBC78B2F1FEB9490008EE450 /* Engine.swift */,
+			);
+			path = Engine;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -176,6 +190,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DBC78B2C1FEB87C3008EE450 /* RootViewController.swift in Sources */,
+				DBC78B301FEB9490008EE450 /* Engine.swift in Sources */,
 				DBA513B41FD4388F007AEE1E /* sdk.swift in Sources */,
 				DBC78B2A1FEA6632008EE450 /* JSCore.swift in Sources */,
 				DBA513BB1FDA7F9B007AEE1E /* RenderManager.swift in Sources */,

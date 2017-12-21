@@ -11,7 +11,7 @@ import Foundation
 import JavaScriptCore
 
 
-class JSCoreBridge: NSObject {
+public class JSCoreBridge: NSObject {
     
     public static let instance:JSCoreBridge = {
         return JSCoreBridge()
@@ -27,6 +27,14 @@ class JSCoreBridge: NSObject {
     
     public func executeJavascript(script:String){
         _jsContext.evaluateScript(script)
+    }
+    
+    public func callJsMethod(method:String,args:Array<Any>){
+        _jsContext.globalObject.invokeMethod(method, withArguments: args)
+    }
+    
+    public func registerHanler(){
+        
     }
     
 }
