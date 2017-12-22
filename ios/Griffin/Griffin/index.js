@@ -66,8 +66,8 @@ var DemoVC = {
 var DemoLabel = {
 backgroundColor: "#ffffff",
 text:"hello world",
-top:100,
-left:10,
+top:0,
+left:0,
 width:200,
 height:30,
 textColor:"#000000"
@@ -81,9 +81,20 @@ width:200,
 height:300
 }
 
+var rootView = {
+    
+backgroundColor:"#FF0000",
+width:300,
+height:300,
+top:70,
+left:0,
+}
 var label = createLabel(DemoLabel)
+var view = createView(rootView)
+var imageView = createView(DemoImageView)
 
-useElement(label)
+setRootView(view)
+addSubview(view,label)
 //createImageView(DemoImageView)
 
 //runWithModule(DemoView)

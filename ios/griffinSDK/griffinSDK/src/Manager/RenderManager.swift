@@ -24,6 +24,10 @@ public class RenderManager : NSObject{
         self._rootController = root
     }
     
+    public func setRootView(obj:Any) -> Void {
+        self._rootController?.view.addSubview(obj as? UIView ?? UIView.init())
+    }
+    
     public func createView(obj:Dictionary<String,Any>) -> View {
         return View.init(dict: obj)
     }
@@ -37,4 +41,9 @@ public class RenderManager : NSObject{
         self._rootController?.view.addSubview(obj as? UIView ?? UIView.init())
     }
     
+    public func addsubView(_ obj:Any, childView: Any){
+        let parentView = obj as? UIView ?? UIView.init()
+        let rChildView = childView as? UIView ?? UIView.init()
+        parentView.addSubview(rChildView)
+    }
 }
