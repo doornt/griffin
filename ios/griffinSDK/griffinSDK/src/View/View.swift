@@ -8,16 +8,66 @@
 
 import UIKit
 
-
-public class View :UIView{
-    convenience init(dict:Dictionary<String,Any>){
-        self.init()
-        let w:CGFloat = dict["width"] != nil ? 100 : 0.0
-        let h:CGFloat = dict["height"] != nil ? 100: 0.0
-        let bgColor = dict["backgroundColor"] != nil ? UIColor.black : UIColor.gray
+extension UIView {
+    
+    func config(dict:Dictionary<String,Any>){
         
-        self.frame = CGRect(x: 0, y: 0, width: w, height: h)
-        self.backgroundColor = bgColor
+        let w:CGFloat = Utils.any2CGFloat(obj: dict["width"]) ?? 0
+        let h:CGFloat = Utils.any2CGFloat(obj: dict["height"]) ?? 0
+        let y:CGFloat = Utils.any2CGFloat(obj: dict["top"]) ?? 0
+        let x:CGFloat = Utils.any2CGFloat(obj: dict["left"]) ?? 0
+        self.frame = CGRect(x: x, y: y, width: w, height: h)
         
+        self.backgroundColor = Utils.hexString2UIColor(hex: Utils.any2String(obj: dict["backgroundColor"]))
+        self.clipsToBounds = Utils.any2Bool(obj: dict["overflow"]) ?? false
+        self.alpha = Utils.any2CGFloat(obj: dict["opacity"]) ?? 1.0
+        
+        self.layer.borderWidth = Utils.any2CGFloat(obj: dict["borderWidth"]) ?? 0
+        self.layer.borderColor = Utils.hexString2UIColor(hex: Utils.any2String(obj: dict["borderColor"])).cgColor
+        
+        for child in Utils.any2Array(obj: dict["children"]) {
+            let rChild = child as? Dictionary<String, Any>
+            guard let realChild = rChild else {
+                continue
+            }
+            let childView: View = View(dict: realChild)
+            addSubview(childView)
+        }
     }
 }
+
+public class View :UIView{
+    
+    convenience init(dict:Dictionary<String,Any>){
+        self.init()
+
+        config(dict: dict)
+    }
+}
+
+public class Label :UILabel{
+    convenience init(dict:Dictionary<String,Any>){
+        self.init()
+        
+        config(dict: dict)
+        
+        self.text = Utils.any2String(obj: dict["text"])
+        self.textColor = Utils.hexString2UIColor(hex: Utils.any2String(obj: dict["textColor"]))
+    
+    }
+}
+
+public class ImageView :UIImageView{
+    convenience init(dict:Dictionary<String,Any>){
+        self.init()
+        
+        config(dict: dict)
+        
+        let url = URL.init(string: "https://op.meituan.net/oppkit_pic/2ndfloor_portal_headpic/157e291c008894a2db841f0dda0d64c.png")!
+        guard let data = try? Data.init(contentsOf: url)  else {
+            return
+        }
+        self.image = UIImage.init(data: data, scale: UIScreen.main.scale)
+    }
+}
+

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3A6C89F31FECB2850044C326 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A6C89F21FECB2850044C326 /* Utils.swift */; };
 		DBA513AD1FD437DA007AEE1E /* GriffinSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = DBA513AB1FD437DA007AEE1E /* GriffinSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DBA513B41FD4388F007AEE1E /* sdk.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA513B31FD4388F007AEE1E /* sdk.swift */; };
 		DBA513B81FD43912007AEE1E /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA513B71FD43912007AEE1E /* BaseViewController.swift */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3A6C89F21FECB2850044C326 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Utils.swift; path = griffinSDK/src/Utils/Utils.swift; sourceTree = SOURCE_ROOT; };
 		DBA513A81FD437DA007AEE1E /* GriffinSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GriffinSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBA513AB1FD437DA007AEE1E /* GriffinSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GriffinSDK.h; sourceTree = "<group>"; };
 		DBA513AC1FD437DA007AEE1E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -41,6 +43,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3A6C89EF1FECB2310044C326 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				3A6C89F21FECB2850044C326 /* Utils.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		DBA5139E1FD437DA007AEE1E = {
 			isa = PBXGroup;
 			children = (
@@ -71,6 +81,7 @@
 		DBA513B51FD438A9007AEE1E /* src */ = {
 			isa = PBXGroup;
 			children = (
+				3A6C89EF1FECB2310044C326 /* Utils */,
 				DBC78B311FEBA0E0008EE450 /* View */,
 				DBC78B2D1FEB945E008EE450 /* Engine */,
 				DBC78B281FEA65A5008EE450 /* Bridge */,
@@ -208,6 +219,7 @@
 				DBA513BB1FDA7F9B007AEE1E /* RenderManager.swift in Sources */,
 				DBC78B331FEBA0F0008EE450 /* View.swift in Sources */,
 				DBA513B81FD43912007AEE1E /* BaseViewController.swift in Sources */,
+				3A6C89F31FECB2850044C326 /* Utils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -12,18 +12,79 @@ function functionForSwiftWithoutParam () {
 
 var DemoView = {
 
-backgroundColor:"#FFFFFF",
-width:900,
-height:900,
+backgroundColor:"#FF0000",
+width:150,
+height:150,
+top:64,
+left:20,
+overflow: 1,
+opacity:1,
+borderWidth:4,
+borderColor:"#000000",
 children:[
     {
-    backgroundColor:"#000000",
-          width:100,
-          height:100
-    }
+          backgroundColor:"#000000",
+          width:200,
+          height:100,
+          top:0,
+          left:0,
+          children:[
+                    {
+                    backgroundColor:"#00ff00",
+                    width:20,
+                    height:20,
+                    top:30
+                    },
+                    {
+                    backgroundColor:"#0000ff",
+                    width:20,
+                    height:20,
+                    left:50
+                    }
+                    ]
+    },
+          {
+          backgroundColor:"#00ff00",
+          width:20,
+          height:20,
+          top:100
+          },
+          {
+          backgroundColor:"#0000ff",
+          width:20,
+          height:20,
+          left:100
+          }
 ]
 }
 
+var DemoVC = {
+    backgroundColor: "#ff0000",
+    title:"DemoVC-title"
+}
 
-runWithModule(DemoView)
+var DemoLabel = {
+backgroundColor: "#ffffff",
+text:"hello world",
+top:100,
+left:10,
+width:200,
+height:30,
+textColor:"#000000"
+}
+
+var DemoImageView = {
+imageUrl:"https://op.meituan.net/oppkit_pic/2ndfloor_portal_headpic/157e291c008894a2db841f0dda0d64c.png",
+top:100,
+left:100,
+width:200,
+height:300
+}
+
+var label = createLabel(DemoLabel)
+
+useElement(label)
+//createImageView(DemoImageView)
+
+//runWithModule(DemoView)
 

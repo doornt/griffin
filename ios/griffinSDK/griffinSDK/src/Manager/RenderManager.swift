@@ -24,7 +24,17 @@ public class RenderManager : NSObject{
         self._rootController = root
     }
     
-    public func runWithModule(obj:Dictionary<String,Any>){
-        self._rootController?.view.addSubview(View.init(dict: obj))
+    public func createView(obj:Dictionary<String,Any>) -> View {
+        return View.init(dict: obj)
     }
+    public func createLabel(obj:Dictionary<String,Any>) -> Label {
+        return Label.init(dict: obj)
+    }
+    public func createImageView(obj:Dictionary<String,Any>) -> ImageView {
+        return ImageView.init(dict: obj)
+    }
+    public func useElement(obj:Any){
+        self._rootController?.view.addSubview(obj as? UIView ?? UIView.init())
+    }
+    
 }
