@@ -15,6 +15,7 @@
 		3A0AC1221FD524DB003EDECB /* GriffinSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A0AC1211FD524DB003EDECB /* GriffinSDK.framework */; };
 		3A0AC1231FD524DB003EDECB /* GriffinSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3A0AC1211FD524DB003EDECB /* GriffinSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3A7286A41FDA713B00773C7C /* index.js in Resources */ = {isa = PBXBuildFile; fileRef = 3A7286A31FDA713B00773C7C /* index.js */; };
+		DBC78B351FEEA5AF008EE450 /* bundle.js in Resources */ = {isa = PBXBuildFile; fileRef = DBC78B341FEEA5AE008EE450 /* bundle.js */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -41,6 +42,7 @@
 		3A0AC1151FD523BB003EDECB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3A0AC1211FD524DB003EDECB /* GriffinSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GriffinSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A7286A31FDA713B00773C7C /* index.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = index.js; sourceTree = "<group>"; };
+		DBC78B341FEEA5AE008EE450 /* bundle.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = bundle.js; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +77,7 @@
 		3A0AC1081FD523BB003EDECB /* Griffin */ = {
 			isa = PBXGroup;
 			children = (
+				DBC78B341FEEA5AE008EE450 /* bundle.js */,
 				3A7286A31FDA713B00773C7C /* index.js */,
 				3A0AC1091FD523BB003EDECB /* AppDelegate.swift */,
 				3A0AC10B1FD523BB003EDECB /* ViewController.swift */,
@@ -148,6 +151,7 @@
 			files = (
 				3A0AC1141FD523BB003EDECB /* LaunchScreen.storyboard in Resources */,
 				3A0AC1111FD523BB003EDECB /* Assets.xcassets in Resources */,
+				DBC78B351FEEA5AF008EE450 /* bundle.js in Resources */,
 				3A0AC10F1FD523BB003EDECB /* Main.storyboard in Resources */,
 				3A7286A41FDA713B00773C7C /* index.js in Resources */,
 			);

@@ -48,12 +48,20 @@ public class Engine: NSObject {
             RenderManager.instance.addsubView(parentView, childView:childView)
         }
         
+        let consoleLog:@convention(block)(String)-> Void = {
+            str in
+            print(str)
+        }
+        
         JSCoreBridge.instance.getContext().setObject(unsafeBitCast(createViewScript,to: AnyObject.self) , forKeyedSubscript: "createView" as NSCopying & NSObjectProtocol)
         JSCoreBridge.instance.getContext().setObject(unsafeBitCast(createLabelScript,to: AnyObject.self) , forKeyedSubscript: "createLabel" as NSCopying & NSObjectProtocol)
         JSCoreBridge.instance.getContext().setObject(unsafeBitCast(createImageViewScript,to: AnyObject.self) , forKeyedSubscript: "createImageView" as NSCopying & NSObjectProtocol)
         JSCoreBridge.instance.getContext().setObject(unsafeBitCast(setRootViewScript,to: AnyObject.self) , forKeyedSubscript: "setRootView" as NSCopying & NSObjectProtocol)
         JSCoreBridge.instance.getContext().setObject(unsafeBitCast(useElementScript,to: AnyObject.self) , forKeyedSubscript: "useElement" as NSCopying & NSObjectProtocol)
         JSCoreBridge.instance.getContext().setObject(unsafeBitCast(addSubviewScript,to: AnyObject.self) , forKeyedSubscript: "addSubview" as NSCopying & NSObjectProtocol)
+        JSCoreBridge.instance.getContext().setObject(unsafeBitCast(consoleLog, to: AnyObject.self),forKeyedSubscript: "consoleLog" as NSCopying & NSObjectProtocol)
+            
+        
         
     }
     

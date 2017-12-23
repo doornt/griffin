@@ -12,6 +12,8 @@ extension UIView {
     
     func config(dict:Dictionary<String,Any>){
         
+        print(dict)
+        
         let w:CGFloat = Utils.any2CGFloat(obj: dict["width"]) ?? 0
         let h:CGFloat = Utils.any2CGFloat(obj: dict["height"]) ?? 0
         let y:CGFloat = Utils.any2CGFloat(obj: dict["top"]) ?? 0
