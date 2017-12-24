@@ -40,8 +40,11 @@ extension UIView {
 
 public class View :UIView{
     
+    public var id:String?
+    
     convenience init(dict:Dictionary<String,Any>){
         self.init()
+        self.id = dict["class"] as? String
 
         config(dict: dict)
     }
