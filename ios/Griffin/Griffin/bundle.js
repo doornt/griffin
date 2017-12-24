@@ -299,16 +299,17 @@ var RenderComponent = /** @class */ (function () {
         this.$children.push(child);
     };
     RenderComponent.prototype.$buildAttr = function (attr) {
+        var val = attr.val.replace(/\"/g, "");
         switch (attr.name) {
             case "width":
             case "height":
             case "left":
             case "top":
-                var n = parseInt(attr.val);
+                var n = parseInt(val);
                 this.$attr[attr.name] = n;
                 break;
             default:
-                this.$attr[attr.name] = attr.val;
+                this.$attr[attr.name] = val;
         }
     };
     return RenderComponent;
