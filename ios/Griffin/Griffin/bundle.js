@@ -74,13 +74,20 @@ var NativeManager = /** @class */ (function () {
     function NativeManager() {
     }
     NativeManager.createView = function (attr) {
+        consoleLog("\ncreateView call:" + JSON.stringify(attr));
         return createView(attr);
     };
     NativeManager.setRootView = function (view) {
+        consoleLog("\nsetRootView call:");
+        consoleLog(view);
         return setRootView(view);
     };
     NativeManager.addSubview = function (view1, view2) {
+        consoleLog("\naddSubview call:" + JSON.stringify(view1));
         return addSubview(view1, view2);
+    };
+    NativeManager.Log = function (arg) {
+        return consoleLog(arg);
     };
     return NativeManager;
 }());
@@ -104,12 +111,6 @@ class TestAComponent extends BaseComponent{
     render(){
         console.error(this.ast)
     }
-
-    
-
-    // click(e){
-
-    // }
 }
 
 launchWithComponent(new TestAComponent())
@@ -125,7 +126,7 @@ var BaseComponent_1 = __webpack_require__(3);
 exports.BaseComponent = BaseComponent_1.BaseComponent;
 var index_1 = __webpack_require__(0);
 var launchWithComponent = function (view) {
-    index_1.NativeManager.setRootView(view.$nativeView);
+    index_1.NativeManager.setRootView(view.nativeView);
 };
 exports.launchWithComponent = launchWithComponent;
 
@@ -150,8 +151,15 @@ var BaseComponent = /** @class */ (function () {
     }
     BaseComponent.prototype.$rebuildAst = function () {
         this.$view = this.$ast.compile({});
-        this.$nativeView = this.$view.$nativeView;
+        this.$nativeView = this.$view.nativeView;
     };
+    Object.defineProperty(BaseComponent.prototype, "nativeView", {
+        get: function () {
+            return this.$nativeView;
+        },
+        enumerable: true,
+        configurable: true
+    });
     BaseComponent.prototype.init = function () {
         // this.$renders = this.$nodes.map(node=>{
         //     return new RenderComponent(node)
@@ -273,16 +281,35 @@ var RenderComponent = /** @class */ (function () {
         this.$attrs = attrs || [];
         for (var _i = 0, _a = this.$attrs; _i < _a.length; _i++) {
             var attr = _a[_i];
-            this.$attr[attr.name] = isNaN(attr.val) ? attr.val : parseInt(attr.val);
+            this.$buildAttr(attr);
         }
-        consoleLog(JSON.stringify(this.$attr));
         this.$nativeView = index_1.NativeManager.createView(this.$attr);
     }
+    Object.defineProperty(RenderComponent.prototype, "nativeView", {
+        get: function () {
+            return this.$nativeView;
+        },
+        enumerable: true,
+        configurable: true
+    });
     RenderComponent.prototype.$render = function () {
         this.$children.map(function (item) { return item.$render(); });
     };
     RenderComponent.prototype.addChild = function (child) {
         this.$children.push(child);
+    };
+    RenderComponent.prototype.$buildAttr = function (attr) {
+        switch (attr.name) {
+            case "width":
+            case "height":
+            case "left":
+            case "top":
+                var n = parseInt(attr.val);
+                this.$attr[attr.name] = n;
+                break;
+            default:
+                this.$attr[attr.name] = attr.val;
+        }
     };
     return RenderComponent;
 }());
@@ -293,7 +320,7 @@ exports.RenderComponent = RenderComponent;
 /* 7 */
 /***/ (function(module, exports) {
 
-module.exports = {"type":"Block","nodes":[{"type":"Tag","name":"div","selfClosing":false,"block":{"type":"Block","nodes":[],"line":1},"attrs":[{"name":"class","val":"'test'","line":1,"column":1,"mustEscape":false},{"name":"@click","val":"\"clcik\"","line":1,"column":7,"mustEscape":true},{"name":"backgroundColor","val":"\"#0000FF\"","line":1,"column":22,"mustEscape":true},{"name":"width","val":"\"100\"","line":1,"column":48,"mustEscape":true},{"name":"height","val":"\"100\"","line":1,"column":60,"mustEscape":true},{"name":"top","val":"\"10\"","line":1,"column":73,"mustEscape":true},{"name":"left","val":"\"10\"","line":1,"column":82,"mustEscape":true}],"attributeBlocks":[],"isInline":false,"line":1,"column":1}],"line":0,"declaredBlocks":{}}
+module.exports = {"type":"Block","nodes":[{"type":"Tag","name":"div","selfClosing":false,"block":{"type":"Block","nodes":[],"line":1},"attrs":[{"name":"class","val":"'test'","line":1,"column":1,"mustEscape":false},{"name":"@click","val":"\"clcik\"","line":1,"column":7,"mustEscape":true},{"name":"backgroundColor","val":"\"#0000FF\"","line":1,"column":22,"mustEscape":true},{"name":"width","val":"100","line":1,"column":48,"mustEscape":true},{"name":"height","val":"100","line":1,"column":58,"mustEscape":true},{"name":"top","val":"10","line":1,"column":69,"mustEscape":true},{"name":"left","val":"10","line":1,"column":76,"mustEscape":true}],"attributeBlocks":[],"isInline":false,"line":1,"column":1}],"line":0,"declaredBlocks":{}}
 
 /***/ })
 /******/ ]);
