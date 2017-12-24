@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -70,23 +70,45 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+var isNative = typeof createView != "undefined";
 var NativeManager = /** @class */ (function () {
     function NativeManager() {
     }
     NativeManager.createView = function (attr) {
+        if (!isNative) {
+            return;
+        }
         consoleLog("\ncreateView call:" + JSON.stringify(attr));
         return createView(attr);
     };
+    NativeManager.createText = function (attr) {
+        if (!isNative) {
+            return;
+        }
+        consoleLog("\createText call:" + JSON.stringify(attr));
+        return createLabel(attr);
+    };
     NativeManager.setRootView = function (view) {
+        if (!isNative) {
+            return;
+        }
         consoleLog("\nsetRootView call:");
         consoleLog(view);
         return setRootView(view);
     };
     NativeManager.addSubview = function (view1, view2) {
-        consoleLog("\naddSubview call:" + JSON.stringify(view1));
+        if (!isNative) {
+            return;
+        }
+        consoleLog("\naddSubview call:");
+        consoleLog(view1);
+        consoleLog(view2);
         return addSubview(view1, view2);
     };
     NativeManager.Log = function (arg) {
+        if (!isNative) {
+            return;
+        }
         return consoleLog(arg);
     };
     return NativeManager;
@@ -98,9 +120,68 @@ exports.NativeManager = NativeManager;
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const {BaseComponent,launchWithComponent} = __webpack_require__(2)
+"use strict";
 
-let list = __webpack_require__(7)
+Object.defineProperty(exports, "__esModule", { value: true });
+var index_1 = __webpack_require__(0);
+var RenderComponent = /** @class */ (function () {
+    function RenderComponent(attrs) {
+        this.$children = [];
+        this.$attr = {};
+        this.$nativeView = null;
+        this.$attrs = attrs || [];
+        for (var _i = 0, _a = this.$attrs; _i < _a.length; _i++) {
+            var attr = _a[_i];
+            attr.val = attr.val.replace(/\"/g, "");
+            this.$buildAttr(attr);
+        }
+        this.createView();
+    }
+    Object.defineProperty(RenderComponent.prototype, "nativeView", {
+        get: function () {
+            return this.$nativeView;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    RenderComponent.prototype.createView = function () {
+        this.$nativeView = index_1.NativeManager.createView(this.$attr);
+    };
+    RenderComponent.prototype.$render = function () {
+        this.$children.map(function (item) { return item.$render(); });
+    };
+    RenderComponent.prototype.addChild = function (child) {
+        if (!child) {
+            return;
+        }
+        this.$children.push(child);
+        index_1.NativeManager.addSubview(this.$nativeView, child.nativeView);
+    };
+    RenderComponent.prototype.$buildAttr = function (attr) {
+        switch (attr.name) {
+            case "width":
+            case "height":
+            case "left":
+            case "top":
+                var n = parseInt(attr.val);
+                this.$attr[attr.name] = n;
+                break;
+            default:
+                this.$attr[attr.name] = attr.val;
+        }
+    };
+    return RenderComponent;
+}());
+exports.RenderComponent = RenderComponent;
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+const {BaseComponent,launchWithComponent} = __webpack_require__(3)
+
+let list = __webpack_require__(8)
 
 class TestAComponent extends BaseComponent{
     
@@ -116,13 +197,13 @@ class TestAComponent extends BaseComponent{
 launchWithComponent(new TestAComponent())
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var BaseComponent_1 = __webpack_require__(3);
+var BaseComponent_1 = __webpack_require__(4);
 exports.BaseComponent = BaseComponent_1.BaseComponent;
 var index_1 = __webpack_require__(0);
 var launchWithComponent = function (view) {
@@ -132,14 +213,14 @@ exports.launchWithComponent = launchWithComponent;
 
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var ComponentManager_1 = __webpack_require__(4);
-var AstManager_1 = __webpack_require__(5);
+var ComponentManager_1 = __webpack_require__(5);
+var AstManager_1 = __webpack_require__(6);
 var BaseComponent = /** @class */ (function () {
     function BaseComponent(ast) {
         this.$nativeView = null;
@@ -174,7 +255,7 @@ exports.BaseComponent = BaseComponent;
 
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -203,13 +284,14 @@ exports.ComponentManager = ComponentManager;
 
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var RenderComponent_1 = __webpack_require__(6);
+var RenderComponent_1 = __webpack_require__(1);
+var TextComponent_1 = __webpack_require__(7);
 var AstManager = /** @class */ (function () {
     function AstManager(ast) {
         this.$inputData = {};
@@ -241,6 +323,9 @@ var AstManager = /** @class */ (function () {
             case "block":
                 view = this.$visitBlock(node);
                 break;
+            case "Text":
+                view = this.$visitText(node);
+                break;
             default:
                 view = this.$visitTag(node);
                 var block = node.block;
@@ -250,6 +335,11 @@ var AstManager = /** @class */ (function () {
         return view;
     };
     AstManager.prototype.$visitBlock = function (node) {
+    };
+    AstManager.prototype.$visitText = function (node) {
+        node.attrs = node.attrs || [];
+        node.attrs.push({ name: "text", val: node.val });
+        return new TextComponent_1.TextComponent(node.attrs);
     };
     AstManager.prototype.$visitTag = function (node) {
         var view = null;
@@ -266,62 +356,42 @@ exports.AstManager = AstManager;
 
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
+var RenderComponent_1 = __webpack_require__(1);
 var index_1 = __webpack_require__(0);
-var RenderComponent = /** @class */ (function () {
-    function RenderComponent(attrs) {
-        this.$children = [];
-        this.$attr = {};
-        this.$nativeView = null;
-        this.$attrs = attrs || [];
-        for (var _i = 0, _a = this.$attrs; _i < _a.length; _i++) {
-            var attr = _a[_i];
-            this.$buildAttr(attr);
-        }
-        this.$nativeView = index_1.NativeManager.createView(this.$attr);
+var TextComponent = /** @class */ (function (_super) {
+    __extends(TextComponent, _super);
+    function TextComponent(attrs) {
+        return _super.call(this, attrs) || this;
     }
-    Object.defineProperty(RenderComponent.prototype, "nativeView", {
-        get: function () {
-            return this.$nativeView;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    RenderComponent.prototype.$render = function () {
-        this.$children.map(function (item) { return item.$render(); });
+    TextComponent.prototype.createView = function () {
+        this.$nativeView = index_1.NativeManager.createText(this.$attr);
     };
-    RenderComponent.prototype.addChild = function (child) {
-        this.$children.push(child);
-    };
-    RenderComponent.prototype.$buildAttr = function (attr) {
-        var val = attr.val.replace(/\"/g, "");
-        switch (attr.name) {
-            case "width":
-            case "height":
-            case "left":
-            case "top":
-                var n = parseInt(val);
-                this.$attr[attr.name] = n;
-                break;
-            default:
-                this.$attr[attr.name] = val;
-        }
-    };
-    return RenderComponent;
-}());
-exports.RenderComponent = RenderComponent;
+    return TextComponent;
+}(RenderComponent_1.RenderComponent));
+exports.TextComponent = TextComponent;
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports) {
 
-module.exports = {"type":"Block","nodes":[{"type":"Tag","name":"div","selfClosing":false,"block":{"type":"Block","nodes":[],"line":1},"attrs":[{"name":"class","val":"'test'","line":1,"column":1,"mustEscape":false},{"name":"@click","val":"\"clcik\"","line":1,"column":7,"mustEscape":true},{"name":"backgroundColor","val":"\"#0000FF\"","line":1,"column":22,"mustEscape":true},{"name":"width","val":"100","line":1,"column":48,"mustEscape":true},{"name":"height","val":"100","line":1,"column":58,"mustEscape":true},{"name":"top","val":"10","line":1,"column":69,"mustEscape":true},{"name":"left","val":"10","line":1,"column":76,"mustEscape":true}],"attributeBlocks":[],"isInline":false,"line":1,"column":1}],"line":0,"declaredBlocks":{}}
+module.exports = {"type":"Block","nodes":[{"type":"Tag","name":"div","selfClosing":false,"block":{"type":"Block","nodes":[{"type":"Tag","name":"div","selfClosing":false,"block":{"type":"Block","nodes":[{"type":"Tag","name":"div","selfClosing":false,"block":{"type":"Block","nodes":[{"type":"Text","val":"Hellow World","line":3,"column":16}],"line":3},"attrs":[{"name":"class","val":"'test3'","line":3,"column":9,"mustEscape":false}],"attributeBlocks":[],"isInline":false,"line":3,"column":9}],"line":2},"attrs":[{"name":"class","val":"'tst2'","line":2,"column":5,"mustEscape":false},{"name":"backgroundColor","val":"\"#0000FF\"","line":2,"column":11,"mustEscape":true},{"name":"width","val":"50","line":2,"column":37,"mustEscape":true},{"name":"height","val":"50","line":2,"column":46,"mustEscape":true},{"name":"top","val":"200","line":2,"column":56,"mustEscape":true},{"name":"left","val":"200","line":2,"column":64,"mustEscape":true}],"attributeBlocks":[],"isInline":false,"line":2,"column":5}],"line":1},"attrs":[{"name":"class","val":"'test'","line":1,"column":1,"mustEscape":false},{"name":"@click","val":"\"clcik\"","line":1,"column":7,"mustEscape":true},{"name":"backgroundColor","val":"\"#00FF00\"","line":1,"column":22,"mustEscape":true},{"name":"width","val":"400","line":1,"column":48,"mustEscape":true},{"name":"height","val":"400","line":1,"column":58,"mustEscape":true},{"name":"top","val":"60","line":1,"column":69,"mustEscape":true},{"name":"left","val":"10","line":1,"column":76,"mustEscape":true}],"attributeBlocks":[],"isInline":false,"line":1,"column":1}],"line":0,"declaredBlocks":{}}
 
 /***/ })
 /******/ ]);
