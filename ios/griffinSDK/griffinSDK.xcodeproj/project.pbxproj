@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3A6C89F31FECB2850044C326 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A6C89F21FECB2850044C326 /* Utils.swift */; };
+		3AE13ACA1FEDF1F6003CA485 /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE13AC91FEDF1F6003CA485 /* Environment.swift */; };
 		DBA513AD1FD437DA007AEE1E /* GriffinSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = DBA513AB1FD437DA007AEE1E /* GriffinSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DBA513B41FD4388F007AEE1E /* sdk.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA513B31FD4388F007AEE1E /* sdk.swift */; };
 		DBA513B81FD43912007AEE1E /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA513B71FD43912007AEE1E /* BaseViewController.swift */; };
@@ -20,6 +21,7 @@
 
 /* Begin PBXFileReference section */
 		3A6C89F21FECB2850044C326 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Utils.swift; path = griffinSDK/src/Utils/Utils.swift; sourceTree = SOURCE_ROOT; };
+		3AE13AC91FEDF1F6003CA485 /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
 		DBA513A81FD437DA007AEE1E /* GriffinSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GriffinSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBA513AB1FD437DA007AEE1E /* GriffinSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GriffinSDK.h; sourceTree = "<group>"; };
 		DBA513AC1FD437DA007AEE1E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -47,6 +49,7 @@
 			isa = PBXGroup;
 			children = (
 				3A6C89F21FECB2850044C326 /* Utils.swift */,
+				3AE13AC91FEDF1F6003CA485 /* Environment.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -216,6 +219,7 @@
 				DBC78B301FEB9490008EE450 /* Engine.swift in Sources */,
 				DBA513B41FD4388F007AEE1E /* sdk.swift in Sources */,
 				DBC78B2A1FEA6632008EE450 /* JSCore.swift in Sources */,
+				3AE13ACA1FEDF1F6003CA485 /* Environment.swift in Sources */,
 				DBA513BB1FDA7F9B007AEE1E /* RenderManager.swift in Sources */,
 				DBC78B331FEBA0F0008EE450 /* View.swift in Sources */,
 				DBA513B81FD43912007AEE1E /* BaseViewController.swift in Sources */,

@@ -70,7 +70,8 @@ top:0,
 left:0,
 width:200,
 height:30,
-textColor:"#000000"
+textColor:"#000000",
+    cornerRadius:20
 }
 
 var DemoImageView = {
@@ -78,17 +79,19 @@ imageUrl:"https://op.meituan.net/oppkit_pic/2ndfloor_portal_headpic/157e291c0088
 top:100,
 left:100,
 width:200,
-height:300
+height:300,
+cornerRadius:20
 }
 
 var rootView = {
     
 backgroundColor:"#FF0000",
-width:300,
 height:300,
 top:70,
 left:0,
+cornerRadius:30
 }
+
 var label = createLabel(DemoLabel)
 var view = createView(rootView)
 var imageView = createView(DemoImageView)

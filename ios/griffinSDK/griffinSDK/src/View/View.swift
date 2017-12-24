@@ -25,6 +25,8 @@ extension UIView {
         self.layer.borderWidth = Utils.any2CGFloat(obj: dict["borderWidth"]) ?? 0
         self.layer.borderColor = Utils.hexString2UIColor(hex: Utils.any2String(obj: dict["borderColor"])).cgColor
         
+        self.layer.cornerRadius = Utils.any2CGFloat(obj: dict["cornerRadius"]) ?? 0
+    
         for child in Utils.any2Array(obj: dict["children"]) {
             let rChild = child as? Dictionary<String, Any>
             guard let realChild = rChild else {
@@ -54,6 +56,9 @@ public class Label :UILabel{
         self.text = Utils.any2String(obj: dict["text"])
         self.textColor = Utils.hexString2UIColor(hex: Utils.any2String(obj: dict["textColor"]))
     
+        if self.layer.cornerRadius > 0 {
+            self.layer.masksToBounds = true
+        }
     }
 }
 
@@ -68,6 +73,10 @@ public class ImageView :UIImageView{
             return
         }
         self.image = UIImage.init(data: data, scale: UIScreen.main.scale)
+        
+        if self.layer.cornerRadius > 0 {
+            self.layer.masksToBounds = true
+        }
     }
 }
 
