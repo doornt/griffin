@@ -64,14 +64,7 @@ var DemoVC = {
 }
 
 var DemoLabel = {
-backgroundColor: "#ffffff",
-text:"hello world",
-top:0,
-left:0,
-width:200,
-height:30,
-textColor:"#000000",
-    cornerRadius:20
+text:"hello world"
 }
 
 var DemoImageView = {
@@ -87,9 +80,9 @@ var rootView = {
     
 backgroundColor:"#FF0000",
 height:300,
+width:300,
 top:70,
-left:0,
-cornerRadius:30
+left:0
 }
 
 var label = createLabel(DemoLabel)

@@ -18,13 +18,19 @@ extension UIView {
         let x:CGFloat = Utils.any2CGFloat(obj: dict["left"]) ?? 0
         self.frame = CGRect(x: x, y: y, width: w, height: h)
         
-        self.backgroundColor = Utils.hexString2UIColor(hex: Utils.any2String(obj: dict["backgroundColor"]))
+        if Utils.hexString2UIColor(hex: Utils.any2String(obj: dict["backgroundColor"])) != nil {
+            self.backgroundColor = Utils.hexString2UIColor(hex: Utils.any2String(obj: dict["backgroundColor"]))
+        }
+        
         self.clipsToBounds = Utils.any2Bool(obj: dict["overflow"]) ?? false
         self.alpha = Utils.any2CGFloat(obj: dict["opacity"]) ?? 1.0
         
         self.layer.borderWidth = Utils.any2CGFloat(obj: dict["borderWidth"]) ?? 0
-        self.layer.borderColor = Utils.hexString2UIColor(hex: Utils.any2String(obj: dict["borderColor"])).cgColor
         
+        if Utils.hexString2UIColor(hex: Utils.any2String(obj: dict["borderColor"])) != nil {
+            self.layer.borderColor = Utils.hexString2UIColor(hex: Utils.any2String(obj: dict["borderColor"]))!.cgColor
+        }
+
         self.layer.cornerRadius = Utils.any2CGFloat(obj: dict["cornerRadius"]) ?? 0
     
         for child in Utils.any2Array(obj: dict["children"]) {
@@ -57,11 +63,17 @@ public class Label :UILabel{
         config(dict: dict)
         
         self.text = Utils.any2String(obj: dict["text"])
-        self.textColor = Utils.hexString2UIColor(hex: Utils.any2String(obj: dict["textColor"]))
+        
+        if Utils.hexString2UIColor(hex: Utils.any2String(obj: dict["textColor"])) != nil {
+           self.textColor = Utils.hexString2UIColor(hex: Utils.any2String(obj: dict["textColor"]))
+        }
     
         if self.layer.cornerRadius > 0 {
             self.layer.masksToBounds = true
         }
+        
+        
+        self.sizeToFit()
     }
 }
 

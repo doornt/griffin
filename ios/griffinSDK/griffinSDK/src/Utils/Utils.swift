@@ -26,9 +26,9 @@ public class Utils: NSObject {
         return obj as? Bool
     }
     
-    class func hexString2UIColor(hex:String?) -> UIColor {
+    class func hexString2UIColor(hex:String?) -> UIColor? {
         guard let hex = hex else {
-            return .clear
+            return nil
         }
         
         var cString:String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
@@ -38,7 +38,7 @@ public class Utils: NSObject {
         }
         
         if ((cString.count) != 6) {
-            return .clear
+            return nil
         }
         
         var rgbValue:UInt32 = 0
