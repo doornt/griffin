@@ -50,13 +50,19 @@ public class Engine: NSObject {
         
        
         
+        let registerEvent:@convention(block)(UIView, String, String)-> Void = {
+            view, event, callBackString in
+            RenderManager.instance.registerEvent(view, event: event, callBackString: callBackString)
+        }
+        
         JSCoreBridge.instance.getContext().setObject(unsafeBitCast(createViewScript,to: AnyObject.self) , forKeyedSubscript: "createView" as NSCopying & NSObjectProtocol)
         JSCoreBridge.instance.getContext().setObject(unsafeBitCast(createLabelScript,to: AnyObject.self) , forKeyedSubscript: "createLabel" as NSCopying & NSObjectProtocol)
         JSCoreBridge.instance.getContext().setObject(unsafeBitCast(createImageViewScript,to: AnyObject.self) , forKeyedSubscript: "createImageView" as NSCopying & NSObjectProtocol)
         JSCoreBridge.instance.getContext().setObject(unsafeBitCast(setRootViewScript,to: AnyObject.self) , forKeyedSubscript: "setRootView" as NSCopying & NSObjectProtocol)
         JSCoreBridge.instance.getContext().setObject(unsafeBitCast(useElementScript,to: AnyObject.self) , forKeyedSubscript: "useElement" as NSCopying & NSObjectProtocol)
         JSCoreBridge.instance.getContext().setObject(unsafeBitCast(addSubviewScript,to: AnyObject.self) , forKeyedSubscript: "addSubview" as NSCopying & NSObjectProtocol)
-        
+     
+        JSCoreBridge.instance.getContext().setObject(unsafeBitCast(registerEvent, to: AnyObject.self),forKeyedSubscript: "registerEvent" as NSCopying & NSObjectProtocol)
         
         JSCoreBridge.instance.getContext().exceptionHandler = {(ctx: JSContext!, value: JSValue!) in
             let stacktrace = value.objectForKeyedSubscript("stack").toString()
@@ -66,8 +72,6 @@ public class Engine: NSObject {
             
             print("\nJS ERROR: \(value) \(moreInfo)")
         }
-            
-        
         
     }
     

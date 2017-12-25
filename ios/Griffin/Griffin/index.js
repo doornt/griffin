@@ -89,6 +89,7 @@ var label = createLabel(DemoLabel)
 var view = createView(rootView)
 var imageView = createView(DemoImageView)
 
+registerEvent(label,"click", "(function func(){var a =9, b=19;var sum=a+b; consoleLog(sum);})")
 setRootView(view)
 addSubview(view,label)
 //createImageView(DemoImageView)

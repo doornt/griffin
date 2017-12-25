@@ -51,8 +51,12 @@ public class JSCoreBridge {
         _jsContext.setObject([:], forKeyedSubscript: "console" as NSCopying & NSObjectProtocol)
     }
     
-    public func executeJavascript(script:String){
-        _jsContext.evaluateScript(script)
+    public func executeAnonymousJSFunction(script:String) {
+        _jsContext.evaluateScript(script).call(withArguments: [])
+    }
+    
+    public func executeJavascript(script:String) -> JSValue!{
+        return _jsContext.evaluateScript(script)
     }
     
     public func callJsMethod(method:String,args:Array<Any>){
