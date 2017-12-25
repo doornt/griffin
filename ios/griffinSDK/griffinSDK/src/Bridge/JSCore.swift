@@ -64,7 +64,7 @@ public class JSCoreBridge {
     public func executeAnonymousJSFunction(script:String) {
         _jsContext.evaluateScript(script).call(withArguments: [])
     }
-    
+   
     public func executeJavascript(script:String) -> JSValue!{
         return _jsContext.evaluateScript(script)
     }

@@ -63,6 +63,10 @@ var DemoVC = {
     title:"DemoVC-title"
 }
 
+function func1() {
+    var a = 100,b=200;
+    consoleLog(a+b);
+}
 var DemoLabel = {
 text:"hello world"
 }
@@ -89,7 +93,7 @@ var label = createLabel(DemoLabel)
 var view = createView(rootView)
 var imageView = createView(DemoImageView)
 
-registerEvent(label,"click", "(function func(){var a =9, b=19;var sum=a+b; consoleLog(sum);})")
+registerEvent(label,"click", "func1")
 setRootView(view)
 addSubview(view,label)
 //createImageView(DemoImageView)

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import JavaScriptCore
 
 private var eventKey: Void?
 
@@ -69,7 +70,7 @@ extension UIView {
             return
         }
         for click in clicks {
-            JSCoreBridge.instance.executeAnonymousJSFunction(script: click)
+            JSCoreBridge.instance.callJsMethod(method: click, args: [])
         }
     }
     
