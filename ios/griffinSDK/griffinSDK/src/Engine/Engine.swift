@@ -61,6 +61,7 @@ public class Engine: NSObject {
         JSCoreBridge.instance.getContext().setObject(unsafeBitCast(setRootViewScript,to: AnyObject.self) , forKeyedSubscript: "setRootView" as NSCopying & NSObjectProtocol)
         JSCoreBridge.instance.getContext().setObject(unsafeBitCast(useElementScript,to: AnyObject.self) , forKeyedSubscript: "useElement" as NSCopying & NSObjectProtocol)
         JSCoreBridge.instance.getContext().setObject(unsafeBitCast(addSubviewScript,to: AnyObject.self) , forKeyedSubscript: "addSubview" as NSCopying & NSObjectProtocol)
+
         JSCoreBridge.instance.getContext().setObject(unsafeBitCast(registerEvent, to: AnyObject.self),forKeyedSubscript: "registerEvent" as NSCopying & NSObjectProtocol)
 
         JSCoreBridge.instance.getContext().exceptionHandler = {(ctx: JSContext!, value: JSValue!) in

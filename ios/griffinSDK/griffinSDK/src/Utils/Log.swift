@@ -18,3 +18,5 @@ public class Log{
         self.log(level: "info", fileName: fileName, line: line, message: message)
     }
 }
+
+

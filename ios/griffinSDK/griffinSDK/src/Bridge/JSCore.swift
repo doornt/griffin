@@ -47,6 +47,8 @@ public class JSCoreBridge {
             print("JSLog:\(message)\n")
         }
         _jsContext.setObject(unsafeBitCast(consoleLog, to: AnyObject.self),forKeyedSubscript: "consoleLog" as NSCopying & NSObjectProtocol)
+   
+        _jsContext.setObject([:], forKeyedSubscript: "console" as NSCopying & NSObjectProtocol)
     }
     
     public func executeAnonymousJSFunction(script:String) {
