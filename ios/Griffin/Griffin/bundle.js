@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -168,11 +168,38 @@ exports.NativeManager = NativeManager;
 
 /***/ }),
 /* 2 */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const {BaseComponent,launchWithComponent} = __webpack_require__(3)
+const {BaseComponent,launchWithComponent} = __webpack_require__(4)
 
-let list = __webpack_require__(9)
+let list = __webpack_require__(11)
 
 class TestAComponent extends BaseComponent{
     
@@ -188,33 +215,33 @@ class TestAComponent extends BaseComponent{
 launchWithComponent(new TestAComponent())
 
 /***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var BaseComponent_1 = __webpack_require__(4);
-exports.BaseComponent = BaseComponent_1.BaseComponent;
-var index_1 = __webpack_require__(1);
-var SDKManager_1 = __webpack_require__(8);
-var launchWithComponent = function (view) {
-    index_1.NativeManager.setRootView(view.nativeView);
-};
-exports.launchWithComponent = launchWithComponent;
-SDKManager_1.SDKManager.instance.init();
-
-
-/***/ }),
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+var BaseComponent_1 = __webpack_require__(5);
+exports.BaseComponent = BaseComponent_1.BaseComponent;
+var index_1 = __webpack_require__(1);
+var index_2 = __webpack_require__(9);
+var launchWithComponent = function (view) {
+    index_1.NativeManager.setRootView(view.nativeView);
+};
+exports.launchWithComponent = launchWithComponent;
+index_2.setConsole();
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(global) {
+Object.defineProperty(exports, "__esModule", { value: true });
 var RenderComponent_1 = __webpack_require__(0);
-var ComponentManager_1 = __webpack_require__(5);
-var AstManager_1 = __webpack_require__(6);
+var ComponentManager_1 = __webpack_require__(6);
+var AstManager_1 = __webpack_require__(7);
 var BaseComponent = /** @class */ (function () {
     function BaseComponent(ast) {
         this.$nativeView = null;
@@ -249,6 +276,10 @@ var BaseComponent = /** @class */ (function () {
         // this.$renders = this.$nodes.map(node=>{
         //     return new RenderComponent(node)
         // })
+        console.log(global);
+        setTimeout(function () {
+            console.log("timeout");
+        }, 1000);
     };
     BaseComponent.prototype.viewDidLoad = function () {
         // this.$renders.map(item=>item.$render())
@@ -257,9 +288,10 @@ var BaseComponent = /** @class */ (function () {
 }());
 exports.BaseComponent = BaseComponent;
 
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -288,14 +320,14 @@ exports.ComponentManager = ComponentManager;
 
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var RenderComponent_1 = __webpack_require__(0);
-var TextComponent_1 = __webpack_require__(7);
+var TextComponent_1 = __webpack_require__(8);
 var AstManager = /** @class */ (function () {
     function AstManager(ast) {
         this.$inputData = {};
@@ -364,7 +396,7 @@ exports.AstManager = AstManager;
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -396,45 +428,63 @@ exports.TextComponent = TextComponent;
 
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var SDKManager = /** @class */ (function () {
-    function SDKManager() {
-    }
-    SDKManager.prototype.init = function () {
-        if (console) {
-            if (!console.log) {
-                console.log = function () {
-                    var args = [];
-                    for (var _i = 0; _i < arguments.length; _i++) {
-                        args[_i] = arguments[_i];
-                    }
-                    consoleLog.apply(void 0, args);
-                };
-            }
-        }
-    };
-    Object.defineProperty(SDKManager, "instance", {
-        get: function () {
-            if (!this.$inst) {
-                this.$inst = new SDKManager;
-            }
-            return this.$inst;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return SDKManager;
-}());
-exports.SDKManager = SDKManager;
+var Console_1 = __webpack_require__(10);
+exports.setConsole = Console_1.setConsole;
 
 
 /***/ }),
-/* 9 */
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(global) {
+Object.defineProperty(exports, "__esModule", { value: true });
+function setConsole() {
+    if (global.Environment && global.Environment != 'web') {
+        global.console = {
+            log: function () {
+                var args = [];
+                for (var _i = 0; _i < arguments.length; _i++) {
+                    args[_i] = arguments[_i];
+                }
+                global.NativeLog.apply(global, args.concat(["__LOG"]));
+            },
+            info: function () {
+                var args = [];
+                for (var _i = 0; _i < arguments.length; _i++) {
+                    args[_i] = arguments[_i];
+                }
+                global.NativeLog.apply(global, args.concat(["__INFO"]));
+            },
+            warn: function () {
+                var args = [];
+                for (var _i = 0; _i < arguments.length; _i++) {
+                    args[_i] = arguments[_i];
+                }
+                global.NativeLog.apply(global, args.concat(["__WARN"]));
+            },
+            error: function () {
+                var args = [];
+                for (var _i = 0; _i < arguments.length; _i++) {
+                    args[_i] = arguments[_i];
+                }
+                global.NativeLog.apply(global, args.concat(["__ERROR"]));
+            }
+        };
+    }
+}
+exports.setConsole = setConsole;
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+
+/***/ }),
+/* 11 */
 /***/ (function(module, exports) {
 
 module.exports = {"type":"Block","nodes":[{"type":"Tag","name":"div","selfClosing":false,"block":{"type":"Block","nodes":[{"type":"Tag","name":"div","selfClosing":false,"block":{"type":"Block","nodes":[],"line":2},"attrs":[{"name":"class","val":"'tst2'","line":2,"column":5,"mustEscape":false},{"name":"backgroundColor","val":"\"#0000FF\"","line":2,"column":11,"mustEscape":true},{"name":"width","val":"50","line":2,"column":37,"mustEscape":true},{"name":"height","val":"50","line":2,"column":46,"mustEscape":true},{"name":"top","val":"200","line":2,"column":56,"mustEscape":true},{"name":"left","val":"200","line":2,"column":64,"mustEscape":true}],"attributeBlocks":[],"isInline":false,"line":2,"column":5},{"type":"Tag","name":"div","selfClosing":false,"block":{"type":"Block","nodes":[{"type":"Text","val":"Hellow World","line":3,"column":12}],"line":3},"attrs":[{"name":"class","val":"'test3'","line":3,"column":5,"mustEscape":false}],"attributeBlocks":[],"isInline":false,"line":3,"column":5}],"line":1},"attrs":[{"name":"class","val":"'test'","line":1,"column":1,"mustEscape":false},{"name":"@click","val":"\"clcik\"","line":1,"column":7,"mustEscape":true},{"name":"backgroundColor","val":"\"#00FF00\"","line":1,"column":22,"mustEscape":true},{"name":"width","val":"400","line":1,"column":48,"mustEscape":true},{"name":"height","val":"400","line":1,"column":58,"mustEscape":true},{"name":"top","val":"60","line":1,"column":69,"mustEscape":true},{"name":"left","val":"10","line":1,"column":76,"mustEscape":true}],"attributeBlocks":[],"isInline":false,"line":1,"column":1}],"line":0,"declaredBlocks":{}}

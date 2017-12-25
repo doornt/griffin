@@ -15,4 +15,12 @@ public class Environment: NSObject {
     public static let instance:Environment = {
         return Environment()
     }()
+    
+    public func get()->[String:Any]{
+        var env = [String:Any]()
+        env["platform"] = "ios"
+        env["screenWidth"] = screenWidth
+        env["screenHeight"] = screenHeight
+        return env
+    }
 }

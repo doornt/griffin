@@ -24,8 +24,13 @@ public class JSCoreBridge {
         self._jsContext = JSContext(virtualMachine: jsVirtualMachine)
         self._jsContext.name = "Griffin Context"
         
+        self.initEnvironment()
         self.initJsFunctions()
 
+    }
+    
+    private func initEnvironment(){
+        _jsContext.setObject(Environment.instance.get(), forKeyedSubscript: "Environment" as NSCopying & NSObjectProtocol)
     }
     
     private func initJsFunctions(){
@@ -39,16 +44,19 @@ public class JSCoreBridge {
     
         let consoleLog:@convention(block)()-> Void = {
             var message:String = ""
+            var key:String = ""
             if let args = JSContext.currentArguments(){
-                for arg in args{
-                    message = message + "\(arg)\t"
+                for (index,arg) in args.enumerated(){
+                    if index != args.count - 1{
+                        message = message + "\(arg)\t"
+                    }else{
+                        key = "\(arg)"
+                    }
                 }
             }
-            print("JSLog:\(message)\n")
+            print("JS\(key):\(message)\n")
         }
-        _jsContext.setObject(unsafeBitCast(consoleLog, to: AnyObject.self),forKeyedSubscript: "consoleLog" as NSCopying & NSObjectProtocol)
-   
-        _jsContext.setObject([:], forKeyedSubscript: "console" as NSCopying & NSObjectProtocol)
+        _jsContext.setObject(unsafeBitCast(consoleLog, to: AnyObject.self),forKeyedSubscript: "NativeLog" as NSCopying & NSObjectProtocol)
         
         _jsContext.exceptionHandler = {(ctx: JSContext!, value: JSValue!) in
             let stacktrace = value.objectForKeyedSubscript("stack").toString()
