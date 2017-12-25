@@ -49,6 +49,16 @@ public class JSCoreBridge {
         _jsContext.setObject(unsafeBitCast(consoleLog, to: AnyObject.self),forKeyedSubscript: "consoleLog" as NSCopying & NSObjectProtocol)
    
         _jsContext.setObject([:], forKeyedSubscript: "console" as NSCopying & NSObjectProtocol)
+        
+        _jsContext.exceptionHandler = {(ctx: JSContext!, value: JSValue!) in
+            let stacktrace = value.objectForKeyedSubscript("stack").toString()
+            let lineNumber = value.objectForKeyedSubscript("line")
+            let column = value.objectForKeyedSubscript("column")
+            let moreInfo = "in method \(String(describing: stacktrace))Line number in file: \(String(describing: lineNumber)), column: \(String(describing: column))"
+            
+            print("\nJS ERROR: \(value) \(moreInfo)")
+        }
+        
     }
     
     public func executeAnonymousJSFunction(script:String) {
@@ -71,6 +81,8 @@ public class JSCoreBridge {
 //        _jsContext.
     }
     
-    
+    public func registerCallMethod<T>(method:T,script:String){
+        _jsContext.setObject(unsafeBitCast(method,to: AnyObject.self) , forKeyedSubscript: script as NSCopying & NSObjectProtocol)
+    }
     
 }

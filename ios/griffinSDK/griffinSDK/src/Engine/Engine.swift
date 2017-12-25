@@ -55,24 +55,14 @@ public class Engine: NSObject {
             RenderManager.instance.registerEvent(view, event: event, callBack: callBack)
         }
         
-        JSCoreBridge.instance.getContext().setObject(unsafeBitCast(createViewScript,to: AnyObject.self) , forKeyedSubscript: "createView" as NSCopying & NSObjectProtocol)
-        JSCoreBridge.instance.getContext().setObject(unsafeBitCast(createLabelScript,to: AnyObject.self) , forKeyedSubscript: "createLabel" as NSCopying & NSObjectProtocol)
-        JSCoreBridge.instance.getContext().setObject(unsafeBitCast(createImageViewScript,to: AnyObject.self) , forKeyedSubscript: "createImageView" as NSCopying & NSObjectProtocol)
-        JSCoreBridge.instance.getContext().setObject(unsafeBitCast(setRootViewScript,to: AnyObject.self) , forKeyedSubscript: "setRootView" as NSCopying & NSObjectProtocol)
-        JSCoreBridge.instance.getContext().setObject(unsafeBitCast(useElementScript,to: AnyObject.self) , forKeyedSubscript: "useElement" as NSCopying & NSObjectProtocol)
-        JSCoreBridge.instance.getContext().setObject(unsafeBitCast(addSubviewScript,to: AnyObject.self) , forKeyedSubscript: "addSubview" as NSCopying & NSObjectProtocol)
-
-        JSCoreBridge.instance.getContext().setObject(unsafeBitCast(registerEvent, to:AnyObject.self),
-            forKeyedSubscript: "registerEvent" as NSCopying & NSObjectProtocol)
-
-        JSCoreBridge.instance.getContext().exceptionHandler = {(ctx: JSContext!, value: JSValue!) in
-            let stacktrace = value.objectForKeyedSubscript("stack").toString()
-            let lineNumber = value.objectForKeyedSubscript("line")
-            let column = value.objectForKeyedSubscript("column")
-            let moreInfo = "in method \(String(describing: stacktrace))Line number in file: \(String(describing: lineNumber)), column: \(String(describing: column))"
-            
-            print("\nJS ERROR: \(value) \(moreInfo)")
-        }
+        
+        JSCoreBridge.instance.registerCallMethod(method: createViewScript, script: "createView")
+        JSCoreBridge.instance.registerCallMethod(method: createLabelScript, script: "createLabel")
+        JSCoreBridge.instance.registerCallMethod(method: createImageViewScript, script: "createImageView")
+        JSCoreBridge.instance.registerCallMethod(method: setRootViewScript, script: "setRootView")
+        JSCoreBridge.instance.registerCallMethod(method: useElementScript, script: "useElement")
+        JSCoreBridge.instance.registerCallMethod(method: addSubviewScript, script: "addSubview")
+        JSCoreBridge.instance.registerCallMethod(method: registerEvent, script: "registerEvent")
     }
     
    
