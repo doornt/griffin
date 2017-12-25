@@ -81,6 +81,8 @@ public class JSCoreBridge {
 //        _jsContext.
     }
     
-    
+    public func registerCallMethod<T>(method:T,script:String){
+        _jsContext.setObject(unsafeBitCast(method,to: AnyObject.self) , forKeyedSubscript: script as NSCopying & NSObjectProtocol)
+    }
     
 }

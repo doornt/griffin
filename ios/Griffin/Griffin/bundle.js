@@ -428,9 +428,6 @@ var SDKManager = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    SDKManager.prototype.launch = function (view) {
-        // NativeManager.setRootView(view)
-    };
     return SDKManager;
 }());
 exports.SDKManager = SDKManager;
