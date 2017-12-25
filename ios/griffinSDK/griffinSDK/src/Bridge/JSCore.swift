@@ -26,8 +26,12 @@ public class JSCoreBridge: NSObject {
         super.init()
     }
     
-    public func executeJavascript(script:String){
-        _jsContext.evaluateScript(script)
+    public func executeAnonymousJSFunction(script:String) {
+        _jsContext.evaluateScript(script).call(withArguments: [])
+    }
+    
+    public func executeJavascript(script:String) -> JSValue!{
+        return _jsContext.evaluateScript(script)
     }
     
     public func callJsMethod(method:String,args:Array<Any>){

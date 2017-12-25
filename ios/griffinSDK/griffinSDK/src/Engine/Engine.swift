@@ -53,6 +53,11 @@ public class Engine: NSObject {
             print(str)
         }
         
+        let registerEvent:@convention(block)(UIView, String, String)-> Void = {
+            view, event, callBackString in
+            RenderManager.instance.registerEvent(view, event: event, callBackString: callBackString)
+        }
+        
         JSCoreBridge.instance.getContext().setObject(unsafeBitCast(createViewScript,to: AnyObject.self) , forKeyedSubscript: "createView" as NSCopying & NSObjectProtocol)
         JSCoreBridge.instance.getContext().setObject(unsafeBitCast(createLabelScript,to: AnyObject.self) , forKeyedSubscript: "createLabel" as NSCopying & NSObjectProtocol)
         JSCoreBridge.instance.getContext().setObject(unsafeBitCast(createImageViewScript,to: AnyObject.self) , forKeyedSubscript: "createImageView" as NSCopying & NSObjectProtocol)
@@ -60,9 +65,7 @@ public class Engine: NSObject {
         JSCoreBridge.instance.getContext().setObject(unsafeBitCast(useElementScript,to: AnyObject.self) , forKeyedSubscript: "useElement" as NSCopying & NSObjectProtocol)
         JSCoreBridge.instance.getContext().setObject(unsafeBitCast(addSubviewScript,to: AnyObject.self) , forKeyedSubscript: "addSubview" as NSCopying & NSObjectProtocol)
         JSCoreBridge.instance.getContext().setObject(unsafeBitCast(consoleLog, to: AnyObject.self),forKeyedSubscript: "consoleLog" as NSCopying & NSObjectProtocol)
-            
-        
-        
+        JSCoreBridge.instance.getContext().setObject(unsafeBitCast(registerEvent, to: AnyObject.self),forKeyedSubscript: "registerEvent" as NSCopying & NSObjectProtocol)
     }
     
    

@@ -46,4 +46,19 @@ public class RenderManager : NSObject{
         let rChildView = childView as? UIView ?? UIView.init()
         parentView.addSubview(rChildView)
     }
+    
+    public func registerEvent(_ view:UIView, event: String, callBackString: String){
+        if view.events == nil {
+            view.events = Dictionary()
+        }
+        
+        if view.events![event] == nil {
+            var array: [String] = Array()
+            array.append(callBackString)
+            view.events![event] = array
+        } else {
+            var array = view.events![event]
+            array?.append(callBackString)
+        }
+    }
 }

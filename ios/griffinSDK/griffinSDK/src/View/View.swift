@@ -8,7 +8,21 @@
 
 import UIKit
 
+private var eventKey: Void?
+
 extension UIView {
+    
+    var events: Dictionary<String, Array<String>>? {
+        get {
+            guard let value = objc_getAssociatedObject(self, &eventKey) as? Dictionary<String, Array<String>> else {
+                return nil
+            }
+            return value
+        }
+        set(newValue) {
+            objc_setAssociatedObject(self, &eventKey, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
     
     func config(dict:Dictionary<String,Any>){
         
@@ -41,7 +55,24 @@ extension UIView {
             let childView: View = View(dict: realChild)
             addSubview(childView)
         }
+        
+        self.isUserInteractionEnabled = true
+        
+        // add tap gensture
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
+        self.addGestureRecognizer(tap)
+        
     }
+    
+    @objc func handleTap(_ sender: UITapGestureRecognizer) {
+        guard let events = self.events, let clicks = events["click"] else {
+            return
+        }
+        for click in clicks {
+            JSCoreBridge.instance.executeAnonymousJSFunction(script: click)
+        }
+    }
+    
 }
 
 public class View :UIView{
@@ -54,6 +85,8 @@ public class View :UIView{
 
         config(dict: dict)
     }
+    
+
 }
 
 public class Label :UILabel{
@@ -71,8 +104,6 @@ public class Label :UILabel{
         if self.layer.cornerRadius > 0 {
             self.layer.masksToBounds = true
         }
-        
-        
         self.sizeToFit()
     }
 }
