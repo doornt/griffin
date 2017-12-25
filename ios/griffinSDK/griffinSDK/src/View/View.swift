@@ -13,9 +13,9 @@ private var eventKey: Void?
 
 extension UIView {
     
-    var events: Dictionary<String, Array<String>>? {
+    var events: Dictionary<String, Array<JSValue>>? {
         get {
-            guard let value = objc_getAssociatedObject(self, &eventKey) as? Dictionary<String, Array<String>> else {
+            guard let value = objc_getAssociatedObject(self, &eventKey) as? Dictionary<String, Array<JSValue>> else {
                 return nil
             }
             return value
@@ -70,7 +70,7 @@ extension UIView {
             return
         }
         for click in clicks {
-            JSCoreBridge.instance.callJsMethod(method: click, args: [])
+            click.call(withArguments: [])
         }
     }
     

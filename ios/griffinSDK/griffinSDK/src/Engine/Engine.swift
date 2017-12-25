@@ -50,7 +50,7 @@ public class Engine: NSObject {
         
        
         
-        let registerEvent:@convention(block)(UIView, String, String)-> Void = {
+        let registerEvent:@convention(block)(UIView, String, JSValue)-> Void = {
             view, event, callBack in
             RenderManager.instance.registerEvent(view, event: event, callBack: callBack)
         }
@@ -62,7 +62,8 @@ public class Engine: NSObject {
         JSCoreBridge.instance.getContext().setObject(unsafeBitCast(useElementScript,to: AnyObject.self) , forKeyedSubscript: "useElement" as NSCopying & NSObjectProtocol)
         JSCoreBridge.instance.getContext().setObject(unsafeBitCast(addSubviewScript,to: AnyObject.self) , forKeyedSubscript: "addSubview" as NSCopying & NSObjectProtocol)
 
-        JSCoreBridge.instance.getContext().setObject(unsafeBitCast(registerEvent, to: AnyObject.self),forKeyedSubscript: "registerEvent" as NSCopying & NSObjectProtocol)
+        JSCoreBridge.instance.getContext().setObject(unsafeBitCast(registerEvent, to:AnyObject.self),
+            forKeyedSubscript: "registerEvent" as NSCopying & NSObjectProtocol)
 
         JSCoreBridge.instance.getContext().exceptionHandler = {(ctx: JSContext!, value: JSValue!) in
             let stacktrace = value.objectForKeyedSubscript("stack").toString()
