@@ -137,35 +137,29 @@ var NativeManager = /** @class */ (function () {
         if (!isNative) {
             return;
         }
-        consoleLog("createView call:" + JSON.stringify(attr));
+        console.log("createView call:" + JSON.stringify(attr));
         return createView(attr);
     };
     NativeManager.createText = function (attr) {
         if (!isNative) {
             return;
         }
-        consoleLog("createText call:" + JSON.stringify(attr));
+        console.log("createText call:" + JSON.stringify(attr));
         return createLabel(attr);
     };
     NativeManager.setRootView = function (view) {
         if (!isNative) {
             return;
         }
-        consoleLog("setRootView call:", view);
+        console.log("setRootView call:", view);
         return setRootView(view);
     };
     NativeManager.addSubview = function (view1, view2) {
         if (!isNative) {
             return;
         }
-        consoleLog("addSubview call:", view1, view2);
+        console.log("addSubview call:", view1, view2);
         return addSubview(view1, view2);
-    };
-    NativeManager.Log = function (arg) {
-        if (!isNative) {
-            return;
-        }
-        return consoleLog(arg);
     };
     return NativeManager;
 }());
@@ -178,7 +172,7 @@ exports.NativeManager = NativeManager;
 
 const {BaseComponent,launchWithComponent} = __webpack_require__(3)
 
-let list = __webpack_require__(8)
+let list = __webpack_require__(9)
 
 class TestAComponent extends BaseComponent{
     
@@ -203,11 +197,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var BaseComponent_1 = __webpack_require__(4);
 exports.BaseComponent = BaseComponent_1.BaseComponent;
 var index_1 = __webpack_require__(1);
+var SDKManager_1 = __webpack_require__(8);
 var launchWithComponent = function (view) {
-    index_1.NativeManager.Log("launch");
     index_1.NativeManager.setRootView(view.nativeView);
 };
 exports.launchWithComponent = launchWithComponent;
+SDKManager_1.SDKManager.instance.init();
 
 
 /***/ }),
@@ -402,6 +397,47 @@ exports.TextComponent = TextComponent;
 
 /***/ }),
 /* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var SDKManager = /** @class */ (function () {
+    function SDKManager() {
+    }
+    SDKManager.prototype.init = function () {
+        if (console) {
+            if (!console.log) {
+                console.log = function () {
+                    var args = [];
+                    for (var _i = 0; _i < arguments.length; _i++) {
+                        args[_i] = arguments[_i];
+                    }
+                    consoleLog.apply(void 0, args);
+                };
+            }
+        }
+    };
+    Object.defineProperty(SDKManager, "instance", {
+        get: function () {
+            if (!this.$inst) {
+                this.$inst = new SDKManager;
+            }
+            return this.$inst;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    SDKManager.prototype.launch = function (view) {
+        // NativeManager.setRootView(view)
+    };
+    return SDKManager;
+}());
+exports.SDKManager = SDKManager;
+
+
+/***/ }),
+/* 9 */
 /***/ (function(module, exports) {
 
 module.exports = {"type":"Block","nodes":[{"type":"Tag","name":"div","selfClosing":false,"block":{"type":"Block","nodes":[{"type":"Tag","name":"div","selfClosing":false,"block":{"type":"Block","nodes":[],"line":2},"attrs":[{"name":"class","val":"'tst2'","line":2,"column":5,"mustEscape":false},{"name":"backgroundColor","val":"\"#0000FF\"","line":2,"column":11,"mustEscape":true},{"name":"width","val":"50","line":2,"column":37,"mustEscape":true},{"name":"height","val":"50","line":2,"column":46,"mustEscape":true},{"name":"top","val":"200","line":2,"column":56,"mustEscape":true},{"name":"left","val":"200","line":2,"column":64,"mustEscape":true}],"attributeBlocks":[],"isInline":false,"line":2,"column":5},{"type":"Tag","name":"div","selfClosing":false,"block":{"type":"Block","nodes":[{"type":"Text","val":"Hellow World","line":3,"column":12}],"line":3},"attrs":[{"name":"class","val":"'test3'","line":3,"column":5,"mustEscape":false}],"attributeBlocks":[],"isInline":false,"line":3,"column":5}],"line":1},"attrs":[{"name":"class","val":"'test'","line":1,"column":1,"mustEscape":false},{"name":"@click","val":"\"clcik\"","line":1,"column":7,"mustEscape":true},{"name":"backgroundColor","val":"\"#00FF00\"","line":1,"column":22,"mustEscape":true},{"name":"width","val":"400","line":1,"column":48,"mustEscape":true},{"name":"height","val":"400","line":1,"column":58,"mustEscape":true},{"name":"top","val":"60","line":1,"column":69,"mustEscape":true},{"name":"left","val":"10","line":1,"column":76,"mustEscape":true}],"attributeBlocks":[],"isInline":false,"line":1,"column":1}],"line":0,"declaredBlocks":{}}
