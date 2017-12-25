@@ -11,6 +11,11 @@ import JavaScriptCore
 
 private var eventKey: Void?
 
+protocol ViewProtocol {
+    
+    func updateView(dict:Dictionary<String,Any>)
+}
+
 extension UIView {
     
     var events: Dictionary<String, Array<JSValue>>? {
@@ -48,6 +53,10 @@ extension UIView {
 
         self.layer.cornerRadius = Utils.any2CGFloat(obj: dict["cornerRadius"]) ?? 0
     
+        for view in subviews {
+            view.removeFromSuperview()
+        }
+        
         for child in Utils.any2Array(obj: dict["children"]) {
             let rChild = child as? Dictionary<String, Any>
             guard let realChild = rChild else {
@@ -58,11 +67,12 @@ extension UIView {
         }
         
         self.isUserInteractionEnabled = true
-        
+    }
+    
+    func addCustomGesture() {
         // add tap gensture
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
         self.addGestureRecognizer(tap)
-        
     }
     
     @objc func handleTap(_ sender: UITapGestureRecognizer) {
@@ -76,7 +86,7 @@ extension UIView {
     
 }
 
-public class View :UIView{
+public class View :UIView, ViewProtocol {
     
     public var id:String?
     
@@ -85,37 +95,57 @@ public class View :UIView{
         self.id = dict["class"] as? String
 
         config(dict: dict)
+        
+        addCustomGesture()
     }
     
-
+    func updateView(dict: Dictionary<String, Any>) {
+        config(dict: dict)
+    }
 }
 
-public class Label :UILabel{
+public class Label :UILabel, ViewProtocol {
     convenience init(dict:Dictionary<String,Any>){
         self.init()
+        
+        buildLabel(dict: dict)
+        addCustomGesture()
+    }
+    
+    func buildLabel(dict:Dictionary<String,Any>) {
         
         config(dict: dict)
         
         self.text = Utils.any2String(obj: dict["text"])
         
         if Utils.hexString2UIColor(hex: Utils.any2String(obj: dict["textColor"])) != nil {
-           self.textColor = Utils.hexString2UIColor(hex: Utils.any2String(obj: dict["textColor"]))
+            self.textColor = Utils.hexString2UIColor(hex: Utils.any2String(obj: dict["textColor"]))
         }
-    
+        
         if self.layer.cornerRadius > 0 {
             self.layer.masksToBounds = true
         }
         self.sizeToFit()
     }
+    
+    func updateView(dict: Dictionary<String, Any>) {
+        buildLabel(dict: dict)
+    }
 }
 
-public class ImageView :UIImageView{
+public class ImageView :UIImageView, ViewProtocol {
     convenience init(dict:Dictionary<String,Any>){
         self.init()
         
+        buildImageView(dict: dict)
+        addCustomGesture()
+    }
+    
+    func buildImageView(dict:Dictionary<String,Any>) {
+        
         config(dict: dict)
         
-        let url = URL.init(string: "https://op.meituan.net/oppkit_pic/2ndfloor_portal_headpic/157e291c008894a2db841f0dda0d64c.png")!
+        let url = URL.init(string: Utils.any2String(obj: dict["url"]) ?? "" )!
         guard let data = try? Data.init(contentsOf: url)  else {
             return
         }
@@ -124,6 +154,10 @@ public class ImageView :UIImageView{
         if self.layer.cornerRadius > 0 {
             self.layer.masksToBounds = true
         }
+    }
+    
+    func updateView(dict: Dictionary<String, Any>) {
+        buildImageView(dict: dict)
     }
 }
 

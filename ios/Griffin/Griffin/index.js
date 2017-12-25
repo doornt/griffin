@@ -63,11 +63,7 @@ var DemoVC = {
     title:"DemoVC-title"
 }
 
-function func1() {
-    var a = 100,b=200;
-    consoleLog(a+b);
 
-}
 var DemoLabel = {
 text:"hello world"
 }
@@ -90,9 +86,22 @@ top:70,
 left:0
 }
 
+var DemoLabel1 = {
+text:"hello w11orld",
+top:100
+}
+
+
 var label = createLabel(DemoLabel)
 var view = createView(rootView)
 var imageView = createView(DemoImageView)
+
+function func1() {
+    var a = 100,b=200;
+    
+    NativeLog(a+b);
+    updateView(label, DemoLabel1);
+}
 
 registerEvent(label,"click", func1)
 setRootView(view)

@@ -48,6 +48,10 @@ public class Engine: NSObject {
             RenderManager.instance.addsubView(parentView, childView:childView)
         }
         
+        let updateSubviewScript:@convention(block)(Any, Dictionary<String,Any>)-> Void = {
+            view, data in
+            RenderManager.instance.updateView(view, data: data)
+        }
        
         
         let registerEvent:@convention(block)(UIView, String, JSValue)-> Void = {
@@ -62,6 +66,7 @@ public class Engine: NSObject {
         JSCoreBridge.instance.registerCallMethod(method: setRootViewScript, script: "setRootView")
         JSCoreBridge.instance.registerCallMethod(method: useElementScript, script: "useElement")
         JSCoreBridge.instance.registerCallMethod(method: addSubviewScript, script: "addSubview")
+        JSCoreBridge.instance.registerCallMethod(method: updateSubviewScript, script: "updateView")
         JSCoreBridge.instance.registerCallMethod(method: registerEvent, script: "registerEvent")
     }
     

@@ -48,6 +48,11 @@ public class RenderManager : NSObject{
         parentView.addSubview(rChildView)
     }
     
+    func updateView(_ view: Any, data: Dictionary<String,Any>){
+        (view as? ViewProtocol )?.updateView(dict: data)
+    }
+
+    
     public func registerEvent(_ view:UIView, event: String, callBack: JSValue){
         if view.events == nil {
             view.events = Dictionary()
