@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import JavaScriptCore
 
 public class RenderManager : NSObject{
     
@@ -47,13 +48,13 @@ public class RenderManager : NSObject{
         parentView.addSubview(rChildView)
     }
     
-    public func registerEvent(_ view:UIView, event: String, callBack: String){
+    public func registerEvent(_ view:UIView, event: String, callBack: JSValue){
         if view.events == nil {
             view.events = Dictionary()
         }
         
         if view.events![event] == nil {
-            var array: [String] = Array()
+            var array: [JSValue] = Array()
             array.append(callBack)
             view.events![event] = array
         } else {

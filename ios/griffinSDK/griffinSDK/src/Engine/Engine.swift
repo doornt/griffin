@@ -50,7 +50,7 @@ public class Engine: NSObject {
         
        
         
-        let registerEvent:@convention(block)(UIView, String, String)-> Void = {
+        let registerEvent:@convention(block)(UIView, String, JSValue)-> Void = {
             view, event, callBack in
             RenderManager.instance.registerEvent(view, event: event, callBack: callBack)
         }
@@ -63,9 +63,6 @@ public class Engine: NSObject {
         JSCoreBridge.instance.registerCallMethod(method: useElementScript, script: "useElement")
         JSCoreBridge.instance.registerCallMethod(method: addSubviewScript, script: "addSubview")
         JSCoreBridge.instance.registerCallMethod(method: registerEvent, script: "registerEvent")
-
-
-
     }
     
    
