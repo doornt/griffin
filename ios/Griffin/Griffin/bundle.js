@@ -70,60 +70,7 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var isNative = typeof createView != "undefined";
-var NativeManager = /** @class */ (function () {
-    function NativeManager() {
-    }
-    NativeManager.createView = function (attr) {
-        if (!isNative) {
-            return;
-        }
-        consoleLog("\ncreateView call:" + JSON.stringify(attr));
-        return createView(attr);
-    };
-    NativeManager.createText = function (attr) {
-        if (!isNative) {
-            return;
-        }
-        consoleLog("\createText call:" + JSON.stringify(attr));
-        return createLabel(attr);
-    };
-    NativeManager.setRootView = function (view) {
-        if (!isNative) {
-            return;
-        }
-        consoleLog("\nsetRootView call:");
-        consoleLog(view);
-        return setRootView(view);
-    };
-    NativeManager.addSubview = function (view1, view2) {
-        if (!isNative) {
-            return;
-        }
-        consoleLog("\naddSubview call:");
-        consoleLog(view1);
-        consoleLog(view2);
-        return addSubview(view1, view2);
-    };
-    NativeManager.Log = function (arg) {
-        if (!isNative) {
-            return;
-        }
-        return consoleLog(arg);
-    };
-    return NativeManager;
-}());
-exports.NativeManager = NativeManager;
-
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var index_1 = __webpack_require__(0);
+var index_1 = __webpack_require__(1);
 var RenderComponent = /** @class */ (function () {
     function RenderComponent(attrs) {
         this.$children = [];
@@ -176,6 +123,56 @@ exports.RenderComponent = RenderComponent;
 
 
 /***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var isNative = typeof createView != "undefined";
+var NativeManager = /** @class */ (function () {
+    function NativeManager() {
+    }
+    NativeManager.createView = function (attr) {
+        if (!isNative) {
+            return;
+        }
+        consoleLog("createView call:" + JSON.stringify(attr));
+        return createView(attr);
+    };
+    NativeManager.createText = function (attr) {
+        if (!isNative) {
+            return;
+        }
+        consoleLog("createText call:" + JSON.stringify(attr));
+        return createLabel(attr);
+    };
+    NativeManager.setRootView = function (view) {
+        if (!isNative) {
+            return;
+        }
+        consoleLog("setRootView call:", view);
+        return setRootView(view);
+    };
+    NativeManager.addSubview = function (view1, view2) {
+        if (!isNative) {
+            return;
+        }
+        consoleLog("addSubview call:", view1, view2);
+        return addSubview(view1, view2);
+    };
+    NativeManager.Log = function (arg) {
+        if (!isNative) {
+            return;
+        }
+        return consoleLog(arg);
+    };
+    return NativeManager;
+}());
+exports.NativeManager = NativeManager;
+
+
+/***/ }),
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -205,8 +202,9 @@ launchWithComponent(new TestAComponent())
 Object.defineProperty(exports, "__esModule", { value: true });
 var BaseComponent_1 = __webpack_require__(4);
 exports.BaseComponent = BaseComponent_1.BaseComponent;
-var index_1 = __webpack_require__(0);
+var index_1 = __webpack_require__(1);
 var launchWithComponent = function (view) {
+    index_1.NativeManager.Log("launch");
     index_1.NativeManager.setRootView(view.nativeView);
 };
 exports.launchWithComponent = launchWithComponent;
@@ -219,6 +217,7 @@ exports.launchWithComponent = launchWithComponent;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+var RenderComponent_1 = __webpack_require__(0);
 var ComponentManager_1 = __webpack_require__(5);
 var AstManager_1 = __webpack_require__(6);
 var BaseComponent = /** @class */ (function () {
@@ -231,7 +230,17 @@ var BaseComponent = /** @class */ (function () {
         this.viewDidLoad();
     }
     BaseComponent.prototype.$rebuildAst = function () {
-        this.$view = this.$ast.compile({});
+        var children = this.$ast.compile({});
+        if (children.length == 1) {
+            this.$view = children[0];
+        }
+        else {
+            this.$view = new RenderComponent_1.RenderComponent(null);
+            for (var _i = 0, children_1 = children; _i < children_1.length; _i++) {
+                var child = children_1[_i];
+                this.$view.addChild(child);
+            }
+        }
         this.$nativeView = this.$view.nativeView;
     };
     Object.defineProperty(BaseComponent.prototype, "nativeView", {
@@ -290,7 +299,7 @@ exports.ComponentManager = ComponentManager;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var RenderComponent_1 = __webpack_require__(1);
+var RenderComponent_1 = __webpack_require__(0);
 var TextComponent_1 = __webpack_require__(7);
 var AstManager = /** @class */ (function () {
     function AstManager(ast) {
@@ -299,23 +308,21 @@ var AstManager = /** @class */ (function () {
     }
     AstManager.prototype.compile = function (data) {
         this.$inputData = data || {};
-        var root = null;
+        // let root:RenderComponent = null
         var children = [];
         for (var _i = 0, _a = this.$ast.nodes; _i < _a.length; _i++) {
             var node = _a[_i];
             children.push(this.$visitNode(node));
         }
-        if (children.length > 1) {
-            root = new RenderComponent_1.RenderComponent(null);
-            for (var _b = 0, children_1 = children; _b < children_1.length; _b++) {
-                var child = children_1[_b];
-                root.addChild(child);
-            }
-        }
-        else {
-            root = children[0];
-        }
-        return root;
+        // if(children.length > 1){
+        //     root = new RenderComponent(null)
+        //     for(let child of children){
+        //         root.addChild(child)
+        //     }
+        // }else{
+        //     root = children[0]
+        // }
+        return children;
     };
     AstManager.prototype.$visitNode = function (node) {
         var view = null;
@@ -329,7 +336,13 @@ var AstManager = /** @class */ (function () {
             default:
                 view = this.$visitTag(node);
                 var block = node.block;
-                block && view.addChild(new AstManager(block).compile(this.$inputData));
+                if (block) {
+                    var children = new AstManager(block).compile(this.$inputData);
+                    for (var _i = 0, children_1 = children; _i < children_1.length; _i++) {
+                        var child = children_1[_i];
+                        view.addChild(child);
+                    }
+                }
                 break;
         }
         return view;
@@ -372,8 +385,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var RenderComponent_1 = __webpack_require__(1);
-var index_1 = __webpack_require__(0);
+var RenderComponent_1 = __webpack_require__(0);
+var index_1 = __webpack_require__(1);
 var TextComponent = /** @class */ (function (_super) {
     __extends(TextComponent, _super);
     function TextComponent(attrs) {
@@ -391,7 +404,7 @@ exports.TextComponent = TextComponent;
 /* 8 */
 /***/ (function(module, exports) {
 
-module.exports = {"type":"Block","nodes":[{"type":"Tag","name":"div","selfClosing":false,"block":{"type":"Block","nodes":[{"type":"Tag","name":"div","selfClosing":false,"block":{"type":"Block","nodes":[{"type":"Tag","name":"div","selfClosing":false,"block":{"type":"Block","nodes":[{"type":"Text","val":"Hellow World","line":3,"column":16}],"line":3},"attrs":[{"name":"class","val":"'test3'","line":3,"column":9,"mustEscape":false}],"attributeBlocks":[],"isInline":false,"line":3,"column":9}],"line":2},"attrs":[{"name":"class","val":"'tst2'","line":2,"column":5,"mustEscape":false},{"name":"backgroundColor","val":"\"#0000FF\"","line":2,"column":11,"mustEscape":true},{"name":"width","val":"50","line":2,"column":37,"mustEscape":true},{"name":"height","val":"50","line":2,"column":46,"mustEscape":true},{"name":"top","val":"200","line":2,"column":56,"mustEscape":true},{"name":"left","val":"200","line":2,"column":64,"mustEscape":true}],"attributeBlocks":[],"isInline":false,"line":2,"column":5}],"line":1},"attrs":[{"name":"class","val":"'test'","line":1,"column":1,"mustEscape":false},{"name":"@click","val":"\"clcik\"","line":1,"column":7,"mustEscape":true},{"name":"backgroundColor","val":"\"#00FF00\"","line":1,"column":22,"mustEscape":true},{"name":"width","val":"400","line":1,"column":48,"mustEscape":true},{"name":"height","val":"400","line":1,"column":58,"mustEscape":true},{"name":"top","val":"60","line":1,"column":69,"mustEscape":true},{"name":"left","val":"10","line":1,"column":76,"mustEscape":true}],"attributeBlocks":[],"isInline":false,"line":1,"column":1}],"line":0,"declaredBlocks":{}}
+module.exports = {"type":"Block","nodes":[{"type":"Tag","name":"div","selfClosing":false,"block":{"type":"Block","nodes":[{"type":"Tag","name":"div","selfClosing":false,"block":{"type":"Block","nodes":[],"line":2},"attrs":[{"name":"class","val":"'tst2'","line":2,"column":5,"mustEscape":false},{"name":"backgroundColor","val":"\"#0000FF\"","line":2,"column":11,"mustEscape":true},{"name":"width","val":"50","line":2,"column":37,"mustEscape":true},{"name":"height","val":"50","line":2,"column":46,"mustEscape":true},{"name":"top","val":"200","line":2,"column":56,"mustEscape":true},{"name":"left","val":"200","line":2,"column":64,"mustEscape":true}],"attributeBlocks":[],"isInline":false,"line":2,"column":5},{"type":"Tag","name":"div","selfClosing":false,"block":{"type":"Block","nodes":[{"type":"Text","val":"Hellow World","line":3,"column":12}],"line":3},"attrs":[{"name":"class","val":"'test3'","line":3,"column":5,"mustEscape":false}],"attributeBlocks":[],"isInline":false,"line":3,"column":5}],"line":1},"attrs":[{"name":"class","val":"'test'","line":1,"column":1,"mustEscape":false},{"name":"@click","val":"\"clcik\"","line":1,"column":7,"mustEscape":true},{"name":"backgroundColor","val":"\"#00FF00\"","line":1,"column":22,"mustEscape":true},{"name":"width","val":"400","line":1,"column":48,"mustEscape":true},{"name":"height","val":"400","line":1,"column":58,"mustEscape":true},{"name":"top","val":"60","line":1,"column":69,"mustEscape":true},{"name":"left","val":"10","line":1,"column":76,"mustEscape":true}],"attributeBlocks":[],"isInline":false,"line":1,"column":1}],"line":0,"declaredBlocks":{}}
 
 /***/ })
 /******/ ]);

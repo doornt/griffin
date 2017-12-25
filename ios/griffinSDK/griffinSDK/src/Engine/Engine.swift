@@ -48,10 +48,7 @@ public class Engine: NSObject {
             RenderManager.instance.addsubView(parentView, childView:childView)
         }
         
-        let consoleLog:@convention(block)(String)-> Void = {
-            str in
-            print(str)
-        }
+       
         
         let registerEvent:@convention(block)(UIView, String, String)-> Void = {
             view, event, callBackString in
@@ -66,6 +63,16 @@ public class Engine: NSObject {
         JSCoreBridge.instance.getContext().setObject(unsafeBitCast(addSubviewScript,to: AnyObject.self) , forKeyedSubscript: "addSubview" as NSCopying & NSObjectProtocol)
         JSCoreBridge.instance.getContext().setObject(unsafeBitCast(consoleLog, to: AnyObject.self),forKeyedSubscript: "consoleLog" as NSCopying & NSObjectProtocol)
         JSCoreBridge.instance.getContext().setObject(unsafeBitCast(registerEvent, to: AnyObject.self),forKeyedSubscript: "registerEvent" as NSCopying & NSObjectProtocol)
+        
+        JSCoreBridge.instance.getContext().exceptionHandler = {(ctx: JSContext!, value: JSValue!) in
+            let stacktrace = value.objectForKeyedSubscript("stack").toString()
+            let lineNumber = value.objectForKeyedSubscript("line")
+            let column = value.objectForKeyedSubscript("column")
+            let moreInfo = "in method \(String(describing: stacktrace))Line number in file: \(String(describing: lineNumber)), column: \(String(describing: column))"
+            
+            print("\nJS ERROR: \(value) \(moreInfo)")
+        }
+        
     }
     
    
