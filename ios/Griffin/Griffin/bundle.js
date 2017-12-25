@@ -137,31 +137,28 @@ var NativeManager = /** @class */ (function () {
         if (!isNative) {
             return;
         }
-        consoleLog("\ncreateView call:" + JSON.stringify(attr));
+        consoleLog("createView call:" + JSON.stringify(attr));
         return createView(attr);
     };
     NativeManager.createText = function (attr) {
         if (!isNative) {
             return;
         }
-        consoleLog("\createText call:" + JSON.stringify(attr));
+        consoleLog("createText call:" + JSON.stringify(attr));
         return createLabel(attr);
     };
     NativeManager.setRootView = function (view) {
         if (!isNative) {
             return;
         }
-        consoleLog("\nsetRootView call:");
-        consoleLog(view);
+        consoleLog("setRootView call:", view);
         return setRootView(view);
     };
     NativeManager.addSubview = function (view1, view2) {
         if (!isNative) {
             return;
         }
-        consoleLog("\naddSubview call:");
-        consoleLog(view1);
-        consoleLog(view2);
+        consoleLog("addSubview call:", view1, view2);
         return addSubview(view1, view2);
     };
     NativeManager.Log = function (arg) {

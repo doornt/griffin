@@ -17,6 +17,7 @@
 		DBC78B2C1FEB87C3008EE450 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC78B2B1FEB87C3008EE450 /* RootViewController.swift */; };
 		DBC78B301FEB9490008EE450 /* Engine.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC78B2F1FEB9490008EE450 /* Engine.swift */; };
 		DBC78B331FEBA0F0008EE450 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC78B321FEBA0F0008EE450 /* View.swift */; };
+		DBC78B371FF09A58008EE450 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC78B361FF09A58008EE450 /* Log.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		DBC78B2B1FEB87C3008EE450 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RootViewController.swift; path = ../../../../GriffinSDK/GriffinSDK/src/Controller/RootViewController.swift; sourceTree = "<group>"; };
 		DBC78B2F1FEB9490008EE450 /* Engine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Engine.swift; path = ../../../../GriffinSDK/GriffinSDK/src/Engine/Engine.swift; sourceTree = "<group>"; };
 		DBC78B321FEBA0F0008EE450 /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = View.swift; path = ../../../../GriffinSDK/GriffinSDK/src/View/View.swift; sourceTree = "<group>"; };
+		DBC78B361FF09A58008EE450 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Log.swift; path = ../../../../GriffinSDK/GriffinSDK/src/Utils/Log.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,6 +52,7 @@
 			children = (
 				3A6C89F21FECB2850044C326 /* Utils.swift */,
 				3AE13AC91FEDF1F6003CA485 /* Environment.swift */,
+				DBC78B361FF09A58008EE450 /* Log.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -217,6 +220,7 @@
 			files = (
 				DBC78B2C1FEB87C3008EE450 /* RootViewController.swift in Sources */,
 				DBC78B301FEB9490008EE450 /* Engine.swift in Sources */,
+				DBC78B371FF09A58008EE450 /* Log.swift in Sources */,
 				DBA513B41FD4388F007AEE1E /* sdk.swift in Sources */,
 				DBC78B2A1FEA6632008EE450 /* JSCore.swift in Sources */,
 				3AE13ACA1FEDF1F6003CA485 /* Environment.swift in Sources */,

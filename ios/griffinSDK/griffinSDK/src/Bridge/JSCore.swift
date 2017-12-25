@@ -35,12 +35,16 @@ public class JSCoreBridge {
                 (cb as JSValue).call(withArguments: [])
             }
         }
-        
         _jsContext.setObject(unsafeBitCast(timeoutFunc, to: AnyObject.self), forKeyedSubscript: "setTimeout" as NSCopying & NSObjectProtocol)
     
-        let consoleLog:@convention(block)(String)-> Void = {
-            str in
-            print(str)
+        let consoleLog:@convention(block)()-> Void = {
+            var message:String = ""
+            if let args = JSContext.currentArguments(){
+                for arg in args{
+                    message = message + "\(arg)\t"
+                }
+            }
+            print("JSLog:\(message)\n")
         }
         _jsContext.setObject(unsafeBitCast(consoleLog, to: AnyObject.self),forKeyedSubscript: "consoleLog" as NSCopying & NSObjectProtocol)
     }
