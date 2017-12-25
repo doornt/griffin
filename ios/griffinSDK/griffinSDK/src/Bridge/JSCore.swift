@@ -11,7 +11,7 @@ import Foundation
 import JavaScriptCore
 
 
-public class JSCoreBridge: NSObject {
+public class JSCoreBridge {
     
     public static let instance:JSCoreBridge = {
         return JSCoreBridge()
@@ -19,11 +19,30 @@ public class JSCoreBridge: NSObject {
     
     let _jsContext:JSContext
     
-    private override init() {
+    private init() {
         let jsVirtualMachine = JSVirtualMachine()
         self._jsContext = JSContext(virtualMachine: jsVirtualMachine)
         self._jsContext.name = "Griffin Context"
-        super.init()
+        
+        self.initJsFunctions()
+
+    }
+    
+    private func initJsFunctions(){
+        let timeoutFunc:@convention(block)(JSValue,Int) ->Void = {
+            (cb,wait) in
+            DispatchQueue.main.asyncAfter(deadline:DispatchTime(uptimeNanoseconds:UInt64(wait) * NSEC_PER_MSEC)){
+                (cb as JSValue).call(withArguments: [])
+            }
+        }
+        
+        _jsContext.setObject(unsafeBitCast(timeoutFunc, to: AnyObject.self), forKeyedSubscript: "setTimeout" as NSCopying & NSObjectProtocol)
+    
+        let consoleLog:@convention(block)(String)-> Void = {
+            str in
+            print(str)
+        }
+        _jsContext.setObject(unsafeBitCast(consoleLog, to: AnyObject.self),forKeyedSubscript: "consoleLog" as NSCopying & NSObjectProtocol)
     }
     
     public func executeJavascript(script:String){
@@ -41,5 +60,7 @@ public class JSCoreBridge: NSObject {
     public func registerHanler(){
 //        _jsContext.
     }
+    
+    
     
 }
