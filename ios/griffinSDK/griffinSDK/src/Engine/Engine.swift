@@ -52,13 +52,16 @@ public class Engine: NSObject {
             view, data in
             RenderManager.instance.updateView(view, data: data)
         }
-       
         
         let registerEvent:@convention(block)(UIView, String, JSValue)-> Void = {
             view, event, callBack in
             RenderManager.instance.registerEvent(view, event: event, callBack: callBack)
         }
         
+        let unRegisterEvent:@convention(block)(UIView, String, JSValue)-> Void = {
+            view, event, callBack in
+            RenderManager.instance.unRegisterEvent(view, event: event, callBack: callBack)
+        }
         
         JSCoreBridge.instance.registerCallMethod(method: createViewScript, script: "createView")
         JSCoreBridge.instance.registerCallMethod(method: createLabelScript, script: "createLabel")
@@ -68,6 +71,7 @@ public class Engine: NSObject {
         JSCoreBridge.instance.registerCallMethod(method: addSubviewScript, script: "addSubview")
         JSCoreBridge.instance.registerCallMethod(method: updateSubviewScript, script: "updateView")
         JSCoreBridge.instance.registerCallMethod(method: registerEvent, script: "registerEvent")
+        JSCoreBridge.instance.registerCallMethod(method: unRegisterEvent, script: "unRegisterEvent")
     }
     
    

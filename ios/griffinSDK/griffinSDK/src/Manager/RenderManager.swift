@@ -67,4 +67,14 @@ public class RenderManager : NSObject{
             array?.append(callBack)
         }
     }
+    
+    public func unRegisterEvent(_ view:UIView, event: String, callBack: JSValue){
+        guard var eventDic = view.events,
+              let eventArr = eventDic[event] else {
+            return
+        }
+        
+        eventDic[event] = eventArr.filter { $0 != callBack }
+        view.events = eventDic
+    }
 }

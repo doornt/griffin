@@ -103,9 +103,19 @@ function func1() {
     updateView(label, DemoLabel1);
 }
 
+function func2() {
+    var a = 100,b=200;
+    
+    NativeLog(a+b);
+    updateView(label, DemoLabel1);
+}
+
 registerEvent(label,"click", func1)
+unRegisterEvent(label,"cliick", func2)
+
 setRootView(view)
 addSubview(view,label)
+
 //createImageView(DemoImageView)
 
 //runWithModule(DemoView)
