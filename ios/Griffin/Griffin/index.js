@@ -110,8 +110,16 @@ function func2() {
     updateView(label, DemoLabel1);
 }
 
+function func3() {
+    
+    
+    NativeLog("view will appear in js");
+    
+}
+
 registerEvent(label,"click", func1)
-unRegisterEvent(label,"cliick", func2)
+registerPageLifeCycle(view, "viewWillAppear", func3)
+//unRegisterEvent(label,"cliick", func2)
 
 setRootView(view)
 addSubview(view,label)

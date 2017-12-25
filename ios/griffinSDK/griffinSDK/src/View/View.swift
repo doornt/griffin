@@ -10,6 +10,7 @@ import UIKit
 import JavaScriptCore
 
 private var eventKey: Void?
+private var lifeCycleKey: Void?
 
 protocol ViewProtocol {
     
@@ -17,6 +18,18 @@ protocol ViewProtocol {
 }
 
 extension UIView {
+    
+    var lifeCycleDict: Dictionary<String, JSValue>? {
+        get {
+            guard let value = objc_getAssociatedObject(self, &lifeCycleKey) as? Dictionary<String, JSValue> else {
+                return nil
+            }
+            return value
+        }
+        set(newValue) {
+            objc_setAssociatedObject(self, &lifeCycleKey, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
     
     var events: Dictionary<String, Array<JSValue>>? {
         get {
@@ -80,7 +93,7 @@ extension UIView {
             return
         }
         for click in clicks {
-            click.call(withArguments: [])
+            click.callWithoutArguments()
         }
     }
     

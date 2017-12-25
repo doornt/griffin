@@ -10,6 +10,11 @@ import Foundation
 
 import JavaScriptCore
 
+extension JSValue {
+    func callWithoutArguments() {
+        call(withArguments: [])
+    }
+}
 
 public class JSCoreBridge {
     

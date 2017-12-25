@@ -39,10 +39,6 @@ public class Engine: NSObject {
             return RenderManager.instance.createImageView(obj:obj)
         }
         
-        let useElementScript:@convention(block)(Any)-> Void = {
-            obj in
-            RenderManager.instance.useElement(obj:obj)
-        }
         let addSubviewScript:@convention(block)(Any, Any)-> Void = {
             parentView, childView in
             RenderManager.instance.addsubView(parentView, childView:childView)
@@ -63,15 +59,20 @@ public class Engine: NSObject {
             RenderManager.instance.unRegisterEvent(view, event: event, callBack: callBack)
         }
         
+        let registerVCLifeCycle:@convention(block)(UIView, String, JSValue)-> Void = {
+            view, event, callBack in
+            RenderManager.instance.registerVCLifeCycle(view, event: event, callBack: callBack)
+        }
+        
         JSCoreBridge.instance.registerCallMethod(method: createViewScript, script: "createView")
         JSCoreBridge.instance.registerCallMethod(method: createLabelScript, script: "createLabel")
         JSCoreBridge.instance.registerCallMethod(method: createImageViewScript, script: "createImageView")
         JSCoreBridge.instance.registerCallMethod(method: setRootViewScript, script: "setRootView")
-        JSCoreBridge.instance.registerCallMethod(method: useElementScript, script: "useElement")
         JSCoreBridge.instance.registerCallMethod(method: addSubviewScript, script: "addSubview")
         JSCoreBridge.instance.registerCallMethod(method: updateSubviewScript, script: "updateView")
         JSCoreBridge.instance.registerCallMethod(method: registerEvent, script: "registerEvent")
         JSCoreBridge.instance.registerCallMethod(method: unRegisterEvent, script: "unRegisterEvent")
+        JSCoreBridge.instance.registerCallMethod(method: registerVCLifeCycle, script: "registerPageLifeCycle")
     }
     
    

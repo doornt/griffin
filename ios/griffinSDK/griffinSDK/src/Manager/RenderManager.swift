@@ -26,7 +26,7 @@ public class RenderManager : NSObject{
     }
     
     public func setRootView(obj:Any) -> Void {
-        self._rootController?.view.addSubview(obj as? UIView ?? UIView.init())
+        self._rootController?.setRootView(obj as? View ?? View.init())
     }
     
     public func createView(obj:Dictionary<String,Any>) -> View {
@@ -76,5 +76,13 @@ public class RenderManager : NSObject{
         
         eventDic[event] = eventArr.filter { $0 != callBack }
         view.events = eventDic
+    }
+    
+    public func registerVCLifeCycle(_ view:UIView, event: String, callBack: JSValue){
+        if view.lifeCycleDict == nil {
+            view.lifeCycleDict = Dictionary()
+        }
+        
+        view.lifeCycleDict![event] = callBack
     }
 }
