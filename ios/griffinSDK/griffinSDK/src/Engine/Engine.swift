@@ -64,15 +64,7 @@ public class Engine: NSObject {
      
         JSCoreBridge.instance.getContext().setObject(unsafeBitCast(registerEvent, to: AnyObject.self),forKeyedSubscript: "registerEvent" as NSCopying & NSObjectProtocol)
         
-        JSCoreBridge.instance.getContext().exceptionHandler = {(ctx: JSContext!, value: JSValue!) in
-            let stacktrace = value.objectForKeyedSubscript("stack").toString()
-            let lineNumber = value.objectForKeyedSubscript("line")
-            let column = value.objectForKeyedSubscript("column")
-            let moreInfo = "in method \(String(describing: stacktrace))Line number in file: \(String(describing: lineNumber)), column: \(String(describing: column))"
-            
-            print("\nJS ERROR: \(value) \(moreInfo)")
-        }
-        
+      
     }
     
    
