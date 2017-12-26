@@ -89,6 +89,7 @@ public class JSCoreBridge: NSObject {
     
     public func executeJavascript(script:String) {
         self._jsContext.perform(#selector(self._jsContext.evaluateScript(_:)), on: self._thread!, with: script, waitUntilDone: false)
+//        self._jsContext.evaluateScript(script)
     }
     
     public func callJsMethod(method:String,args:Array<Any>){

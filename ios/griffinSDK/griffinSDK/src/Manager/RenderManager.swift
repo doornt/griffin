@@ -73,40 +73,14 @@ public class RenderManager : NSObject{
         guard let view = viewCollection[instanceId] else {
             return
         }
-        if view.events == nil {
-            view.events = Dictionary()
-        }
         
-        if view.events![event] == nil {
-            var array: [JSValue] = Array()
-            array.append(callBack)
-            view.events![event] = array
-        } else {
-            var array = view.events![event]
-            array?.append(callBack)
-        }
+        view.registerEvent(event, callBack: callBack)
     }
     
     public func unRegisterEvent(_ instanceId:String, event: String, callBack: JSValue){
-        guard let view = viewCollection[instanceId],
-              var eventDic = view.events,
-              let eventArr = eventDic[event] else {
-            return
-        }
-        
-        eventDic[event] = eventArr.filter { $0 != callBack }
-        view.events = eventDic
-    }
-    
-    public func registerVCLifeCycle(_ instanceId:String, event: String, callBack: JSValue){
         guard let view = viewCollection[instanceId] else {
             return
         }
-        
-        if view.lifeCycleDict == nil {
-            view.lifeCycleDict = Dictionary()
-        }
-        
-        view.lifeCycleDict![event] = callBack
+        view.unRegisterEvent(event, callBack: callBack)
     }
 }

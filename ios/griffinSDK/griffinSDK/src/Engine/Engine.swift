@@ -75,13 +75,6 @@ public class Engine: NSObject {
             }
         }
         
-        let registerVCLifeCycle:@convention(block)(String, String, JSValue)-> Void = {
-            instanceId, event, callBack in
-            DispatchQueue.main.async {
-                RenderManager.instance.registerVCLifeCycle(instanceId, event: event, callBack: callBack)
-            }
-        }
-        
         JSCoreBridge.instance.registerCallMethod(method: createRootView, script: "createRootView")
         JSCoreBridge.instance.registerCallMethod(method: createViewScript, script: "createView")
         JSCoreBridge.instance.registerCallMethod(method: createLabelScript, script: "createLabel")
@@ -91,7 +84,6 @@ public class Engine: NSObject {
         JSCoreBridge.instance.registerCallMethod(method: updateSubviewScript, script: "updateView")
         JSCoreBridge.instance.registerCallMethod(method: registerEvent, script: "registerEvent")
         JSCoreBridge.instance.registerCallMethod(method: unRegisterEvent, script: "unRegisterEvent")
-        JSCoreBridge.instance.registerCallMethod(method: registerVCLifeCycle, script: "registerPageLifeCycle")
     }
     
    

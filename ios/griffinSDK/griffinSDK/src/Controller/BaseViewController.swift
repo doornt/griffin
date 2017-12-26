@@ -43,47 +43,39 @@ public class BaseViewController : UIViewController,UIGestureRecognizerDelegate{
     
     override public func viewDidLoad() {
         super.viewDidLoad()
-
+        
         self.renderWithUrl()
         
-        lifeCycleCallback("viewDidLoad")
+        JSCoreBridge.instance.callJsMethod(method: "dispatchEventToJs", args: [self.rootView?.instanceId ?? "", "viewDidLoad"])
     }
     
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        lifeCycleCallback("viewWillAppear")
+        JSCoreBridge.instance.callJsMethod(method: "dispatchEventToJs", args: [self.rootView?.instanceId ?? "", "viewWillAppear"])
     }
     
     override public func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        lifeCycleCallback("viewDidAppear")
+        JSCoreBridge.instance.callJsMethod(method: "dispatchEventToJs", args: [self.rootView?.instanceId ?? "", "viewDidAppear"])
     }
     
     override public func viewDidDisappear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        lifeCycleCallback("viewDidDisappear")
+        JSCoreBridge.instance.callJsMethod(method: "dispatchEventToJs", args: [self.rootView?.instanceId ?? "", "viewDidDisappear"])
     }
     
     public override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        lifeCycleCallback("viewWillLayoutSubviews")
+        JSCoreBridge.instance.callJsMethod(method: "dispatchEventToJs", args: [self.rootView?.instanceId ?? "", "viewWillLayoutSubviews"])
     }
     
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        lifeCycleCallback("viewDidLayoutSubviews")
+        JSCoreBridge.instance.callJsMethod(method: "dispatchEventToJs", args: [self.rootView?.instanceId ?? "", "viewDidLayoutSubviews"])
     }
     
     override public func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        lifeCycleCallback("didReceiveMemoryWarning")
-    }
-    
-    func lifeCycleCallback(_ lifeCycle: String) {
-        guard let lifeCycleDict = self.rootView?.lifeCycleDict  else {
-            return
-        }
-        lifeCycleDict[lifeCycle]?.callWithoutArguments()
+        JSCoreBridge.instance.callJsMethod(method: "dispatchEventToJs", args: [self.rootView?.instanceId ?? "", "didReceiveMemoryWarning"])
     }
 }

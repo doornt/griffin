@@ -91,14 +91,17 @@ extension UIView {
             let childView: View = View(dict: realChild)
             addSubview(childView)
         }
-        
-        self.isUserInteractionEnabled = true
     }
     
-    func addCustomGesture() {
+    func addTapGesture() {
+        self.isUserInteractionEnabled = true
         // add tap gensture
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
         self.addGestureRecognizer(tap)
+    }
+    
+    func removeTapGesuture() {
+        self.isUserInteractionEnabled = false
     }
     
     @objc func handleTap(_ sender: UITapGestureRecognizer) {
@@ -110,6 +113,37 @@ extension UIView {
         }
     }
     
+    public func registerEvent(_ event: String, callBack: JSValue) {
+        if self.events == nil {
+            self.events = Dictionary()
+        }
+        
+        if self.events![event] == nil {
+            var array: [JSValue] = Array()
+            array.append(callBack)
+            self.events![event] = array
+        } else {
+            var array = self.events![event]
+            array?.append(callBack)
+        }
+        
+        if event == "click" {
+            addTapGesture()
+        }
+    }
+    
+    public func unRegisterEvent(_ event: String, callBack: JSValue) {
+        guard var eventDic = self.events,
+            let eventArr = eventDic[event] else {
+                return
+        }
+        eventDic[event] = eventArr.filter { $0 != callBack }
+        self.events = eventDic
+        
+        if event == "click" {
+            removeTapGesuture()
+        }
+    }
 }
 
 public class View :UIView, ViewProtocol {
@@ -120,9 +154,8 @@ public class View :UIView, ViewProtocol {
         self.init()
         self.id = dict["class"] as? String
 
+        self.isUserInteractionEnabled = false
         config(dict: dict)
-        
-        addCustomGesture()
     }
     
     func updateView(dict: Dictionary<String, Any>) {
@@ -133,9 +166,8 @@ public class View :UIView, ViewProtocol {
 public class Label :UILabel, ViewProtocol {
     convenience init(dict:Dictionary<String,Any>){
         self.init()
-        
+        self.isUserInteractionEnabled = false
         buildLabel(dict: dict)
-        addCustomGesture()
     }
     
     func buildLabel(dict:Dictionary<String,Any>) {
@@ -162,9 +194,8 @@ public class Label :UILabel, ViewProtocol {
 public class ImageView :UIImageView, ViewProtocol {
     convenience init(dict:Dictionary<String,Any>){
         self.init()
-        
+        self.isUserInteractionEnabled = false
         buildImageView(dict: dict)
-        addCustomGesture()
     }
     
     func buildImageView(dict:Dictionary<String,Any>) {

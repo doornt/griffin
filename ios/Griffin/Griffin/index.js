@@ -96,10 +96,10 @@ top:200
 
 createRootView("0")
 
-for (i = 0; i < 100000;i++)
-{
-    createLabel("22",DemoLabel)
-}
+//for (i = 0; i < 100000;i++)
+//{
+//    createLabel("22",DemoLabel)
+//}
 var label = createLabel("2",DemoLabel)
 var view = createView("1",rootView)
 var imageView = createImageView("3",DemoImageView)
@@ -124,10 +124,15 @@ function func3() {
     NativeLog("view will appear in js");
     
 }
+function dispatchEventToJs(id, event) {
+    
+    
+    NativeLog(id, event);
+    
+}
 
 registerEvent("2","click", func1)
-registerPageLifeCycle("0", "viewWillAppear", func3)
-//unRegisterEvent(label,"cliick", func2)
+unRegisterEvent("2","click", func1)
 
 addSubview("0","2")
 
