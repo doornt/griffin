@@ -623,7 +623,7 @@ var NativeToJs = /** @class */ (function () {
     function NativeToJs() {
     }
     NativeToJs.init = function () {
-        global.dispachEventToJs = function (rootViewId, event) {
+        global.dispatchEventToJs = function (rootViewId, event) {
             console.log(JSON.stringify(event));
         };
     };
