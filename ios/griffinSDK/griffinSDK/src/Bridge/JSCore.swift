@@ -12,28 +12,38 @@ import JavaScriptCore
 
 extension JSValue {
     func callWithoutArguments() {
-        DispatchQueue.global().async {
-            self.call(withArguments: [])
-        }
+        JSCoreBridge.instance.callWithoutArguments(obj: self)
     }
 }
 
-public class JSCoreBridge {
+public class JSCoreBridge: NSObject {
     
     public static let instance:JSCoreBridge = {
         return JSCoreBridge()
     }()
     
-    let _jsContext:JSContext
-    
-    private init() {
-        let jsVirtualMachine = JSVirtualMachine()
-        self._jsContext = JSContext(virtualMachine: jsVirtualMachine)
+    let _jsContext:JSContext = JSContext(virtualMachine: JSVirtualMachine())
+
+    var _thread: Thread?
+
+    private override init() {
+        
+        super.init()
+        
         self._jsContext.name = "Griffin Context"
         
         self.initEnvironment()
         self.initJsFunctions()
 
+        _thread = Thread.init(target: self, selector: #selector(self.run), object: nil)
+        _thread?.name = "com.doornt.griffin"
+        
+        _thread?.start()
+    }
+    
+    @objc private func run() {
+        RunLoop.current.add(Port.init(), forMode: RunLoopMode.defaultRunLoopMode)
+        RunLoop.current.run()
     }
     
     private func initEnvironment(){
@@ -78,22 +88,28 @@ public class JSCoreBridge {
     }
     
     public func executeAnonymousJSFunction(script:String) {
-        DispatchQueue.global().async {
-            self._jsContext.evaluateScript(script).call(withArguments: [])
-        }
+        perform(#selector(self._executeAnonymousJSFunction), on: self._thread!, with: script, waitUntilDone: false)
     }
    
+    @objc private func _executeAnonymousJSFunction(script:String) {
+        self._jsContext.evaluateScript(script).call(withArguments: [])
+    }
+    
+    
+    
     public func executeJavascript(script:String) {
-        DispatchQueue.global().async {
-            self._jsContext.evaluateScript(script)
-        }
+        self._jsContext.perform(#selector(self._jsContext.evaluateScript(_:)), on: self._thread!, with: script, waitUntilDone: false)
     }
     
     public func callJsMethod(method:String,args:Array<Any>){
-        DispatchQueue.global().async {
-            self._jsContext.globalObject.invokeMethod(method, withArguments: args)
-        }
+        perform(#selector(self._callJsMethod), on: self._thread!, with: ["method" :method, "args": args], waitUntilDone: false)
     }
+    
+    @objc private func _callJsMethod(dict:[String: Any]){
+        self._jsContext.globalObject.invokeMethod(Utils.any2String(obj: dict["method"]), withArguments: dict["args"] as! [Any])
+    }
+    
+    
     
     public func getContext()->JSContext{
         return self._jsContext
@@ -107,4 +123,8 @@ public class JSCoreBridge {
         _jsContext.setObject(unsafeBitCast(method,to: AnyObject.self) , forKeyedSubscript: script as NSCopying & NSObjectProtocol)
     }
     
+    
+    public func callWithoutArguments(obj: JSValue) {
+        obj.perform(#selector(obj.call), on: self._thread!, with: [], waitUntilDone: false)
+    }
 }
