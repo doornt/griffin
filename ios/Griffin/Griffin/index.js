@@ -9,6 +9,7 @@ function functionForSwiftWithoutParam () {
 }
 
 
+NativeLog("begin",Date(Date.now()));
 
 var DemoView = {
 
@@ -95,6 +96,10 @@ top:200
 
 createRootView("0")
 
+for (i = 0; i < 100000;i++)
+{
+    createLabel("22",DemoLabel)
+}
 var label = createLabel("2",DemoLabel)
 var view = createView("1",rootView)
 var imageView = createImageView("3",DemoImageView)
@@ -129,4 +134,4 @@ addSubview("0","2")
 //createImageView(DemoImageView)
 
 //runWithModule(DemoView)
-
+NativeLog("end",Date(Date.now()));

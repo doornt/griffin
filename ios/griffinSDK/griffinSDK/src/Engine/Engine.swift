@@ -22,46 +22,64 @@ public class Engine: NSObject {
         
         let createRootView:@convention(block)(String)-> Void = {
             obj in
-            RenderManager.instance.createRootView(instanceId:obj)
+            DispatchQueue.main.async {
+                RenderManager.instance.createRootView(instanceId:obj)
+            }
         }
         
         let createViewScript:@convention(block)(String, Dictionary<String,Any>)-> Void = {
             instanceId, obj in
-            RenderManager.instance.createView(instanceId, obj: obj)
+            DispatchQueue.main.async {
+                RenderManager.instance.createView(instanceId, obj: obj)
+            }
         }
         
         let createLabelScript:@convention(block)(String, Dictionary<String,Any>)-> Void = {
             instanceId, obj in
-            RenderManager.instance.createLabel(instanceId, obj: obj)
+            DispatchQueue.main.async {
+                RenderManager.instance.createLabel(instanceId, obj: obj)
+            }
         }
         let createImageViewScript:@convention(block)(String, Dictionary<String,Any>)-> Void = {
             instanceId, obj in
-            RenderManager.instance.createImageView(instanceId, obj:obj)
+            DispatchQueue.main.async {
+                RenderManager.instance.createImageView(instanceId, obj:obj)
+            }
         }
         
         let addSubviewScript:@convention(block)(String, String)-> Void = {
             parentId, childId in
-            RenderManager.instance.addsubView(parentId, childId:childId)
+            DispatchQueue.main.async {
+                RenderManager.instance.addsubView(parentId, childId:childId)
+            }
         }
         
         let updateSubviewScript:@convention(block)(String, Dictionary<String,Any>)-> Void = {
             instanceId, data in
-            RenderManager.instance.updateView(instanceId, data: data)
+            DispatchQueue.main.async {
+                RenderManager.instance.updateView(instanceId, data: data)
+            }
         }
         
         let registerEvent:@convention(block)(String, String, JSValue)-> Void = {
             instanceId, event, callBack in
-            RenderManager.instance.registerEvent(instanceId, event: event, callBack: callBack)
+            DispatchQueue.main.async {
+                RenderManager.instance.registerEvent(instanceId, event: event, callBack: callBack)
+            }
         }
         
         let unRegisterEvent:@convention(block)(String, String, JSValue)-> Void = {
             instanceId, event, callBack in
-            RenderManager.instance.unRegisterEvent(instanceId, event: event, callBack: callBack)
+            DispatchQueue.main.async {
+                RenderManager.instance.unRegisterEvent(instanceId, event: event, callBack: callBack)
+            }
         }
         
         let registerVCLifeCycle:@convention(block)(String, String, JSValue)-> Void = {
             instanceId, event, callBack in
-            RenderManager.instance.registerVCLifeCycle(instanceId, event: event, callBack: callBack)
+            DispatchQueue.main.async {
+                RenderManager.instance.registerVCLifeCycle(instanceId, event: event, callBack: callBack)
+            }
         }
         
         JSCoreBridge.instance.registerCallMethod(method: createRootView, script: "createRootView")

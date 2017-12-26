@@ -12,7 +12,9 @@ import JavaScriptCore
 
 extension JSValue {
     func callWithoutArguments() {
-        call(withArguments: [])
+        DispatchQueue.global().async {
+            self.call(withArguments: [])
+        }
     }
 }
 
@@ -76,15 +78,21 @@ public class JSCoreBridge {
     }
     
     public func executeAnonymousJSFunction(script:String) {
-        _jsContext.evaluateScript(script).call(withArguments: [])
+        DispatchQueue.global().async {
+            self._jsContext.evaluateScript(script).call(withArguments: [])
+        }
     }
    
-    public func executeJavascript(script:String) -> JSValue!{
-        return _jsContext.evaluateScript(script)
+    public func executeJavascript(script:String) {
+        DispatchQueue.global().async {
+            self._jsContext.evaluateScript(script)
+        }
     }
     
     public func callJsMethod(method:String,args:Array<Any>){
-        _jsContext.globalObject.invokeMethod(method, withArguments: args)
+        DispatchQueue.global().async {
+            self._jsContext.globalObject.invokeMethod(method, withArguments: args)
+        }
     }
     
     public func getContext()->JSContext{
