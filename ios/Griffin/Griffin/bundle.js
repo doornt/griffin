@@ -490,7 +490,7 @@ var TextComponent = /** @class */ (function (_super) {
     }
     TextComponent.prototype.createView = function () {
         TaskManager_1.TaskManager.instance.send(Task_1.ETaskType.VIEW, {
-            action: Task_1.EViewTask.CREATE_VIEW,
+            action: Task_1.EViewTask.CREATE_LABEL,
             nodeId: this.id,
             data: this.$attr
         });
