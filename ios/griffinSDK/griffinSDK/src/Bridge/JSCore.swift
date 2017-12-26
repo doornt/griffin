@@ -87,16 +87,6 @@ public class JSCoreBridge: NSObject {
         
     }
     
-    public func executeAnonymousJSFunction(script:String) {
-        perform(#selector(self._executeAnonymousJSFunction), on: self._thread!, with: script, waitUntilDone: false)
-    }
-   
-    @objc private func _executeAnonymousJSFunction(script:String) {
-        self._jsContext.evaluateScript(script).call(withArguments: [])
-    }
-    
-    
-    
     public func executeJavascript(script:String) {
         self._jsContext.perform(#selector(self._jsContext.evaluateScript(_:)), on: self._thread!, with: script, waitUntilDone: false)
     }
@@ -108,7 +98,6 @@ public class JSCoreBridge: NSObject {
     @objc private func _callJsMethod(dict:[String: Any]){
         self._jsContext.globalObject.invokeMethod(Utils.any2String(obj: dict["method"]), withArguments: dict["args"] as! [Any])
     }
-    
     
     
     public func getContext()->JSContext{
