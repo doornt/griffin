@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 5);
+/******/ 	return __webpack_require__(__webpack_require__.s = 6);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -196,7 +196,7 @@ exports.TaskManager = TaskManager;
 Object.defineProperty(exports, "__esModule", { value: true });
 var TaskManager_1 = __webpack_require__(2);
 var Task_1 = __webpack_require__(1);
-var NodeID_1 = __webpack_require__(4);
+var NodeID_1 = __webpack_require__(5);
 var RenderComponent = /** @class */ (function () {
     function RenderComponent(attrs) {
         this.$children = [];
@@ -265,6 +265,43 @@ exports.RenderComponent = RenderComponent;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+var ComponentManager = /** @class */ (function () {
+    function ComponentManager() {
+        this._registeredClass = {};
+    }
+    Object.defineProperty(ComponentManager, "instance", {
+        get: function () {
+            if (!this.$inst) {
+                this.$inst = new ComponentManager();
+            }
+            return this.$inst;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    ComponentManager.prototype.register = function (name, ctr) {
+        this._registeredClass[name] = ctr;
+    };
+    ComponentManager.prototype.createViewByTag = function (tag, attrs) {
+        var T = this._registeredClass[tag];
+        if (!T) {
+            console.warn("unsupported tag", tag);
+            return null;
+        }
+        return new T(attrs);
+    };
+    return ComponentManager;
+}());
+exports.ComponentManager = ComponentManager;
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
 var current = 0;
 function generateID() {
     return (current++).toString();
@@ -273,12 +310,12 @@ exports.generateID = generateID;
 
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const {BaseComponent,launchWithComponent} = __webpack_require__(6)
+const {BaseComponent,launchWithComponent} = __webpack_require__(7)
 
-let list = __webpack_require__(16)
+let list = __webpack_require__(18)
 
 class TestAComponent extends BaseComponent{
     
@@ -294,15 +331,15 @@ class TestAComponent extends BaseComponent{
 launchWithComponent(new TestAComponent())
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var BaseComponent_1 = __webpack_require__(7);
+var BaseComponent_1 = __webpack_require__(8);
 exports.BaseComponent = BaseComponent_1.BaseComponent;
-var Application_1 = __webpack_require__(11);
+var Application_1 = __webpack_require__(10);
 var launchWithComponent = function (view) {
     Application_1.Application.instance.runWithModule(view);
 };
@@ -311,18 +348,16 @@ Application_1.Application.instance.init();
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(global) {
 Object.defineProperty(exports, "__esModule", { value: true });
-var ComponentManager_1 = __webpack_require__(8);
 var AstManager_1 = __webpack_require__(9);
 var RenderComponent_1 = __webpack_require__(3);
 var BaseComponent = /** @class */ (function () {
     function BaseComponent(ast) {
-        ComponentManager_1.ComponentManager.instance.autoRegister(this.constructor.name, this.constructor);
         this.$ast = new AstManager_1.AstManager(ast);
         this.$rebuildAst();
         this.init();
@@ -367,43 +402,16 @@ exports.BaseComponent = BaseComponent;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var ComponentManager = /** @class */ (function () {
-    function ComponentManager() {
-        this._registeredClass = {};
-    }
-    Object.defineProperty(ComponentManager, "instance", {
-        get: function () {
-            if (!this.$inst) {
-                this.$inst = new ComponentManager();
-            }
-            return this.$inst;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    ComponentManager.prototype.autoRegister = function (name, ctr) {
-        this._registeredClass[name] = ctr;
-    };
-    return ComponentManager;
-}());
-exports.ComponentManager = ComponentManager;
-
-
-/***/ }),
 /* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var RenderComponent_1 = __webpack_require__(3);
-var TextComponent_1 = __webpack_require__(10);
+var ComponentManager_1 = __webpack_require__(4);
+// import {BaseComponent} from "../Components/BaseComponent"
+// import {RenderComponent} from "../Runtime/VDOM/RenderComponent"
+// import { TextComponent } from "../Runtime/VDOM/TextComponent";
 var AstManager = /** @class */ (function () {
     function AstManager(ast) {
         this.$inputData = {};
@@ -447,13 +455,13 @@ var AstManager = /** @class */ (function () {
     AstManager.prototype.$visitText = function (node) {
         node.attrs = node.attrs || [];
         node.attrs.push({ name: "text", val: node.val });
-        return new TextComponent_1.TextComponent(node.attrs);
+        return ComponentManager_1.ComponentManager.instance.createViewByTag("text", node.attrs);
     };
     AstManager.prototype.$visitTag = function (node) {
         var view = null;
         switch (node.name) {
             default:
-                view = new RenderComponent_1.RenderComponent(node.attrs);
+                view = ComponentManager_1.ComponentManager.instance.createViewByTag(node.name, node.attrs);
                 break;
         }
         return view;
@@ -468,49 +476,13 @@ exports.AstManager = AstManager;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var RenderComponent_1 = __webpack_require__(3);
-var TaskManager_1 = __webpack_require__(2);
-var Task_1 = __webpack_require__(1);
-var TextComponent = /** @class */ (function (_super) {
-    __extends(TextComponent, _super);
-    function TextComponent(attrs) {
-        return _super.call(this, attrs) || this;
-    }
-    TextComponent.prototype.createView = function () {
-        TaskManager_1.TaskManager.instance.send(Task_1.ETaskType.VIEW, {
-            action: Task_1.EViewTask.CREATE_LABEL,
-            nodeId: this.id,
-            data: this.$attr
-        });
-    };
-    return TextComponent;
-}(RenderComponent_1.RenderComponent));
-exports.TextComponent = TextComponent;
-
-
-/***/ }),
-/* 11 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
 /* WEBPACK VAR INJECTION */(function(global) {
 Object.defineProperty(exports, "__esModule", { value: true });
-var setup_1 = __webpack_require__(12);
+var setup_1 = __webpack_require__(11);
 var TaskManager_1 = __webpack_require__(2);
-var RootView_1 = __webpack_require__(15);
+var RootView_1 = __webpack_require__(14);
 var Task_1 = __webpack_require__(1);
+var Html5 = __webpack_require__(15);
 var Application = /** @class */ (function () {
     function Application() {
         this.$root = null;
@@ -535,6 +507,7 @@ var Application = /** @class */ (function () {
     Application.prototype.init = function () {
         setup_1.setup();
         TaskManager_1.TaskManager.instance.init();
+        Html5.setup();
         this.$root = RootView_1.RootView.create();
     };
     Application.prototype.runWithModule = function (view) {
@@ -552,14 +525,14 @@ exports.Application = Application;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 12 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Console_1 = __webpack_require__(13);
-var NativeToJs_1 = __webpack_require__(14);
+var Console_1 = __webpack_require__(12);
+var NativeToJs_1 = __webpack_require__(13);
 function setup() {
     Console_1.setConsole();
     NativeToJs_1.NativeToJs.init();
@@ -568,7 +541,7 @@ exports.setup = setup;
 
 
 /***/ }),
-/* 13 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -613,7 +586,7 @@ exports.setConsole = setConsole;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 14 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -634,7 +607,7 @@ exports.NativeToJs = NativeToJs;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 15 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -642,7 +615,7 @@ exports.NativeToJs = NativeToJs;
 Object.defineProperty(exports, "__esModule", { value: true });
 var TaskManager_1 = __webpack_require__(2);
 var Task_1 = __webpack_require__(1);
-var NodeID_1 = __webpack_require__(4);
+var NodeID_1 = __webpack_require__(5);
 var RootView = /** @class */ (function () {
     function RootView() {
         this.$instanceId = null;
@@ -665,7 +638,89 @@ exports.RootView = RootView;
 
 
 /***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ComponentManager_1 = __webpack_require__(4);
+var div_1 = __webpack_require__(16);
+var label_1 = __webpack_require__(17);
+exports.setup = function () {
+    ComponentManager_1.ComponentManager.instance.register("div", div_1.Div);
+    ComponentManager_1.ComponentManager.instance.register("label", label_1.Label);
+    ComponentManager_1.ComponentManager.instance.register("text", label_1.Label);
+};
+
+
+/***/ }),
 /* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var RenderComponent_1 = __webpack_require__(3);
+var Div = /** @class */ (function (_super) {
+    __extends(Div, _super);
+    function Div(attrs) {
+        return _super.call(this, attrs) || this;
+    }
+    return Div;
+}(RenderComponent_1.RenderComponent));
+exports.Div = Div;
+
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var RenderComponent_1 = __webpack_require__(3);
+var TaskManager_1 = __webpack_require__(2);
+var Task_1 = __webpack_require__(1);
+var Label = /** @class */ (function (_super) {
+    __extends(Label, _super);
+    function Label(attrs) {
+        return _super.call(this, attrs) || this;
+    }
+    Label.prototype.createView = function () {
+        TaskManager_1.TaskManager.instance.send(Task_1.ETaskType.VIEW, {
+            action: Task_1.EViewTask.CREATE_LABEL,
+            nodeId: this.id,
+            data: this.$attr
+        });
+    };
+    return Label;
+}(RenderComponent_1.RenderComponent));
+exports.Label = Label;
+
+
+/***/ }),
+/* 18 */
 /***/ (function(module, exports) {
 
 module.exports = {"type":"Block","nodes":[{"type":"Tag","name":"div","selfClosing":false,"block":{"type":"Block","nodes":[{"type":"Tag","name":"div","selfClosing":false,"block":{"type":"Block","nodes":[],"line":2},"attrs":[{"name":"class","val":"'tst2'","line":2,"column":5,"mustEscape":false},{"name":"backgroundColor","val":"\"#0000FF\"","line":2,"column":11,"mustEscape":true},{"name":"width","val":"50","line":2,"column":37,"mustEscape":true},{"name":"height","val":"50","line":2,"column":46,"mustEscape":true},{"name":"top","val":"200","line":2,"column":56,"mustEscape":true},{"name":"left","val":"200","line":2,"column":64,"mustEscape":true}],"attributeBlocks":[],"isInline":false,"line":2,"column":5},{"type":"Tag","name":"div","selfClosing":false,"block":{"type":"Block","nodes":[{"type":"Text","val":"Hellow World","line":3,"column":12}],"line":3},"attrs":[{"name":"class","val":"'test3'","line":3,"column":5,"mustEscape":false}],"attributeBlocks":[],"isInline":false,"line":3,"column":5}],"line":1},"attrs":[{"name":"class","val":"'test'","line":1,"column":1,"mustEscape":false},{"name":"@click","val":"\"clcik\"","line":1,"column":7,"mustEscape":true},{"name":"backgroundColor","val":"\"#00FF00\"","line":1,"column":22,"mustEscape":true},{"name":"width","val":"400","line":1,"column":48,"mustEscape":true},{"name":"height","val":"400","line":1,"column":58,"mustEscape":true},{"name":"top","val":"60","line":1,"column":69,"mustEscape":true},{"name":"left","val":"10","line":1,"column":76,"mustEscape":true}],"attributeBlocks":[],"isInline":false,"line":1,"column":1}],"line":0,"declaredBlocks":{}}
