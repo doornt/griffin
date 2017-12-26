@@ -30,7 +30,8 @@ public class RenderManager : NSObject{
     public func createRootView(instanceId:String) -> Void {
         let rootview = View.init(frame: CGRect.init(x: 0, y: 0, width: Environment.instance.screenWidth, height: Environment.instance.screenHeight))
         rootview.instanceId = instanceId
-        
+        viewCollection[instanceId] = rootview
+    
         self._rootController?.setRootView(rootview)
     }
     

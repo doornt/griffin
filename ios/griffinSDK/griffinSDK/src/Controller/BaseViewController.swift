@@ -43,7 +43,7 @@ public class BaseViewController : UIViewController,UIGestureRecognizerDelegate{
     
     override public func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = UIColor.yellow
+
         self.renderWithUrl()
         
         lifeCycleCallback("viewDidLoad")

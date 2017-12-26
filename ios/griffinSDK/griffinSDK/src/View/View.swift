@@ -171,8 +171,9 @@ public class ImageView :UIImageView, ViewProtocol {
         
         config(dict: dict)
         
-        let url = URL.init(string: Utils.any2String(obj: dict["url"]) ?? "" )!
-        guard let data = try? Data.init(contentsOf: url)  else {
+        let url = URL.init(string: Utils.any2String(obj: dict["url"]) ?? "" )
+        guard let rUrl = url,
+              let data = try? Data.init(contentsOf: rUrl)  else {
             return
         }
         self.image = UIImage.init(data: data, scale: UIScreen.main.scale)

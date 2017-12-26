@@ -27,16 +27,16 @@ public class Engine: NSObject {
         
         let createViewScript:@convention(block)(String, Dictionary<String,Any>)-> Void = {
             instanceId, obj in
-            return RenderManager.instance.createView(instanceId, obj: obj)
+            RenderManager.instance.createView(instanceId, obj: obj)
         }
         
         let createLabelScript:@convention(block)(String, Dictionary<String,Any>)-> Void = {
             instanceId, obj in
-            return RenderManager.instance.createView(instanceId, obj: obj)
+            RenderManager.instance.createLabel(instanceId, obj: obj)
         }
         let createImageViewScript:@convention(block)(String, Dictionary<String,Any>)-> Void = {
             instanceId, obj in
-            return RenderManager.instance.createImageView(instanceId, obj:obj)
+            RenderManager.instance.createImageView(instanceId, obj:obj)
         }
         
         let addSubviewScript:@convention(block)(String, String)-> Void = {
