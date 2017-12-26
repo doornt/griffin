@@ -13,6 +13,8 @@ public class RenderManager : NSObject{
     
     var _rootController:BaseViewController?
     
+    var viewCollection: [String: UIView] = Dictionary()
+    
     public static let instance:RenderManager = {
         return RenderManager()
     }()
@@ -25,35 +27,51 @@ public class RenderManager : NSObject{
         self._rootController = root
     }
     
-    public func setRootView(obj:Any) -> Void {
-        self._rootController?.setRootView(obj as? View ?? View.init())
+    public func createRootView(instanceId:String) -> Void {
+        let rootview = View.init(frame: CGRect.init(x: 0, y: 0, width: Environment.instance.screenWidth, height: Environment.instance.screenHeight))
+        rootview.instanceId = instanceId
+        
+        self._rootController?.setRootView(rootview)
     }
     
-    public func createView(obj:Dictionary<String,Any>) -> View {
-        return View.init(dict: obj)
-    }
-    public func createLabel(obj:Dictionary<String,Any>) -> Label {
-        return Label.init(dict: obj)
-    }
-    public func createImageView(obj:Dictionary<String,Any>) -> ImageView {
-        return ImageView.init(dict: obj)
-    }
-    public func useElement(obj:Any){
-        self._rootController?.view.addSubview(obj as? UIView ?? UIView.init())
+    public func createView(_ instanceId:String, obj:Dictionary<String,Any>) {
+        let view = View.init(dict: obj)
+        view.instanceId = instanceId
+        viewCollection[instanceId] = view
     }
     
-    public func addsubView(_ obj:Any, childView: Any){
-        let parentView = obj as? UIView ?? UIView.init()
-        let rChildView = childView as? UIView ?? UIView.init()
-        parentView.addSubview(rChildView)
+    public func createLabel(_ instanceId:String, obj:Dictionary<String,Any>) {
+        let label = Label.init(dict: obj)
+        label.instanceId = instanceId
+        viewCollection[instanceId] = label
     }
     
-    func updateView(_ view: Any, data: Dictionary<String,Any>){
+    public func createImageView(_ instanceId:String, obj:Dictionary<String,Any>) {
+        let imageview = ImageView.init(dict: obj)
+        imageview.instanceId = instanceId
+        viewCollection[instanceId] = imageview
+    }
+    
+    public func addsubView(_ parentId:String, childId: String){
+        guard let parentView = viewCollection[parentId],
+            let childView = viewCollection[childId] else {
+                return
+        }
+        parentView.addSubview(childView)
+    }
+    
+    func updateView(_ instanceId:String, data: Dictionary<String,Any>) {
+        guard let view = viewCollection[instanceId] else {
+            return
+        }
         (view as? ViewProtocol )?.updateView(dict: data)
     }
 
     
-    public func registerEvent(_ view:UIView, event: String, callBack: JSValue){
+    public func registerEvent(_ instanceId:String, event: String, callBack: JSValue){
+        guard let view = viewCollection[instanceId] else {
+            return
+        }
         if view.events == nil {
             view.events = Dictionary()
         }
@@ -68,8 +86,9 @@ public class RenderManager : NSObject{
         }
     }
     
-    public func unRegisterEvent(_ view:UIView, event: String, callBack: JSValue){
-        guard var eventDic = view.events,
+    public func unRegisterEvent(_ instanceId:String, event: String, callBack: JSValue){
+        guard let view = viewCollection[instanceId],
+              var eventDic = view.events,
               let eventArr = eventDic[event] else {
             return
         }
@@ -78,7 +97,11 @@ public class RenderManager : NSObject{
         view.events = eventDic
     }
     
-    public func registerVCLifeCycle(_ view:UIView, event: String, callBack: JSValue){
+    public func registerVCLifeCycle(_ instanceId:String, event: String, callBack: JSValue){
+        guard let view = viewCollection[instanceId] else {
+            return
+        }
+        
         if view.lifeCycleDict == nil {
             view.lifeCycleDict = Dictionary()
         }

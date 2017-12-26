@@ -20,54 +20,55 @@ public class Engine: NSObject {
     
     public func initSDK(){
         
-        let setRootViewScript:@convention(block)(Any)-> Void = {
+        let createRootView:@convention(block)(String)-> Void = {
             obj in
-            return RenderManager.instance.setRootView(obj:obj)
+            RenderManager.instance.createRootView(instanceId:obj)
         }
         
-        let createViewScript:@convention(block)(Dictionary<String,Any>)-> View = {
-            obj in
-            return RenderManager.instance.createView(obj:obj)
+        let createViewScript:@convention(block)(String, Dictionary<String,Any>)-> Void = {
+            instanceId, obj in
+            return RenderManager.instance.createView(instanceId, obj: obj)
         }
         
-        let createLabelScript:@convention(block)(Dictionary<String,Any>)-> Label = {
-            obj in
-            return RenderManager.instance.createLabel(obj:obj)
+        let createLabelScript:@convention(block)(String, Dictionary<String,Any>)-> Void = {
+            instanceId, obj in
+            return RenderManager.instance.createView(instanceId, obj: obj)
         }
-        let createImageViewScript:@convention(block)(Dictionary<String,Any>)-> ImageView = {
-            obj in
-            return RenderManager.instance.createImageView(obj:obj)
-        }
-        
-        let addSubviewScript:@convention(block)(Any, Any)-> Void = {
-            parentView, childView in
-            RenderManager.instance.addsubView(parentView, childView:childView)
+        let createImageViewScript:@convention(block)(String, Dictionary<String,Any>)-> Void = {
+            instanceId, obj in
+            return RenderManager.instance.createImageView(instanceId, obj:obj)
         }
         
-        let updateSubviewScript:@convention(block)(Any, Dictionary<String,Any>)-> Void = {
-            view, data in
-            RenderManager.instance.updateView(view, data: data)
+        let addSubviewScript:@convention(block)(String, String)-> Void = {
+            parentId, childId in
+            RenderManager.instance.addsubView(parentId, childId:childId)
         }
         
-        let registerEvent:@convention(block)(UIView, String, JSValue)-> Void = {
-            view, event, callBack in
-            RenderManager.instance.registerEvent(view, event: event, callBack: callBack)
+        let updateSubviewScript:@convention(block)(String, Dictionary<String,Any>)-> Void = {
+            instanceId, data in
+            RenderManager.instance.updateView(instanceId, data: data)
         }
         
-        let unRegisterEvent:@convention(block)(UIView, String, JSValue)-> Void = {
-            view, event, callBack in
-            RenderManager.instance.unRegisterEvent(view, event: event, callBack: callBack)
+        let registerEvent:@convention(block)(String, String, JSValue)-> Void = {
+            instanceId, event, callBack in
+            RenderManager.instance.registerEvent(instanceId, event: event, callBack: callBack)
         }
         
-        let registerVCLifeCycle:@convention(block)(UIView, String, JSValue)-> Void = {
-            view, event, callBack in
-            RenderManager.instance.registerVCLifeCycle(view, event: event, callBack: callBack)
+        let unRegisterEvent:@convention(block)(String, String, JSValue)-> Void = {
+            instanceId, event, callBack in
+            RenderManager.instance.unRegisterEvent(instanceId, event: event, callBack: callBack)
         }
         
+        let registerVCLifeCycle:@convention(block)(String, String, JSValue)-> Void = {
+            instanceId, event, callBack in
+            RenderManager.instance.registerVCLifeCycle(instanceId, event: event, callBack: callBack)
+        }
+        
+        JSCoreBridge.instance.registerCallMethod(method: createRootView, script: "createRootView")
         JSCoreBridge.instance.registerCallMethod(method: createViewScript, script: "createView")
         JSCoreBridge.instance.registerCallMethod(method: createLabelScript, script: "createLabel")
         JSCoreBridge.instance.registerCallMethod(method: createImageViewScript, script: "createImageView")
-        JSCoreBridge.instance.registerCallMethod(method: setRootViewScript, script: "setRootView")
+    
         JSCoreBridge.instance.registerCallMethod(method: addSubviewScript, script: "addSubview")
         JSCoreBridge.instance.registerCallMethod(method: updateSubviewScript, script: "updateView")
         JSCoreBridge.instance.registerCallMethod(method: registerEvent, script: "registerEvent")
