@@ -132,7 +132,7 @@ function dispatchEventToJs(id, event) {
 }
 
 registerEvent("2","click", func1)
-unRegisterEvent("2","click", func1)
+//unRegisterEvent("2","click", func1)
 
 addSubview("0","2")
 
