@@ -65,7 +65,9 @@ var DemoVC = {
 
 
 var DemoLabel = {
-text:"hello world"
+text:"hello world",
+top:100,
+left:10
 }
 
 var DemoImageView = {
@@ -88,26 +90,27 @@ left:0
 
 var DemoLabel1 = {
 text:"hello w11orld",
-top:100
+top:200
 }
 
+createRootView("0")
 
-var label = createLabel(DemoLabel)
-var view = createView(rootView)
-var imageView = createView(DemoImageView)
+var label = createLabel("2",DemoLabel)
+var view = createView("1",rootView)
+var imageView = createImageView("3",DemoImageView)
 
 function func1() {
     var a = 100,b=200;
     
     NativeLog(a+b);
-    updateView(label, DemoLabel1);
+    updateView("2", DemoLabel1);
 }
 
 function func2() {
     var a = 100,b=200;
     
     NativeLog(a+b);
-    updateView(label, DemoLabel1);
+    updateView("2", DemoLabel1);
 }
 
 function func3() {
@@ -117,12 +120,11 @@ function func3() {
     
 }
 
-registerEvent(label,"click", func1)
-registerPageLifeCycle(view, "viewWillAppear", func3)
+registerEvent("2","click", func1)
+registerPageLifeCycle("0", "viewWillAppear", func3)
 //unRegisterEvent(label,"cliick", func2)
 
-setRootView(view)
-addSubview(view,label)
+addSubview("0","2")
 
 //createImageView(DemoImageView)
 
