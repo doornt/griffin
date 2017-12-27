@@ -9,6 +9,7 @@
 import UIKit
 
 class Environment {
+    
     let screenWidth  = UIScreen.main.bounds.size.width
     let screenHeight = UIScreen.main.bounds.size.height
     
@@ -16,7 +17,7 @@ class Environment {
         return Environment()
     }()
     
-    func get()->[String:Any]{
+    func get() -> [String:Any]{
         var env = [String:Any]()
         env["platform"] = "ios"
         env["screenWidth"] = screenWidth

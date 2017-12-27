@@ -14,40 +14,40 @@ private var lifeCycleKey: Void?
 private var instanceIdKey: Void?
 
 protocol ViewProtocol {
-    func updateView(dict:Dictionary<String,Any>)
+    func update(_ dict:Dictionary<String,Any>)
 }
 
 // MARK: - Config
 extension UIView {
     
-    func config(dict:Dictionary<String,Any>){
+    func config(_ dict:Dictionary<String,Any>){
         
-        let w:CGFloat = Utils.any2CGFloat(obj: dict["width"]) ?? 0
-        let h:CGFloat = Utils.any2CGFloat(obj: dict["height"]) ?? 0
-        let y:CGFloat = Utils.any2CGFloat(obj: dict["top"]) ?? 0
-        let x:CGFloat = Utils.any2CGFloat(obj: dict["left"]) ?? 0
+        let w:CGFloat = Utils.any2CGFloat(dict["width"]) ?? 0
+        let h:CGFloat = Utils.any2CGFloat(dict["height"]) ?? 0
+        let y:CGFloat = Utils.any2CGFloat(dict["top"]) ?? 0
+        let x:CGFloat = Utils.any2CGFloat(dict["left"]) ?? 0
         self.frame = CGRect(x: x, y: y, width: w, height: h)
         
-        if Utils.hexString2UIColor(hex: Utils.any2String(obj: dict["backgroundColor"])) != nil {
-            self.backgroundColor = Utils.hexString2UIColor(hex: Utils.any2String(obj: dict["backgroundColor"]))
+        if Utils.hexString2UIColor(Utils.any2String(dict["backgroundColor"])) != nil {
+            self.backgroundColor = Utils.hexString2UIColor(Utils.any2String(dict["backgroundColor"]))
         }
         
-        self.clipsToBounds = Utils.any2Bool(obj: dict["overflow"]) ?? false
-        self.alpha = Utils.any2CGFloat(obj: dict["opacity"]) ?? 1.0
+        self.clipsToBounds = Utils.any2Bool(dict["overflow"]) ?? false
+        self.alpha = Utils.any2CGFloat(dict["opacity"]) ?? 1.0
         
-        self.layer.borderWidth = Utils.any2CGFloat(obj: dict["borderWidth"]) ?? 0
+        self.layer.borderWidth = Utils.any2CGFloat(dict["borderWidth"]) ?? 0
         
-        if Utils.hexString2UIColor(hex: Utils.any2String(obj: dict["borderColor"])) != nil {
-            self.layer.borderColor = Utils.hexString2UIColor(hex: Utils.any2String(obj: dict["borderColor"]))!.cgColor
+        if Utils.hexString2UIColor(Utils.any2String(dict["borderColor"])) != nil {
+            self.layer.borderColor = Utils.hexString2UIColor(Utils.any2String(dict["borderColor"]))!.cgColor
         }
         
-        self.layer.cornerRadius = Utils.any2CGFloat(obj: dict["cornerRadius"]) ?? 0
+        self.layer.cornerRadius = Utils.any2CGFloat(dict["cornerRadius"]) ?? 0
         
         for view in subviews {
             view.removeFromSuperview()
         }
         
-        for child in Utils.any2Array(obj: dict["children"]) {
+        for child in Utils.any2Array(dict["children"]) {
             let rChild = child as? Dictionary<String, Any>
             guard let realChild = rChild else {
                 continue
@@ -124,7 +124,7 @@ extension UIView {
 // MARK: - registerEvent & unRegisterEvent
 extension UIView {
     
-    func registerEvent(_ event: String, callBack: JSValue) {
+    func register(event: String, callBack: JSValue) {
         if self.events == nil {
             self.events = Dictionary()
         }
@@ -143,7 +143,7 @@ extension UIView {
         }
     }
     
-    func unRegisterEvent(_ event: String, callBack: JSValue) {
+    func unRegister(event: String, callBack: JSValue) {
         guard var eventDic = self.events,
             let eventArr = eventDic[event] else {
                 return

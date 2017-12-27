@@ -10,24 +10,24 @@ import UIKit
 
 class Label :UILabel, ViewProtocol {
     
-    func updateView(dict: Dictionary<String, Any>) {
-        buildLabel(dict: dict)
+    func update(_ dict: Dictionary<String, Any>) {
+        setup(dict)
     }
 
     convenience init(dict:Dictionary<String,Any>){
         self.init()
         self.isUserInteractionEnabled = false
-        buildLabel(dict: dict)
+        setup(dict)
     }
     
-    func buildLabel(dict:Dictionary<String,Any>) {
+    func setup(_ dict:Dictionary<String,Any>) {
         
-        config(dict: dict)
+        config(dict)
         
-        self.text = Utils.any2String(obj: dict["text"])
+        self.text = Utils.any2String(dict["text"])
         
-        if Utils.hexString2UIColor(hex: Utils.any2String(obj: dict["textColor"])) != nil {
-            self.textColor = Utils.hexString2UIColor(hex: Utils.any2String(obj: dict["textColor"]))
+        if Utils.hexString2UIColor(Utils.any2String(dict["textColor"])) != nil {
+            self.textColor = Utils.hexString2UIColor(Utils.any2String(dict["textColor"]))
         }
         
         if self.layer.cornerRadius > 0 {

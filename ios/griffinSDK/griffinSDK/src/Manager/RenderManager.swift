@@ -38,14 +38,14 @@ extension RenderManager {
         guard let view = viewCollection[instanceId] else {
             return
         }
-        (view as? ViewProtocol )?.updateView(dict: data)
+        (view as? ViewProtocol )?.update(data)
     }
 }
 
 //MARK: - Create Element
 extension RenderManager {
     
-    func createRootView(instanceId:String) -> Void {
+    func createRootView(_ instanceId:String) -> Void {
         let rootview = View.init(frame: CGRect.init(x: 0, y: 0, width: Environment.instance.screenWidth, height: Environment.instance.screenHeight))
         rootview.instanceId = instanceId
         viewCollection[instanceId] = rootview
@@ -74,18 +74,18 @@ extension RenderManager {
 
 // MARK: - Event
 extension RenderManager {
-    func registerEvent(_ instanceId:String, event: String, callBack: JSValue){
+    func register(event:String, instanceId:String,  callBack: JSValue){
         guard let view = viewCollection[instanceId] else {
             return
         }
         
-        view.registerEvent(event, callBack: callBack)
+        view.register(event: event, callBack: callBack)
     }
     
-    func unRegisterEvent(_ instanceId:String, event: String, callBack: JSValue){
+    func unRegister(event: String, instanceId:String, callBack: JSValue){
         guard let view = viewCollection[instanceId] else {
             return
         }
-        view.unRegisterEvent(event, callBack: callBack)
+        view.unRegister(event: event, callBack: callBack)
     }
 }

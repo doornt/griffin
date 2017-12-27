@@ -14,14 +14,15 @@ class View :UIView, ViewProtocol {
     
     convenience init(dict:Dictionary<String,Any>){
         self.init()
+        
         self.id = dict["class"] as? String
 
         self.isUserInteractionEnabled = false
-        config(dict: dict)
+        config(dict)
     }
     
-    func updateView(dict: Dictionary<String, Any>) {
-        config(dict: dict)
+    func update(_ dict: Dictionary<String, Any>) {
+        config(dict)
     }
 }
 

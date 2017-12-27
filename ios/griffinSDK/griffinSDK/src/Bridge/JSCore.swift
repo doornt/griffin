@@ -11,7 +11,7 @@ import JavaScriptCore
 
 extension JSValue {
     func callWithoutArguments() {
-        JSCoreBridge.instance.callWithoutArguments(obj: self)
+        JSCoreBridge.instance.callWith(obj: self)
     }
 }
 
@@ -21,12 +21,12 @@ extension JSCoreBridge {
         self._jsContext.perform(#selector(self._jsContext.evaluateScript(_:)), on: self._thread!, with: script, waitUntilDone: false)
     }
     
-    func callJsMethod(method:String,args:Array<Any>){
+    func callJs(method:String,args:Array<Any>){
         perform(#selector(self._callJsMethod), on: self._thread!, with: ["method" :method, "args": args], waitUntilDone: false)
     }
     
     @objc private func _callJsMethod(dict:[String: Any]){
-        self._jsContext.globalObject.invokeMethod(Utils.any2String(obj: dict["method"]), withArguments: dict["args"] as! [Any])
+        self._jsContext.globalObject.invokeMethod(Utils.any2String(dict["method"]), withArguments: dict["args"] as! [Any])
     }
     
     
@@ -38,11 +38,11 @@ extension JSCoreBridge {
         //        _jsContext.
     }
     
-    func registerCallMethod<T>(method:T,script:String){
+    func register<T>(method:T,script:String){
         _jsContext.setObject(unsafeBitCast(method,to: AnyObject.self) , forKeyedSubscript: script as NSCopying & NSObjectProtocol)
     }
     
-    func callWithoutArguments(obj: JSValue) {
+    func callWith(obj: JSValue) {
         obj.perform(#selector(obj.call), on: self._thread!, with: [], waitUntilDone: false)
     }
 }

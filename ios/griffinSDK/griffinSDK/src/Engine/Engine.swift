@@ -22,38 +22,38 @@ public class Engine {
     private let createRootView:@convention(block)(String)-> Void = {
         obj in
         DispatchQueue.main.async {
-            RenderManager.instance.createRootView(instanceId:obj)
+            RenderManager.instance.createRootView(obj)
         }
     }
     
-    private let createViewScript:@convention(block)(String, Dictionary<String,Any>)-> Void = {
+    private let createView:@convention(block)(String, Dictionary<String,Any>)-> Void = {
         instanceId, obj in
         DispatchQueue.main.async {
             RenderManager.instance.createView(instanceId, obj: obj)
         }
     }
     
-    private let createLabelScript:@convention(block)(String, Dictionary<String,Any>)-> Void = {
+    private let createLabel:@convention(block)(String, Dictionary<String,Any>)-> Void = {
         instanceId, obj in
         DispatchQueue.main.async {
             RenderManager.instance.createLabel(instanceId, obj: obj)
         }
     }
-    private let createImageViewScript:@convention(block)(String, Dictionary<String,Any>)-> Void = {
+    private let createImageView:@convention(block)(String, Dictionary<String,Any>)-> Void = {
         instanceId, obj in
         DispatchQueue.main.async {
             RenderManager.instance.createImageView(instanceId, obj:obj)
         }
     }
     
-    private let addSubviewScript:@convention(block)(String, String)-> Void = {
+    private let addSubview:@convention(block)(String, String)-> Void = {
         parentId, childId in
         DispatchQueue.main.async {
             RenderManager.instance.addSubView(parentId, childId:childId)
         }
     }
     
-    private let updateSubviewScript:@convention(block)(String, Dictionary<String,Any>)-> Void = {
+    private let updateSubview:@convention(block)(String, Dictionary<String,Any>)-> Void = {
         instanceId, data in
         DispatchQueue.main.async {
             RenderManager.instance.updateView(instanceId, data: data)
@@ -63,14 +63,14 @@ public class Engine {
     private let registerEvent:@convention(block)(String, String, JSValue)-> Void = {
         instanceId, event, callBack in
         DispatchQueue.main.async {
-            RenderManager.instance.registerEvent(instanceId, event: event, callBack: callBack)
+            RenderManager.instance.register(event: event, instanceId: instanceId, callBack: callBack)
         }
     }
     
     private let unRegisterEvent:@convention(block)(String, String, JSValue)-> Void = {
         instanceId, event, callBack in
         DispatchQueue.main.async {
-            RenderManager.instance.unRegisterEvent(instanceId, event: event, callBack: callBack)
+            RenderManager.instance.unRegister(event: event, instanceId: instanceId, callBack: callBack)
         }
     }
 }
@@ -80,17 +80,17 @@ private extension Engine {
     
     func registerNativeMethods() {
         // MARK: Create View
-        JSCoreBridge.instance.registerCallMethod(method: createRootView, script: "createRootView")
-        JSCoreBridge.instance.registerCallMethod(method: createViewScript, script: "createView")
-        JSCoreBridge.instance.registerCallMethod(method: createLabelScript, script: "createLabel")
-        JSCoreBridge.instance.registerCallMethod(method: createImageViewScript, script: "createImageView")
+        JSCoreBridge.instance.register(method: createRootView, script: "createRootView")
+        JSCoreBridge.instance.register(method: createView, script: "createView")
+        JSCoreBridge.instance.register(method: createLabel, script: "createLabel")
+        JSCoreBridge.instance.register(method: createImageView, script: "createImageView")
         
         // MARK: Operate View
-        JSCoreBridge.instance.registerCallMethod(method: addSubviewScript, script: "addSubview")
-        JSCoreBridge.instance.registerCallMethod(method: updateSubviewScript, script: "updateView")
+        JSCoreBridge.instance.register(method: addSubview, script: "addSubview")
+        JSCoreBridge.instance.register(method: updateSubview, script: "updateView")
         
         // MARK: Event
-        JSCoreBridge.instance.registerCallMethod(method: registerEvent, script: "registerEvent")
-        JSCoreBridge.instance.registerCallMethod(method: unRegisterEvent, script: "unRegisterEvent")
+        JSCoreBridge.instance.register(method: registerEvent, script: "registerEvent")
+        JSCoreBridge.instance.register(method: unRegisterEvent, script: "unRegisterEvent")
     }
 }

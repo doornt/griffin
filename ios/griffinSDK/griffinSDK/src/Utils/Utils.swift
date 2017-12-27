@@ -10,23 +10,23 @@ import UIKit
 
 class Utils {
     
-    public class func any2CGFloat(obj: Any?) -> CGFloat? {
+    class func any2CGFloat(_ obj: Any?) -> CGFloat? {
         return obj as? CGFloat
     }
     
-    class func any2String(obj: Any?) -> String? {
+    class func any2String(_ obj: Any?) -> String? {
         return obj as? String ?? ""
     }
     
-    class func any2Array(obj: Any?) -> Array<Any> {
+    class func any2Array(_ obj: Any?) -> Array<Any> {
         return obj as? Array ?? []
     }
     
-    class func any2Bool(obj: Any?) -> Bool? {
+    class func any2Bool(_ obj: Any?) -> Bool? {
         return obj as? Bool
     }
     
-    class func hexString2UIColor(hex:String?) -> UIColor? {
+    class func hexString2UIColor(_ hex:String?) -> UIColor? {
         guard let hex = hex else {
             return nil
         }

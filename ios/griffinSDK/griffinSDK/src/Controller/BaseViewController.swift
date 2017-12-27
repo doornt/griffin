@@ -46,36 +46,36 @@ class BaseViewController : UIViewController {
         
         self.renderWithUrl()
         
-        JSCoreBridge.instance.callJsMethod(method: "dispatchEventToJs", args: [self.rootView?.instanceId ?? "", "viewDidLoad"])
+        JSCoreBridge.instance.callJs(method: "dispatchEventToJs", args: [self.rootView?.instanceId ?? "", "viewDidLoad"])
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        JSCoreBridge.instance.callJsMethod(method: "dispatchEventToJs", args: [self.rootView?.instanceId ?? "", "viewWillAppear"])
+        JSCoreBridge.instance.callJs(method: "dispatchEventToJs", args: [self.rootView?.instanceId ?? "", "viewWillAppear"])
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        JSCoreBridge.instance.callJsMethod(method: "dispatchEventToJs", args: [self.rootView?.instanceId ?? "", "viewDidAppear"])
+        JSCoreBridge.instance.callJs(method: "dispatchEventToJs", args: [self.rootView?.instanceId ?? "", "viewDidAppear"])
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        JSCoreBridge.instance.callJsMethod(method: "dispatchEventToJs", args: [self.rootView?.instanceId ?? "", "viewDidDisappear"])
+        JSCoreBridge.instance.callJs(method: "dispatchEventToJs", args: [self.rootView?.instanceId ?? "", "viewDidDisappear"])
     }
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        JSCoreBridge.instance.callJsMethod(method: "dispatchEventToJs", args: [self.rootView?.instanceId ?? "", "viewWillLayoutSubviews"])
+        JSCoreBridge.instance.callJs(method: "dispatchEventToJs", args: [self.rootView?.instanceId ?? "", "viewWillLayoutSubviews"])
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        JSCoreBridge.instance.callJsMethod(method: "dispatchEventToJs", args: [self.rootView?.instanceId ?? "", "viewDidLayoutSubviews"])
+        JSCoreBridge.instance.callJs(method: "dispatchEventToJs", args: [self.rootView?.instanceId ?? "", "viewDidLayoutSubviews"])
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        JSCoreBridge.instance.callJsMethod(method: "dispatchEventToJs", args: [self.rootView?.instanceId ?? "", "didReceiveMemoryWarning"])
+        JSCoreBridge.instance.callJs(method: "dispatchEventToJs", args: [self.rootView?.instanceId ?? "", "didReceiveMemoryWarning"])
     }
 }
