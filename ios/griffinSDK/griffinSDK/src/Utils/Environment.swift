@@ -19,7 +19,7 @@ class Environment {
     
     func get() -> [String:Any]{
         var env = [String:Any]()
-        env["platform"] = "ios"
+        env["platform"] = "iOS"
         env["screenWidth"] = screenWidth
         env["screenHeight"] = screenHeight
         return env

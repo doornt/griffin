@@ -8,6 +8,16 @@
 
 import UIKit
 
+enum ViewControllerLifeCycle: String {
+    case ViewDidLoad
+    case ViewWillAppear
+    case viewDidAppear
+    case ViewWillDisappear
+    case ViewDidDisappear
+    case ViewWillLayoutSubviews
+    case ViewDidLayoutSubviews
+    case DidReceiveMemoryWarning
+}
 
 class BaseViewController : UIViewController {
     
@@ -46,36 +56,45 @@ class BaseViewController : UIViewController {
         
         self.renderWithUrl()
         
-        JSCoreBridge.instance.callJs(method: "dispatchEventToJs", args: [self.rootView?.instanceId ?? "", "viewDidLoad"])
+        dispatchVCLifeCycle2Js(period: ViewControllerLifeCycle.ViewDidLoad.rawValue)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        JSCoreBridge.instance.callJs(method: "dispatchEventToJs", args: [self.rootView?.instanceId ?? "", "viewWillAppear"])
+        dispatchVCLifeCycle2Js(period: ViewControllerLifeCycle.ViewWillAppear.rawValue)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        JSCoreBridge.instance.callJs(method: "dispatchEventToJs", args: [self.rootView?.instanceId ?? "", "viewDidAppear"])
+        dispatchVCLifeCycle2Js(period: ViewControllerLifeCycle.viewDidAppear.rawValue)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        dispatchVCLifeCycle2Js(period: ViewControllerLifeCycle.ViewWillDisappear.rawValue)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        JSCoreBridge.instance.callJs(method: "dispatchEventToJs", args: [self.rootView?.instanceId ?? "", "viewDidDisappear"])
+        dispatchVCLifeCycle2Js(period: ViewControllerLifeCycle.ViewDidDisappear.rawValue)
     }
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        JSCoreBridge.instance.callJs(method: "dispatchEventToJs", args: [self.rootView?.instanceId ?? "", "viewWillLayoutSubviews"])
+        dispatchVCLifeCycle2Js(period: ViewControllerLifeCycle.ViewWillLayoutSubviews.rawValue)
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        JSCoreBridge.instance.callJs(method: "dispatchEventToJs", args: [self.rootView?.instanceId ?? "", "viewDidLayoutSubviews"])
+        dispatchVCLifeCycle2Js(period: ViewControllerLifeCycle.ViewDidLayoutSubviews.rawValue)
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        JSCoreBridge.instance.callJs(method: "dispatchEventToJs", args: [self.rootView?.instanceId ?? "", "didReceiveMemoryWarning"])
+        dispatchVCLifeCycle2Js(period: ViewControllerLifeCycle.DidReceiveMemoryWarning.rawValue)
+    }
+    
+    private func dispatchVCLifeCycle2Js(period: String) {
+        JSCoreBridge.instance.dispatchEventToJs(rootviewId: self.rootView?.instanceId ?? "", data: ["type": period])
     }
 }

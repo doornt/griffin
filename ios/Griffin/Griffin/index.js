@@ -127,7 +127,7 @@ function func3() {
 function dispatchEventToJs(id, event) {
     
     
-    NativeLog(id, event);
+    NativeLog(id, event["type"]);
     
 }
 

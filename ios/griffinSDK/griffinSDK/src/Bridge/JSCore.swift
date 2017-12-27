@@ -17,6 +17,10 @@ extension JSValue {
 
 extension JSCoreBridge {
     
+    func dispatchEventToJs(rootviewId instanceId: String, data: [String: Any?]) {
+        callJs(method: "dispatchEventToJs", args: [instanceId, data])
+    }
+    
     func executeJavascript(script:String) {
         self._jsContext.perform(#selector(self._jsContext.evaluateScript(_:)), on: self._thread!, with: script, waitUntilDone: false)
     }
