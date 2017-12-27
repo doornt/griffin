@@ -120,7 +120,7 @@ extension UIView {
     
     // MARK: - registerEvent & unRegisterEvent
     
-    public func registerEvent(_ event: String, callBack: JSValue) {
+    func registerEvent(_ event: String, callBack: JSValue) {
         if self.events == nil {
             self.events = Dictionary()
         }
@@ -139,7 +139,7 @@ extension UIView {
         }
     }
     
-    public func unRegisterEvent(_ event: String, callBack: JSValue) {
+    func unRegisterEvent(_ event: String, callBack: JSValue) {
         guard var eventDic = self.events,
             let eventArr = eventDic[event] else {
                 return

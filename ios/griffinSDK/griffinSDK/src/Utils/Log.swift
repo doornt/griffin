@@ -8,13 +8,12 @@
 
 import Foundation
 
-
-public class Log{
+class Log{
     private static func log(level:String,fileName:String,line:Int,message:String){
         print("<Griffin>[\(level)]\(fileName):\(line),\(message)")
     }
     
-    public static func info(fileName:String,line:Int,message:String){
+    static func info(fileName:String,line:Int,message:String){
         self.log(level: "info", fileName: fileName, line: line, message: message)
     }
 }

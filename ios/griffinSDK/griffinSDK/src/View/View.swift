@@ -10,7 +10,7 @@ import UIKit
 
 class View :UIView, ViewProtocol {
 
-    public var id:String?
+    var id:String?
     
     convenience init(dict:Dictionary<String,Any>){
         self.init()

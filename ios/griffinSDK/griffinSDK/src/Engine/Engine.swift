@@ -75,13 +75,17 @@ public class Engine: NSObject {
             }
         }
         
+        // MARK: - Create View
         JSCoreBridge.instance.registerCallMethod(method: createRootView, script: "createRootView")
         JSCoreBridge.instance.registerCallMethod(method: createViewScript, script: "createView")
         JSCoreBridge.instance.registerCallMethod(method: createLabelScript, script: "createLabel")
         JSCoreBridge.instance.registerCallMethod(method: createImageViewScript, script: "createImageView")
     
+        // MARK: - Operate View
         JSCoreBridge.instance.registerCallMethod(method: addSubviewScript, script: "addSubview")
         JSCoreBridge.instance.registerCallMethod(method: updateSubviewScript, script: "updateView")
+        
+        // MARK: - Event
         JSCoreBridge.instance.registerCallMethod(method: registerEvent, script: "registerEvent")
         JSCoreBridge.instance.registerCallMethod(method: unRegisterEvent, script: "unRegisterEvent")
     }

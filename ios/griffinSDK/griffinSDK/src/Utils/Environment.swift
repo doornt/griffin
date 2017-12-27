@@ -8,15 +8,15 @@
 
 import UIKit
 
-public class Environment: NSObject {
-    public let screenWidth  = UIScreen.main.bounds.size.width
-    public let screenHeight = UIScreen.main.bounds.size.height
+class Environment: NSObject {
+    let screenWidth  = UIScreen.main.bounds.size.width
+    let screenHeight = UIScreen.main.bounds.size.height
     
-    public static let instance:Environment = {
+    static let instance:Environment = {
         return Environment()
     }()
     
-    public func get()->[String:Any]{
+    func get()->[String:Any]{
         var env = [String:Any]()
         env["platform"] = "ios"
         env["screenWidth"] = screenWidth

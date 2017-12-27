@@ -16,9 +16,9 @@ extension JSValue {
     }
 }
 
-public class JSCoreBridge: NSObject {
+class JSCoreBridge: NSObject {
     
-    public static let instance:JSCoreBridge = {
+    static let instance:JSCoreBridge = {
         return JSCoreBridge()
     }()
     
@@ -87,12 +87,11 @@ public class JSCoreBridge: NSObject {
         
     }
     
-    public func executeJavascript(script:String) {
+    func executeJavascript(script:String) {
         self._jsContext.perform(#selector(self._jsContext.evaluateScript(_:)), on: self._thread!, with: script, waitUntilDone: false)
-//        self._jsContext.evaluateScript(script)
     }
     
-    public func callJsMethod(method:String,args:Array<Any>){
+    func callJsMethod(method:String,args:Array<Any>){
         perform(#selector(self._callJsMethod), on: self._thread!, with: ["method" :method, "args": args], waitUntilDone: false)
     }
     
@@ -101,20 +100,19 @@ public class JSCoreBridge: NSObject {
     }
     
     
-    public func getContext()->JSContext{
+    func getContext()->JSContext{
         return self._jsContext
     }
     
-    public func registerHanler(){
+    func registerHanler(){
 //        _jsContext.
     }
     
-    public func registerCallMethod<T>(method:T,script:String){
+    func registerCallMethod<T>(method:T,script:String){
         _jsContext.setObject(unsafeBitCast(method,to: AnyObject.self) , forKeyedSubscript: script as NSCopying & NSObjectProtocol)
     }
     
-    
-    public func callWithoutArguments(obj: JSValue) {
+    func callWithoutArguments(obj: JSValue) {
         obj.perform(#selector(obj.call), on: self._thread!, with: [], waitUntilDone: false)
     }
 }

@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class Utils: NSObject {
+class Utils: NSObject {
     
     class func any2CGFloat(obj: Any?) -> CGFloat? {
         return obj as? CGFloat
