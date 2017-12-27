@@ -17,47 +17,8 @@ protocol ViewProtocol {
     func updateView(dict:Dictionary<String,Any>)
 }
 
+// MARK: - Config
 extension UIView {
-    
-    // MARK: - Associate Object
-    
-    var instanceId: String? {
-        get {
-            guard let value = objc_getAssociatedObject(self, &instanceIdKey) as? String else {
-                return nil
-            }
-            return value
-        }
-        set(newValue) {
-            objc_setAssociatedObject(self, &instanceIdKey, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-        }
-    }
-    
-    var lifeCycleDict: Dictionary<String, JSValue>? {
-        get {
-            guard let value = objc_getAssociatedObject(self, &lifeCycleKey) as? Dictionary<String, JSValue> else {
-                return nil
-            }
-            return value
-        }
-        set(newValue) {
-            objc_setAssociatedObject(self, &lifeCycleKey, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-        }
-    }
-    
-    var events: Dictionary<String, Array<JSValue>>? {
-        get {
-            guard let value = objc_getAssociatedObject(self, &eventKey) as? Dictionary<String, Array<JSValue>> else {
-                return nil
-            }
-            return value
-        }
-        set(newValue) {
-            objc_setAssociatedObject(self, &eventKey, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-        }
-    }
-    
-    // MARK: - Config
     
     func config(dict:Dictionary<String,Any>){
         
@@ -95,8 +56,49 @@ extension UIView {
             addSubview(childView)
         }
     }
+}
+
+// MARK: - Associate Object
+extension UIView {
+    var instanceId: String? {
+        get {
+            guard let value = objc_getAssociatedObject(self, &instanceIdKey) as? String else {
+                return nil
+            }
+            return value
+        }
+        set(newValue) {
+            objc_setAssociatedObject(self, &instanceIdKey, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
     
-    // MARK: - tap gesture
+    var lifeCycleDict: Dictionary<String, JSValue>? {
+        get {
+            guard let value = objc_getAssociatedObject(self, &lifeCycleKey) as? Dictionary<String, JSValue> else {
+                return nil
+            }
+            return value
+        }
+        set(newValue) {
+            objc_setAssociatedObject(self, &lifeCycleKey, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
+    
+    var events: Dictionary<String, Array<JSValue>>? {
+        get {
+            guard let value = objc_getAssociatedObject(self, &eventKey) as? Dictionary<String, Array<JSValue>> else {
+                return nil
+            }
+            return value
+        }
+        set(newValue) {
+            objc_setAssociatedObject(self, &eventKey, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
+}
+
+// MARK: - Gesture
+extension UIView {
     
     func addTapGesture() {
         self.isUserInteractionEnabled = true
@@ -117,8 +119,10 @@ extension UIView {
             click.callWithoutArguments()
         }
     }
-    
-    // MARK: - registerEvent & unRegisterEvent
+}
+
+// MARK: - registerEvent & unRegisterEvent
+extension UIView {
     
     func registerEvent(_ event: String, callBack: JSValue) {
         if self.events == nil {

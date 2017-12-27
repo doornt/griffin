@@ -7,12 +7,43 @@
 //
 
 import Foundation
-
 import JavaScriptCore
 
 extension JSValue {
     func callWithoutArguments() {
         JSCoreBridge.instance.callWithoutArguments(obj: self)
+    }
+}
+
+extension JSCoreBridge {
+    
+    func executeJavascript(script:String) {
+        self._jsContext.perform(#selector(self._jsContext.evaluateScript(_:)), on: self._thread!, with: script, waitUntilDone: false)
+    }
+    
+    func callJsMethod(method:String,args:Array<Any>){
+        perform(#selector(self._callJsMethod), on: self._thread!, with: ["method" :method, "args": args], waitUntilDone: false)
+    }
+    
+    @objc private func _callJsMethod(dict:[String: Any]){
+        self._jsContext.globalObject.invokeMethod(Utils.any2String(obj: dict["method"]), withArguments: dict["args"] as! [Any])
+    }
+    
+    
+    func getContext()->JSContext{
+        return self._jsContext
+    }
+    
+    func registerHanler(){
+        //        _jsContext.
+    }
+    
+    func registerCallMethod<T>(method:T,script:String){
+        _jsContext.setObject(unsafeBitCast(method,to: AnyObject.self) , forKeyedSubscript: script as NSCopying & NSObjectProtocol)
+    }
+    
+    func callWithoutArguments(obj: JSValue) {
+        obj.perform(#selector(obj.call), on: self._thread!, with: [], waitUntilDone: false)
     }
 }
 
@@ -22,9 +53,8 @@ class JSCoreBridge: NSObject {
         return JSCoreBridge()
     }()
     
-    let _jsContext:JSContext = JSContext(virtualMachine: JSVirtualMachine())
-
-    var _thread: Thread?
+    private let _jsContext:JSContext = JSContext(virtualMachine: JSVirtualMachine())
+    private var _thread: Thread?
 
     private override init() {
         
@@ -37,7 +67,6 @@ class JSCoreBridge: NSObject {
 
         _thread = Thread.init(target: self, selector: #selector(self.run), object: nil)
         _thread?.name = "com.doornt.griffin"
-        
         _thread?.start()
     }
     
@@ -85,34 +114,5 @@ class JSCoreBridge: NSObject {
             print("\nJS ERROR: \(value) \(moreInfo)")
         }
         
-    }
-    
-    func executeJavascript(script:String) {
-        self._jsContext.perform(#selector(self._jsContext.evaluateScript(_:)), on: self._thread!, with: script, waitUntilDone: false)
-    }
-    
-    func callJsMethod(method:String,args:Array<Any>){
-        perform(#selector(self._callJsMethod), on: self._thread!, with: ["method" :method, "args": args], waitUntilDone: false)
-    }
-    
-    @objc private func _callJsMethod(dict:[String: Any]){
-        self._jsContext.globalObject.invokeMethod(Utils.any2String(obj: dict["method"]), withArguments: dict["args"] as! [Any])
-    }
-    
-    
-    func getContext()->JSContext{
-        return self._jsContext
-    }
-    
-    func registerHanler(){
-//        _jsContext.
-    }
-    
-    func registerCallMethod<T>(method:T,script:String){
-        _jsContext.setObject(unsafeBitCast(method,to: AnyObject.self) , forKeyedSubscript: script as NSCopying & NSObjectProtocol)
-    }
-    
-    func callWithoutArguments(obj: JSValue) {
-        obj.perform(#selector(obj.call), on: self._thread!, with: [], waitUntilDone: false)
     }
 }

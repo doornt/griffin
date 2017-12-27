@@ -9,29 +9,47 @@
 import UIKit
 import JavaScriptCore
 
-class RenderManager : NSObject{
+class RenderManager {
     
-    var _rootController:BaseViewController?
+    private var _rootController:BaseViewController?
     
-    var viewCollection: [String: UIView] = Dictionary()
+    private var viewCollection: [String: UIView] = Dictionary()
     
     static let instance:RenderManager = {
         return RenderManager()
     }()
     
-    private override init() {
-        super.init()
-    }
-    
     func setRootController(root:BaseViewController){
         self._rootController = root
     }
+}
+
+//MARK: - Elements Operations
+extension RenderManager {
+    func addSubView(_ parentId:String, childId: String){
+        guard let parentView = viewCollection[parentId],
+            let childView = viewCollection[childId] else {
+                return
+        }
+        parentView.addSubview(childView)
+    }
+    
+    func updateView(_ instanceId:String, data: Dictionary<String,Any>) {
+        guard let view = viewCollection[instanceId] else {
+            return
+        }
+        (view as? ViewProtocol )?.updateView(dict: data)
+    }
+}
+
+//MARK: - Create Element
+extension RenderManager {
     
     func createRootView(instanceId:String) -> Void {
         let rootview = View.init(frame: CGRect.init(x: 0, y: 0, width: Environment.instance.screenWidth, height: Environment.instance.screenHeight))
         rootview.instanceId = instanceId
         viewCollection[instanceId] = rootview
-    
+        
         self._rootController?.setRootView(rootview)
     }
     
@@ -52,23 +70,10 @@ class RenderManager : NSObject{
         imageview.instanceId = instanceId
         viewCollection[instanceId] = imageview
     }
-    
-    func addsubView(_ parentId:String, childId: String){
-        guard let parentView = viewCollection[parentId],
-            let childView = viewCollection[childId] else {
-                return
-        }
-        parentView.addSubview(childView)
-    }
-    
-    func updateView(_ instanceId:String, data: Dictionary<String,Any>) {
-        guard let view = viewCollection[instanceId] else {
-            return
-        }
-        (view as? ViewProtocol )?.updateView(dict: data)
-    }
+}
 
-    
+// MARK: - Event
+extension RenderManager {
     func registerEvent(_ instanceId:String, event: String, callBack: JSValue){
         guard let view = viewCollection[instanceId] else {
             return

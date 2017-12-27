@@ -9,20 +9,14 @@
 import UIKit
 
 
-class BaseViewController : UIViewController,UIGestureRecognizerDelegate{
+class BaseViewController : UIViewController {
     
-    var rootView: View?
-    var sourceUrl:URL?
+    private var rootView: View?
+    private var sourceUrl:URL?
     
     func setRootView(_ view: View) {
         self.rootView = view
         self.view.addSubview(self.rootView!)
-    }
-    
-    convenience init(url:URL?){
-        self.init(nibName:nil,bundle:nil)
-        
-        self.sourceUrl = url
     }
     
     private func renderWithUrl(){
@@ -37,8 +31,14 @@ class BaseViewController : UIViewController,UIGestureRecognizerDelegate{
             catch{
                 print(error.localizedDescription)
             }
-           
+            
         }
+    }
+    
+    convenience init(url:URL?){
+        self.init(nibName:nil,bundle:nil)
+        
+        self.sourceUrl = url
     }
     
     override func viewDidLoad() {
