@@ -28,8 +28,8 @@ extension UIView {
         let x:CGFloat = Utils.any2CGFloat(dict["left"]) ?? 0
         self.frame = CGRect(x: x, y: y, width: w, height: h)
         
-        if Utils.hexString2UIColor(Utils.any2String(dict["backgroundColor"])) != nil {
-            self.backgroundColor = Utils.hexString2UIColor(Utils.any2String(dict["backgroundColor"]))
+        if Utils.hexString2UIColor(Utils.any2String(dict["background-color"])) != nil {
+            self.backgroundColor = Utils.hexString2UIColor(Utils.any2String(dict["background-color"]))
         }
         
         self.clipsToBounds = Utils.any2Bool(dict["overflow"]) ?? false
