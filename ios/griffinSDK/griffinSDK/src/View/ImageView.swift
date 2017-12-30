@@ -23,13 +23,7 @@ class ImageView :UIImageView, ViewProtocol {
     func setup(_ dict:Dictionary<String,Any>) {
         
         config(dict)
-        
-        let url = URL.init(string: Utils.any2String(dict["url"]) ?? "" )
-        guard let rUrl = url,
-            let data = try? Data.init(contentsOf: rUrl)  else {
-                return
-        }
-        self.image = UIImage.init(data: data, scale: UIScreen.main.scale)
+        self.setGriffinImage(with: Utils.any2String(dict["url"]) ?? "")
         
         if self.layer.cornerRadius > 0 {
             self.layer.masksToBounds = true
