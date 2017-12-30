@@ -86,6 +86,7 @@ class LinkedMap {
             return nil
         }
         
+        let result = tail
         dic.removeValue(forKey: tail!.key)
         totalCost -= tail!.cost;
         totalCount -= 1;
@@ -100,7 +101,7 @@ class LinkedMap {
             tail = tail!.prev;
             tail!.next = nil;
         }
-        return tail;
+        return result;
     }
     
     func removeAll() {

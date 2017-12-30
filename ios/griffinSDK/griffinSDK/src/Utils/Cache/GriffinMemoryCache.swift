@@ -55,7 +55,7 @@ class GriffinMemoryCache {
         pthread_mutex_lock(&lock)
         let node = lru.dic[key]
         if node != nil {
-            node!.time = Date().timeIntervalSince1970
+            node!.time = CACurrentMediaTime()
             lru.bringNodeTo(head: node!)
         }
         pthread_mutex_unlock(&lock)
@@ -81,11 +81,13 @@ class GriffinMemoryCache {
         let node = lru.dic[key]
         
         if node != nil {
-            node!.time = Date().timeIntervalSince1970
+            node!.time = CACurrentMediaTime()
             node!.value = object
-            node!.cost = cost
-            lru.totalCount -= node!.cost
+            
             lru.totalCost += cost
+            lru.totalCount -= node!.cost
+            
+            node!.cost = cost
             
             lru.bringNodeTo(head: node!)
         } else {
@@ -93,7 +95,7 @@ class GriffinMemoryCache {
             linkedNode.value = object
             linkedNode.key = key
             linkedNode.cost = cost
-            linkedNode.time = Date().timeIntervalSince1970
+            linkedNode.time = CACurrentMediaTime()
             lru.insertNodeAt(head: linkedNode)
         }
         
@@ -112,6 +114,12 @@ class GriffinMemoryCache {
                         let _ = node?.cost
                     }
                 }
+            }
+        }
+        
+        if (lru.totalCost > costLimit) {
+            DispatchQueue.global(qos: .utility).async {
+                self.trimToCost(self.costLimit)
             }
         }
         pthread_mutex_unlock(&lock)
@@ -282,7 +290,7 @@ private extension GriffinMemoryCache {
     func _trimToAge(_ age: TimeInterval) {
         var finish = false
         
-        let now = Date().timeIntervalSince1970
+        let now = CACurrentMediaTime()
         
         pthread_mutex_lock(&lock)
         if age <= 0 {
@@ -301,7 +309,7 @@ private extension GriffinMemoryCache {
             
             if pthread_mutex_trylock(&lock) == 0 {
                 
-                if lru.tail != nil && (now - (lru.tail?.time)!) <= Double(age) {
+                if lru.tail != nil && (now - (lru.tail?.time)!) > Double(age) {
                     
                     let node = lru.removeTail()
                     if node != nil {
