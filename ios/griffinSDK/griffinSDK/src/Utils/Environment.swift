@@ -13,6 +13,14 @@ class Environment {
     let screenWidth  = UIScreen.main.bounds.size.width
     let screenHeight = UIScreen.main.bounds.size.height
     
+    lazy var homePath = {
+        return NSHomeDirectory()
+    }()
+    
+    lazy var cachePath = {
+       return NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first
+    }()
+    
     static let instance:Environment = {
         return Environment()
     }()
@@ -22,6 +30,8 @@ class Environment {
         env["platform"] = "iOS"
         env["screenWidth"] = screenWidth
         env["screenHeight"] = screenHeight
+        env["homePath"] = homePath
+        env["cachePath"] = cachePath
         return env
     }
 }
