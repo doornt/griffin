@@ -10,6 +10,10 @@ import UIKit
 
 class Utils {
     
+    class func any2Int(_ obj: Any?) -> Int? {
+        return obj as? Int
+    }
+    
     class func any2CGFloat(_ obj: Any?) -> CGFloat? {
         return obj as? CGFloat
     }

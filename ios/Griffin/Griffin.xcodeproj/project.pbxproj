@@ -15,8 +15,19 @@
 		3A0AC1221FD524DB003EDECB /* GriffinSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A0AC1211FD524DB003EDECB /* GriffinSDK.framework */; };
 		3A0AC1231FD524DB003EDECB /* GriffinSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3A0AC1211FD524DB003EDECB /* GriffinSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3A7286A41FDA713B00773C7C /* index.js in Resources */ = {isa = PBXBuildFile; fileRef = 3A7286A31FDA713B00773C7C /* index.js */; };
+		3A78FA951FF7911700BC6D26 /* GriffinTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A78FA941FF7911700BC6D26 /* GriffinTests.swift */; };
 		3AE705D01FF38DC600748063 /* bundle.js in Resources */ = {isa = PBXBuildFile; fileRef = 3AE705CF1FF38DC600748063 /* bundle.js */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		3A78FA971FF7911700BC6D26 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3A0AC0FE1FD523BB003EDECB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3A0AC1051FD523BB003EDECB;
+			remoteInfo = Griffin;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		3A0AC1241FD524DB003EDECB /* Embed Frameworks */ = {
@@ -42,6 +53,9 @@
 		3A0AC1151FD523BB003EDECB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3A0AC1211FD524DB003EDECB /* GriffinSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GriffinSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A7286A31FDA713B00773C7C /* index.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = index.js; sourceTree = "<group>"; };
+		3A78FA921FF7911700BC6D26 /* GriffinTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GriffinTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3A78FA941FF7911700BC6D26 /* GriffinTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GriffinTests.swift; sourceTree = "<group>"; };
+		3A78FA961FF7911700BC6D26 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3AE705CF1FF38DC600748063 /* bundle.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = bundle.js; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -54,6 +68,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		3A78FA8F1FF7911700BC6D26 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -62,6 +83,7 @@
 			children = (
 				3A0AC1211FD524DB003EDECB /* GriffinSDK.framework */,
 				3A0AC1081FD523BB003EDECB /* Griffin */,
+				3A78FA931FF7911700BC6D26 /* GriffinTests */,
 				3A0AC1071FD523BB003EDECB /* Products */,
 			);
 			sourceTree = "<group>";
@@ -70,6 +92,7 @@
 			isa = PBXGroup;
 			children = (
 				3A0AC1061FD523BB003EDECB /* Griffin.app */,
+				3A78FA921FF7911700BC6D26 /* GriffinTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -87,6 +110,15 @@
 				3A0AC1151FD523BB003EDECB /* Info.plist */,
 			);
 			path = Griffin;
+			sourceTree = "<group>";
+		};
+		3A78FA931FF7911700BC6D26 /* GriffinTests */ = {
+			isa = PBXGroup;
+			children = (
+				3A78FA941FF7911700BC6D26 /* GriffinTests.swift */,
+				3A78FA961FF7911700BC6D26 /* Info.plist */,
+			);
+			path = GriffinTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -110,19 +142,42 @@
 			productReference = 3A0AC1061FD523BB003EDECB /* Griffin.app */;
 			productType = "com.apple.product-type.application";
 		};
+		3A78FA911FF7911700BC6D26 /* GriffinTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3A78FA9B1FF7911700BC6D26 /* Build configuration list for PBXNativeTarget "GriffinTests" */;
+			buildPhases = (
+				3A78FA8E1FF7911700BC6D26 /* Sources */,
+				3A78FA8F1FF7911700BC6D26 /* Frameworks */,
+				3A78FA901FF7911700BC6D26 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3A78FA981FF7911700BC6D26 /* PBXTargetDependency */,
+			);
+			name = GriffinTests;
+			productName = GriffinTests;
+			productReference = 3A78FA921FF7911700BC6D26 /* GriffinTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		3A0AC0FE1FD523BB003EDECB /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0900;
+				LastSwiftUpdateCheck = 0920;
 				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = "裴韬";
 				TargetAttributes = {
 					3A0AC1051FD523BB003EDECB = {
 						CreatedOnToolsVersion = 9.0;
 						ProvisioningStyle = Manual;
+					};
+					3A78FA911FF7911700BC6D26 = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 3A0AC1051FD523BB003EDECB;
 					};
 				};
 			};
@@ -140,6 +195,7 @@
 			projectRoot = "";
 			targets = (
 				3A0AC1051FD523BB003EDECB /* Griffin */,
+				3A78FA911FF7911700BC6D26 /* GriffinTests */,
 			);
 		};
 /* End PBXProject section */
@@ -157,6 +213,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		3A78FA901FF7911700BC6D26 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -169,7 +232,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		3A78FA8E1FF7911700BC6D26 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3A78FA951FF7911700BC6D26 /* GriffinTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		3A78FA981FF7911700BC6D26 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3A0AC1051FD523BB003EDECB /* Griffin */;
+			targetProxy = 3A78FA971FF7911700BC6D26 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		3A0AC10D1FD523BB003EDECB /* Main.storyboard */ = {
@@ -332,6 +411,40 @@
 			};
 			name = Release;
 		};
+		3A78FA991FF7911700BC6D26 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = W7PLND39DC;
+				INFOPLIST_FILE = GriffinTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.dornt.com.GriffinTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Griffin.app/Griffin";
+			};
+			name = Debug;
+		};
+		3A78FA9A1FF7911700BC6D26 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = W7PLND39DC;
+				INFOPLIST_FILE = GriffinTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.dornt.com.GriffinTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Griffin.app/Griffin";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -349,6 +462,15 @@
 			buildConfigurations = (
 				3A0AC1191FD523BB003EDECB /* Debug */,
 				3A0AC11A1FD523BB003EDECB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3A78FA9B1FF7911700BC6D26 /* Build configuration list for PBXNativeTarget "GriffinTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3A78FA991FF7911700BC6D26 /* Debug */,
+				3A78FA9A1FF7911700BC6D26 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
