@@ -73,7 +73,7 @@ class GriffinTests: XCTestCase {
         sleep(2)
         self.memCache?.setObject(20, for: 20)
         
-        self.memCache?.trimToAge(5) // 4s 前
+        self.memCache?.trimToAge(4) // 4s 前
         
         
         let name = Utils.any2String(memCache?.object(for: "username"))

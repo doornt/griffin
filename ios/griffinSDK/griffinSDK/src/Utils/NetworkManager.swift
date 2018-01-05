@@ -34,7 +34,7 @@ class NetworkManager {
         
         let task = URLSession.shared.dataTask(with: mutableReq as URLRequest) { (data, response, error) in
             
-            if error != nil {
+            if let error = error {
                 completionHandler?(nil, error)
                 return
             }
@@ -56,7 +56,7 @@ class NetworkManager {
     }
 }
 
-extension NetworkManager {
+private extension NetworkManager {
     
     func getStringFromat(with params: [String: String]?) -> String {
         guard let params = params else {

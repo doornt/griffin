@@ -13,6 +13,9 @@ extension JSValue {
     func callWithoutArguments() {
         JSCoreBridge.instance.callWith(obj: self)
     }
+    func callWithArguments(_ arguments: Any?) {
+        JSCoreBridge.instance.callWith(obj: self, agruments: arguments)
+    }
 }
 
 extension JSCoreBridge {
@@ -48,6 +51,9 @@ extension JSCoreBridge {
     
     func callWith(obj: JSValue) {
         obj.perform(#selector(obj.call), on: self._thread!, with: [], waitUntilDone: false)
+    }
+    func callWith(obj: JSValue, agruments: Any?) {
+        obj.perform(#selector(obj.call), on: self._thread!, with: [agruments], waitUntilDone: false)
     }
 }
 

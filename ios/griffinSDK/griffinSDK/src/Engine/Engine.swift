@@ -73,6 +73,16 @@ public class Engine {
             RenderManager.instance.unRegister(event: event, instanceId: instanceId, callBack: callBack)
         }
     }
+    
+    private let fetch:@convention(block)(String, [String: String], JSValue)-> Void = {
+        url, params, callback in
+        DispatchQueue.main.async {
+            NetworkManager.instance.get(url: url, params: params) {
+                (data, error) in
+                callback.callWithArguments(data)
+            }
+        }
+    }
 }
 
 // MARK: - RegisterNativeMethods
@@ -92,5 +102,8 @@ private extension Engine {
         // MARK: Event
         JSCoreBridge.instance.register(method: registerEvent, script: "registerEvent")
         JSCoreBridge.instance.register(method: unRegisterEvent, script: "unRegisterEvent")
+        
+        // MARK: Network
+        JSCoreBridge.instance.register(method: fetch, script: "fetch")
     }
 }
