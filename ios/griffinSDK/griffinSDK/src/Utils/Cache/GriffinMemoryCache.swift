@@ -193,7 +193,7 @@ private extension GriffinMemoryCache {
         if count == 0 {
             lru.removeAll()
             finish = true
-        } else if count < lru.totalCount {
+        } else if count >= lru.totalCount {
             finish = true
         }
         pthread_mutex_unlock(&lock)
@@ -206,7 +206,7 @@ private extension GriffinMemoryCache {
             
             if pthread_mutex_trylock(&lock) == 0 {
                 
-                if count > lru.totalCount {
+                if count < lru.totalCount {
                     
                     let node = lru.removeTail()
                     if node != nil {
@@ -239,7 +239,7 @@ private extension GriffinMemoryCache {
         if cost == 0 {
             lru.removeAll()
             finish = true
-        } else if cost < lru.totalCost {
+        } else if cost >= lru.totalCost {
             finish = true
         }
         pthread_mutex_unlock(&lock)
@@ -252,7 +252,7 @@ private extension GriffinMemoryCache {
             
             if pthread_mutex_trylock(&lock) == 0 {
                 
-                if cost > lru.totalCost {
+                if cost < lru.totalCost {
                     
                     let node = lru.removeTail()
                     if node != nil {

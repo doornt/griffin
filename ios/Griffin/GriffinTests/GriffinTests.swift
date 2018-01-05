@@ -44,6 +44,16 @@ class GriffinTests: XCTestCase {
         XCTAssert(age == nil)
     }
     
+    func testTrimToCount(){
+        
+        memCache?.trimToCount(1)
+        
+        let name = memCache?.object(for: "username")
+        XCTAssert(name == nil)
+        let age = Utils.any2Int(memCache?.object(for: "age"))
+        XCTAssert(age == 18)
+    }
+    
     func testPerformanceExample() {
         // This is an example of a performance test case.
         self.measure {
