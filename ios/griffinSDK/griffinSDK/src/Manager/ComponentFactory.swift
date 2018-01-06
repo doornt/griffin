@@ -12,7 +12,7 @@ class ComponentFactory {
     static let instance = ComponentFactory()
     
     private let lock = NSLock()
-    private var componentConfigs = [String: String]()
+    var componentConfigs = [String: String]()
     
     private init() {}
     

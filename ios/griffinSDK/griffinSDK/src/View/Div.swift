@@ -20,6 +20,6 @@ class DivView : ViewComponent {
     }
     
     override func loadView() -> UIView {
-        return _divView
+        return self._divView
     }
 }

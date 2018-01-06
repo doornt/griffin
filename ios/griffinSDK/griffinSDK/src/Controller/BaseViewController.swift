@@ -21,10 +21,10 @@ enum ViewControllerLifeCycle: String {
 
 class BaseViewController : UIViewController {
     
-    private var rootView: View?
+    private var rootView: UIView?
     private var sourceUrl:URL?
     
-    func setRootView(_ view: View) {
+    func setRootView(_ view: UIView) {
         self.rootView = view
         self.view.addSubview(self.rootView!)
     }

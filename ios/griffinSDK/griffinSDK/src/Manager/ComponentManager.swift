@@ -16,6 +16,17 @@ class ComponentManager {
     
     private var _indexDict = [String: ViewComponent]()
     
+    func createRootView(_ instanceId:String) -> Void {
+        let component = DivView.init(ref: instanceId, styles: ["background-color":"#FF0000",
+                                                               "height":Environment.instance.screenHeight,
+                                                               "width":Environment.instance.screenWidth,
+                                                               "top":0,
+                                                               "left":0])
+        _indexDict[instanceId] = component
+        
+        RenderManager.instance._rootController?.setRootView(component.loadView())
+    }
+    
     func addComponent(_ componentData:[String: Any], toSupercomponent superRef: String, atIndex index: NSInteger, appendingInTree: Bool) {
         
         guard let supercomponent = _indexDict[superRef] else {
@@ -42,7 +53,11 @@ class ComponentManager {
             return nil
         }
         
-        let clazz = NSClassFromString(type) as! ViewComponent.Type
+        guard let typeClassName = ComponentFactory.instance.componentConfigs[type] else {
+            return nil
+        }
+
+        let clazz = NSClassFromString("GriffinSDK.\(typeClassName)") as! ViewComponent.Type
         let viewComponent: ViewComponent =  clazz.init(ref: ref, styles: data)
         _indexDict[ref] = viewComponent
         return viewComponent
