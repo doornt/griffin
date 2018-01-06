@@ -18,23 +18,37 @@ class Label: ViewComponent {
         
     }()
     
+    private var _text: String = ""
+    private var _textColorString: String = "#333333"
+    
     required init(ref:String,styles:Dictionary<String,Any>) {
         super.init(ref: ref, styles: styles)
         
-        self._label.text = Utils.any2String(styles["text"])
-        
-        if Utils.hexString2UIColor(Utils.any2String(styles["textColor"])) != nil {
-            self._label.textColor = Utils.hexString2UIColor(Utils.any2String(styles["textColor"]))
-        }
-        
-        if self._label.layer.cornerRadius > 0 {
-            self._label.layer.masksToBounds = true
-        }
-        self._label.sizeToFit()
+        _text = Utils.any2String(styles["text"]) ?? ""
+        _textColorString = Utils.any2String(styles["textColor"]) ?? "#333333"
     }
     
     override func loadView() -> UIView {
         return self._label;
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        guard let label = self._view as? UILabel else {
+            return
+        }
+    
+        label.text = _text
+        
+        if Utils.hexString2UIColor(_textColorString) != nil {
+            label.textColor = Utils.hexString2UIColor(_textColorString)
+        }
+        
+        if label.layer.cornerRadius > 0 {
+            label.layer.masksToBounds = true
+        }
+        label.sizeToFit()
     }
     
 //    func update(_ dict: Dictionary<String, Any>) {

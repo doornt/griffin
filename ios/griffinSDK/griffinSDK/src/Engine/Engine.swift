@@ -21,21 +21,21 @@ public class Engine {
     // MARK: - Native Methods
     private let createRootView:@convention(block)(String)-> Void = {
         obj in
-        DispatchQueue.main.async {
+        ComponentManager.instance.performOnComponentThread {
             ComponentManager.instance.createRootView(obj)
         }
     }
     
     private let createElementBlock:@convention(block)(String, Dictionary<String,Any>) -> Void = {
         instanceId, obj in
-        DispatchQueue.main.async {
+        ComponentManager.instance.performOnComponentThread {
             ComponentManager.instance.createElement(instanceId, withData: obj)
         }
     }
     
     private let addSubview:@convention(block)(String, String)-> Void = {
         parentId, childId in
-        DispatchQueue.main.async {
+        ComponentManager.instance.performOnComponentThread {
             ComponentManager.instance.addElement(parentId, childId:childId)
         }
     }
@@ -92,11 +92,10 @@ private extension Engine {
     
     func registerNativeMethods() {
         
-        JSCoreBridge.instance.register(method: createElementBlock, script: "createElement")
-        
         // MARK: Create View
         JSCoreBridge.instance.register(method: createRootView, script: "createRootView")
-     
+        JSCoreBridge.instance.register(method: createElementBlock, script: "createElement")
+        
         // MARK: Operate View
         JSCoreBridge.instance.register(method: addSubview, script: "addSubview")
         JSCoreBridge.instance.register(method: updateSubview, script: "updateView")

@@ -11,22 +11,38 @@ import Foundation
 class ComponentFactory {
     static let instance = ComponentFactory()
     
-    private let lock = NSLock()
-    var componentConfigs = [String: AnyObject.Type]()
+    private let _lock = NSLock()
+    private var _componentConfigs = [String: AnyClass]()
     
     private init() {}
     
+    func component(withTag tag: String) -> AnyClass? {
+        
+        var componentType: AnyClass? = nil
+        
+        _lock.lock()
+        
+        componentType = _componentConfigs[tag] as? ViewComponent.Type
+        if componentType == nil {
+            print("\(tag) does not registered with any class")
+        }
+        
+        _lock.unlock()
+        
+        return componentType
+    }
+    
     func registerComponent(_ tag: String, withClass className:AnyClass) {
         
-        lock.lock()
+        _lock.lock()
         
-        let component = componentConfigs[tag]
+        let component = _componentConfigs[tag] as? ViewComponent.Type
         if component != nil {
             print("\(tag) has already been registered with class \(className)")
         }
         
-        componentConfigs[tag] = className
+        _componentConfigs[tag] = className
         
-        lock.unlock()
+        _lock.unlock()
     }
 }

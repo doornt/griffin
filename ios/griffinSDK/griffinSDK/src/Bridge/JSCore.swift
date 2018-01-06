@@ -86,16 +86,14 @@ class JSCoreBridge: NSObject {
         self.initJsFunctions()
 
         _thread = Thread.init(target: self, selector: #selector(self.run), object: nil)
-        _thread?.name = "com.doornt.griffin.bridge"
+        _thread?.name = JSBridgeThreadName
         _thread?.start()
     }
     
     @objc private func run() {
         RunLoop.current.add(Port.init(), forMode: RunLoopMode.defaultRunLoopMode)
-        
-        while !_stopRunning {
-            RunLoop.current.run()
-        }
+        while (!_stopRunning && RunLoop.current.run(mode: .defaultRunLoopMode, before: Date.distantFuture)){}
+
     }
     
     private func initEnvironment(){
