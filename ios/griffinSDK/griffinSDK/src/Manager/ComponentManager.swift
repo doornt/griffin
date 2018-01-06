@@ -7,11 +7,11 @@
 //
 
 import Foundation
+import JavaScriptCore
 
 class ComponentManager: NSObject {
     
     static let instance = ComponentManager()
-    
     
     private var _indexDict = [String: ViewComponent]()
     private let _stopRunning = false
@@ -19,6 +19,12 @@ class ComponentManager: NSObject {
     private var _componentThread: Thread?
     private var _uiTaskQueue = [()->Void]()
     private var _displayLink: CADisplayLink?
+    
+    private var _rootController:BaseViewController?
+    
+    func setRootController(root:BaseViewController){
+        self._rootController = root
+    }
     
     private override init() {
         super.init()
@@ -57,6 +63,13 @@ class ComponentManager: NSObject {
         }
     }
     
+    func _addUITask(_ block: @escaping () -> Void) {
+        _uiTaskQueue.append(block)
+    }
+}
+
+//MARK: - Elements Operations
+extension ComponentManager {
     func createRootView(_ instanceId:String) -> Void {
         let component = DivView.init(ref: instanceId, styles: ["background-color":"#FF0000",
                                                                "height":Environment.instance.screenHeight,
@@ -66,7 +79,7 @@ class ComponentManager: NSObject {
         _indexDict[instanceId] = component
         
         _addUITask {
-            RenderManager.instance._rootController?.setRootView(component.view)
+            self._rootController?.setRootView(component.view)
         }
     }
     
@@ -74,10 +87,20 @@ class ComponentManager: NSObject {
         let _ = _buildComponent(instanceId, withData:componentData)
     }
     
+    func updateElement(_ instanceId:String, data: Dictionary<String,Any>) {
+        guard let component = _indexDict[instanceId] else {
+            return
+        }
+        component.updateWithStyle(data["styles"] as![String:Any])
+        _addUITask {
+            component.refresh()
+        }
+    }
+    
     func addElement(_ parentId:String, childId: String){
         guard let superComponent = _indexDict[parentId],
-              let childComponent = _indexDict[childId] else {
-            return
+            let childComponent = _indexDict[childId] else {
+                return
         }
         _addUITask {
             superComponent.addChild(childComponent)
@@ -93,14 +116,10 @@ class ComponentManager: NSObject {
         guard let typeClass = ComponentFactory.instance.component(withTag:type) as? ViewComponent.Type else {
             return nil
         }
-
+        
         let viewComponent: ViewComponent =  typeClass.init(ref: instanceId, styles: data["styles"] as![String:Any])
         _indexDict[instanceId] = viewComponent
         return viewComponent
     }
-    
-    
-    func _addUITask(_ block: @escaping () -> Void) {
-        _uiTaskQueue.append(block)
-    }
 }
+

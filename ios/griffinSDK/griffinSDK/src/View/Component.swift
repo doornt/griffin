@@ -30,12 +30,16 @@ class ViewComponent {
     private var _cornerRadius: CGFloat = 0.0
     
     required init(ref:String,styles:Dictionary<String,Any>) {
+        _config(styles: styles)
+    }
+    
+    private func _config(styles:Dictionary<String,Any>) {
         let w:CGFloat = Utils.any2CGFloat(styles["width"]) ?? 0
         let h:CGFloat = Utils.any2CGFloat(styles["height"]) ?? 0
         let y:CGFloat = Utils.any2CGFloat(styles["top"]) ?? 0
         let x:CGFloat = Utils.any2CGFloat(styles["left"]) ?? 0
         _frame = CGRect(x: x, y: y, width: w, height: h)
-
+        
         _backgroundColor = Utils.any2String(styles["background-color"]) ?? "#000000"
         _isOverflow = Utils.any2Bool(styles["overflow"]) ?? false
         _alpha = Utils.any2CGFloat(styles["opacity"]) ?? 1.0
@@ -68,16 +72,22 @@ class ViewComponent {
         return v
     }
     
+    func refresh() {
+        setupView()
+    }
+    
+    func updateWithStyle(_ styles: Dictionary<String,Any>) {
+        _config(styles: styles)
+    }
+    
     func viewDidLoad() {}
     
     var children:[ViewComponent]{
         return self._children
     }
     
-    var view:UIView{
-        if self._view != nil {
-            return self._view!
-        }
+    private func setupView() {
+        
         self._view = loadView()
         
         self._view?.frame = _frame
@@ -88,7 +98,7 @@ class ViewComponent {
         
         self._view?.clipsToBounds = _isOverflow
         self._view?.alpha = _alpha
-    
+        
         self._view?.layer.borderWidth = _borderWidth
         
         if Utils.hexString2UIColor(_borderColor) != nil {
@@ -110,6 +120,14 @@ class ViewComponent {
         //            let childView: View = View(dict: realChild)
         //            view.addSubview(childView)
         //        }
+    }
+    
+    var view:UIView{
+        if self._view != nil {
+            return self._view!
+        }
+        setupView()
+        
         
         return self._view!
     }

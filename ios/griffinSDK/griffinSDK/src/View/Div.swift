@@ -26,4 +26,8 @@ class DivView : ViewComponent {
     override func viewDidLoad() {
         super.viewDidLoad()
     }
+    
+    override func updateWithStyle(_ styles: Dictionary<String, Any>) {
+        super.updateWithStyle(styles)
+    }
 }

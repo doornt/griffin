@@ -13,6 +13,6 @@ public class RootViewController : UINavigationController{
     public convenience init(url:URL?){
         let root = BaseViewController.init(url: url)
         self.init(rootViewController: root)
-        RenderManager.instance.setRootController(root: root)
+        ComponentManager.instance.setRootController(root: root)
     }
 }

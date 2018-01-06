@@ -24,6 +24,11 @@ class ImageView : ViewComponent {
         
         super.init(ref: ref, styles: styles)
 
+        _config(styles: styles)
+        
+    }
+    
+    func _config(styles:Dictionary<String,Any>) {
         _imageUrl =  Utils.any2String(styles["url"]) ?? ""
     }
     
@@ -45,8 +50,9 @@ class ImageView : ViewComponent {
         }
     }
     
-//    func update(_ dict: Dictionary<String, Any>) {
-//        setup(dict)
-//    }
+    override func updateWithStyle(_ styles: Dictionary<String, Any>) {
+        super.updateWithStyle(styles)
+        _config(styles: styles)
+    }
 
 }
