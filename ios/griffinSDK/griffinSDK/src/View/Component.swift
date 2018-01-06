@@ -12,12 +12,15 @@ class ViewComponent {
     
     lazy var _children: [ViewComponent] = []
     
+    var _parent:ViewComponent?
+    
     lazy var _viewLoaded = false
     
     var _view:UIView?
     
-    var _layout:LayoutNode?
+    var _layout:LayoutStyle?
     
+
     required init(ref:String,styles:Dictionary<String,Any>) {
         
         _config(styles)
@@ -62,6 +65,7 @@ class ViewComponent {
 //        }
     }
     
+    
     func addChild(_ child:ViewComponent){
         let superView = self.loadView()
         let subView = child.loadView()
@@ -86,12 +90,26 @@ class ViewComponent {
         return v
     }
     
-    var view: UIView{
+
+    var children:[ViewComponent]{
+        return self._children
+    }
+    
+    var view:UIView{
         if self._view != nil {
             return self._view!
         }
         self._view = loadView()
         return self._view!
+    }
+    
+    var parent:ViewComponent?{
+        get{
+            return self._parent
+        }
+        set{
+            self._parent = newValue
+        }
     }
     
 }

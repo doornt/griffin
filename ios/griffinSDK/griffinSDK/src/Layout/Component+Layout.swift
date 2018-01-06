@@ -11,11 +11,12 @@ import Foundation
 extension ViewComponent{
     
     
+    
     func initLayoutWithStyles(styles:Dictionary<String,Any>){
-//        self._layout = LayoutNode.init(styles: styles,owner: self)
+//        _layout = LayoutNode.init(styles: styles,owner: self)
     }
     
-    var layout: LayoutNode?{
+    var layout: LayoutStyle?{
         return self._layout
     }
 }
