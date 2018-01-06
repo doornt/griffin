@@ -26,46 +26,17 @@ public class Engine {
         }
     }
     
-    private let addElementBlock:@convention(block)(JSValue, JSValue, JSValue, JSValue, JSValue) -> Void = {
-        (instanceId, ref, element, index, ifCallback) in
-        
-        
+    private let createElementBlock:@convention(block)(String, Dictionary<String,Any>) -> Void = {
+        instanceId, obj in
         DispatchQueue.main.async {
-            
-            let instanceIdString = instanceId.toString()
-            let componentData = element.toDictionary()
-            let parentRef = ref.toString()
-            let insertIndex = index.toInt32()
-            
-            ComponentManager.instance.addComponent(componentData as! [String : Any], toSupercomponent: parentRef!, atIndex: NSInteger(insertIndex), appendingInTree: false)
+            ComponentManager.instance.createElement(instanceId, withData: obj)
         }
-        
     }
-    
-//    private let createView:@convention(block)(String, Dictionary<String,Any>)-> Void = {
-//        instanceId, obj in
-//        DispatchQueue.main.async {
-//            RenderManager.instance.createView(instanceId, obj: obj)
-//        }
-//    }
-//    
-//    private let createLabel:@convention(block)(String, Dictionary<String,Any>)-> Void = {
-//        instanceId, obj in
-//        DispatchQueue.main.async {
-//            RenderManager.instance.createLabel(instanceId, obj: obj)
-//        }
-//    }
-//    private let createImageView:@convention(block)(String, Dictionary<String,Any>)-> Void = {
-//        instanceId, obj in
-//        DispatchQueue.main.async {
-//            RenderManager.instance.createImageView(instanceId, obj:obj)
-//        }
-//    }
     
     private let addSubview:@convention(block)(String, String)-> Void = {
         parentId, childId in
         DispatchQueue.main.async {
-            RenderManager.instance.addSubView(parentId, childId:childId)
+            ComponentManager.instance.addElement(parentId, childId:childId)
         }
     }
     
@@ -110,25 +81,22 @@ private extension Engine {
     }
     
     func registerComponents() {
-        registerComponent("div", withClass: "DivView")
-        registerComponent("text", withClass: "Label")
-        registerComponent("img", withClass: "ImageView")
+        registerComponent("div", withClass: DivView.self)
+        registerComponent("text", withClass: Label.self)
+        registerComponent("img", withClass: ImageView.self)
     }
     
-    func registerComponent(_ tag: String, withClass className:String) {
+    func registerComponent(_ tag: String, withClass className: AnyClass) {
         ComponentFactory.instance.registerComponent(tag, withClass: className)
     }
     
     func registerNativeMethods() {
         
-        JSCoreBridge.instance.register(method: addElementBlock, script: "addElement")
+        JSCoreBridge.instance.register(method: createElementBlock, script: "createElement")
         
         // MARK: Create View
         JSCoreBridge.instance.register(method: createRootView, script: "createRootView")
-//        JSCoreBridge.instance.register(method: createView, script: "createView")
-//        JSCoreBridge.instance.register(method: createLabel, script: "createLabel")
-//        JSCoreBridge.instance.register(method: createImageView, script: "createImageView")
-        
+     
         // MARK: Operate View
         JSCoreBridge.instance.register(method: addSubview, script: "addSubview")
         JSCoreBridge.instance.register(method: updateSubview, script: "updateView")

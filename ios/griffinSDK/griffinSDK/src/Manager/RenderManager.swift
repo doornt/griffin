@@ -42,36 +42,6 @@ extension RenderManager {
     }
 }
 
-//MARK: - Create Element
-extension RenderManager {
-    
-//    func createRootView(_ instanceId:String) -> Void {
-//        let rootview = View.init(frame: CGRect.init(x: 0, y: 0, width: Environment.instance.screenWidth, height: Environment.instance.screenHeight))
-//        rootview.instanceId = instanceId
-//        viewCollection[instanceId] = rootview
-//        
-//        self._rootController?.setRootView(rootview)
-//    }
-    
-//    func createView(_ instanceId:String, obj:Dictionary<String,Any>) {
-//        let view = View.init(dict: obj)
-//        view.instanceId = instanceId
-//        viewCollection[instanceId] = view
-//    }
-//    
-//    func createLabel(_ instanceId:String, obj:Dictionary<String,Any>) {
-//        let label = Label.init(dict: obj)
-//        label.instanceId = instanceId
-//        viewCollection[instanceId] = label
-//    }
-//    
-//    func createImageView(_ instanceId:String, obj:Dictionary<String,Any>) {
-//        let imageview = ImageView.init(dict: obj)
-//        imageview.instanceId = instanceId
-//        viewCollection[instanceId] = imageview
-//    }
-}
-
 // MARK: - Event
 extension RenderManager {
     func register(event:String, instanceId:String,  callBack: JSValue){

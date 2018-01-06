@@ -27,39 +27,30 @@ class ComponentManager {
         RenderManager.instance._rootController?.setRootView(component.loadView())
     }
     
-    func addComponent(_ componentData:[String: Any], toSupercomponent superRef: String, atIndex index: NSInteger, appendingInTree: Bool) {
-        
-        guard let supercomponent = _indexDict[superRef] else {
-            return
-        }
-        
-        self._recursivelyAddComponent(componentData, toSupercomponent: supercomponent, atIndex: index, appendingInTree: appendingInTree)
+    func createElement(_ instanceId: String, withData componentData:[String: Any]) {
+        let _ = _buildComponent(instanceId, withData:componentData)
     }
     
-    func _recursivelyAddComponent(_ componentData:[String: Any], toSupercomponent: ViewComponent, atIndex index: NSInteger, appendingInTree: Bool) {
-        
-        let component = _buildComponentForData(componentData, supercomponent: toSupercomponent)
-        
-        guard let newComponent = component else {
+    func addElement(_ parentId:String, childId: String){
+        guard let superComponent = _indexDict[parentId],
+              let childComponent = _indexDict[childId] else {
             return
         }
-        toSupercomponent.addChild(newComponent)
+        superComponent.addChild(childComponent)
     }
     
-    func _buildComponentForData(_ data:[String: Any] ,supercomponent:ViewComponent) -> ViewComponent? {
+    func _buildComponent(_ instanceId: String, withData data:[String: Any]) -> ViewComponent? {
         
-        guard let ref = Utils.any2String(data["ref"]),
-              let type = Utils.any2String(data["type"]) else {
+        guard let type = Utils.any2String(data["type"]) else {
             return nil
         }
         
-        guard let typeClassName = ComponentFactory.instance.componentConfigs[type] else {
+        guard let typeClass = ComponentFactory.instance.componentConfigs[type] as? ViewComponent.Type else {
             return nil
         }
 
-        let clazz = NSClassFromString("GriffinSDK.\(typeClassName)") as! ViewComponent.Type
-        let viewComponent: ViewComponent =  clazz.init(ref: ref, styles: data)
-        _indexDict[ref] = viewComponent
+        let viewComponent: ViewComponent =  typeClass.init(ref: instanceId, styles: data)
+        _indexDict[instanceId] = viewComponent
         return viewComponent
     }
     

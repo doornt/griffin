@@ -52,14 +52,14 @@ class ViewComponent {
             subview.removeFromSuperview()
         }
         
-        for child in Utils.any2Array(dict["children"]) {
-            let rChild = child as? Dictionary<String, Any>
-            guard let realChild = rChild else {
-                continue
-            }
-            let childView: View = View(dict: realChild)
-            view.addSubview(childView)
-        }
+//        for child in Utils.any2Array(dict["children"]) {
+//            let rChild = child as? Dictionary<String, Any>
+//            guard let realChild = rChild else {
+//                continue
+//            }
+//            let childView: View = View(dict: realChild)
+//            view.addSubview(childView)
+//        }
     }
     
     func addChild(_ child:ViewComponent){

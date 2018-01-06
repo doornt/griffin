@@ -17,47 +17,6 @@ protocol ViewProtocol {
     func update(_ dict:Dictionary<String,Any>)
 }
 
-// MARK: - Config
-extension UIView {
-    
-    func config(_ dict:Dictionary<String,Any>){
-        
-        let w:CGFloat = Utils.any2CGFloat(dict["width"]) ?? 0
-        let h:CGFloat = Utils.any2CGFloat(dict["height"]) ?? 0
-        let y:CGFloat = Utils.any2CGFloat(dict["top"]) ?? 0
-        let x:CGFloat = Utils.any2CGFloat(dict["left"]) ?? 0
-        self.frame = CGRect(x: x, y: y, width: w, height: h)
-        
-        if Utils.hexString2UIColor(Utils.any2String(dict["background-color"])) != nil {
-            self.backgroundColor = Utils.hexString2UIColor(Utils.any2String(dict["background-color"]))
-        }
-        
-        self.clipsToBounds = Utils.any2Bool(dict["overflow"]) ?? false
-        self.alpha = Utils.any2CGFloat(dict["opacity"]) ?? 1.0
-        
-        self.layer.borderWidth = Utils.any2CGFloat(dict["borderWidth"]) ?? 0
-        
-        if Utils.hexString2UIColor(Utils.any2String(dict["borderColor"])) != nil {
-            self.layer.borderColor = Utils.hexString2UIColor(Utils.any2String(dict["borderColor"]))!.cgColor
-        }
-        
-        self.layer.cornerRadius = Utils.any2CGFloat(dict["cornerRadius"]) ?? 0
-        
-        for view in subviews {
-            view.removeFromSuperview()
-        }
-        
-        for child in Utils.any2Array(dict["children"]) {
-            let rChild = child as? Dictionary<String, Any>
-            guard let realChild = rChild else {
-                continue
-            }
-            let childView: View = View(dict: realChild)
-            addSubview(childView)
-        }
-    }
-}
-
 // MARK: - Associate Object
 extension UIView {
     var instanceId: String? {

@@ -12,11 +12,11 @@ class ComponentFactory {
     static let instance = ComponentFactory()
     
     private let lock = NSLock()
-    var componentConfigs = [String: String]()
+    var componentConfigs = [String: AnyObject.Type]()
     
     private init() {}
     
-    func registerComponent(_ tag: String, withClass className:String) {
+    func registerComponent(_ tag: String, withClass className:AnyClass) {
         
         lock.lock()
         
