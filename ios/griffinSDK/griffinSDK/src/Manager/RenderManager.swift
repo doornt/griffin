@@ -53,23 +53,23 @@ extension RenderManager {
         self._rootController?.setRootView(rootview)
     }
     
-    func createView(_ instanceId:String, obj:Dictionary<String,Any>) {
-        let view = View.init(dict: obj)
-        view.instanceId = instanceId
-        viewCollection[instanceId] = view
-    }
-    
-    func createLabel(_ instanceId:String, obj:Dictionary<String,Any>) {
-        let label = Label.init(dict: obj)
-        label.instanceId = instanceId
-        viewCollection[instanceId] = label
-    }
-    
-    func createImageView(_ instanceId:String, obj:Dictionary<String,Any>) {
-        let imageview = ImageView.init(dict: obj)
-        imageview.instanceId = instanceId
-        viewCollection[instanceId] = imageview
-    }
+//    func createView(_ instanceId:String, obj:Dictionary<String,Any>) {
+//        let view = View.init(dict: obj)
+//        view.instanceId = instanceId
+//        viewCollection[instanceId] = view
+//    }
+//    
+//    func createLabel(_ instanceId:String, obj:Dictionary<String,Any>) {
+//        let label = Label.init(dict: obj)
+//        label.instanceId = instanceId
+//        viewCollection[instanceId] = label
+//    }
+//    
+//    func createImageView(_ instanceId:String, obj:Dictionary<String,Any>) {
+//        let imageview = ImageView.init(dict: obj)
+//        imageview.instanceId = instanceId
+//        viewCollection[instanceId] = imageview
+//    }
 }
 
 // MARK: - Event

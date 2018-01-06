@@ -25,11 +25,19 @@ extension JSCoreBridge {
     }
     
     func executeJavascript(script:String) {
-        self._jsContext.perform(#selector(self._jsContext.evaluateScript(_:)), on: self._thread!, with: script, waitUntilDone: false)
+        if Thread.current === self._thread {
+            self._jsContext.evaluateScript(script)
+        } else {
+            self._jsContext.perform(#selector(self._jsContext.evaluateScript(_:)), on: self._thread!, with: script, waitUntilDone: false)
+        }
     }
     
     func callJs(method:String,args:Array<Any>){
-        perform(#selector(self._callJsMethod), on: self._thread!, with: ["method" :method, "args": args], waitUntilDone: false)
+        if Thread.current == self._thread {
+            self._callJsMethod(dict: ["method" :method, "args": args])
+        } else {
+            perform(#selector(self._callJsMethod), on: self._thread!, with: ["method" :method, "args": args], waitUntilDone: false)
+        }
     }
     
     @objc private func _callJsMethod(dict:[String: Any]){
@@ -66,6 +74,8 @@ class JSCoreBridge: NSObject {
     private let _jsContext:JSContext = JSContext(virtualMachine: JSVirtualMachine())
     private var _thread: Thread?
 
+    private let _stopRunning = false
+    
     private override init() {
         
         super.init()
@@ -76,13 +86,16 @@ class JSCoreBridge: NSObject {
         self.initJsFunctions()
 
         _thread = Thread.init(target: self, selector: #selector(self.run), object: nil)
-        _thread?.name = "com.doornt.griffin"
+        _thread?.name = "com.doornt.griffin.bridge"
         _thread?.start()
     }
     
     @objc private func run() {
         RunLoop.current.add(Port.init(), forMode: RunLoopMode.defaultRunLoopMode)
-        RunLoop.current.run()
+        
+        while !_stopRunning {
+            RunLoop.current.run()
+        }
     }
     
     private func initEnvironment(){

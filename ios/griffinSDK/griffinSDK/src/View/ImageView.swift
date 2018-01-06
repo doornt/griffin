@@ -8,25 +8,34 @@
 
 import UIKit
 
-class ImageView :UIImageView, ViewProtocol {
+class ImageView : ViewComponent {
     
-    func update(_ dict: Dictionary<String, Any>) {
-        setup(dict)
-    }
-    
-    convenience init(dict:Dictionary<String,Any>){
-        self.init()
-        self.isUserInteractionEnabled = false
-        setup(dict)
-    }
-    
-    func setup(_ dict:Dictionary<String,Any>) {
+    lazy var _imageView: UIImageView = {
         
-        config(dict)
-        self.setGriffinImage(with: Utils.any2String(dict["url"]) ?? "")
+        let imageview = UIImageView.init()
+        imageview.isUserInteractionEnabled = false
+        return UIImageView.init()
         
-        if self.layer.cornerRadius > 0 {
-            self.layer.masksToBounds = true
+    }()
+    
+    required init(ref:String,styles:Dictionary<String,Any>) {
+        
+        super.init(ref: ref, styles: styles)
+
+        self._imageView.setGriffinImage(with: Utils.any2String(styles["url"]) ?? "")
+        
+        if self._imageView.layer.cornerRadius > 0 {
+            self._imageView.layer.masksToBounds = true
         }
+
     }
+    
+    override func loadView() -> UIView {
+        return self._imageView;
+    }
+    
+//    func update(_ dict: Dictionary<String, Any>) {
+//        setup(dict)
+//    }
+
 }

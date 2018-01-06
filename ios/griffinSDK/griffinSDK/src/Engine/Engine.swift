@@ -15,7 +15,7 @@ public class Engine {
     }()
     
     public func initSDK(){
-        registerNativeMethods()
+        registerDefault()
     }
     
     // MARK: - Native Methods
@@ -26,25 +26,41 @@ public class Engine {
         }
     }
     
-    private let createView:@convention(block)(String, Dictionary<String,Any>)-> Void = {
-        instanceId, obj in
+    private let addElementBlock:@convention(block)(JSValue, JSValue, JSValue, JSValue, JSValue) -> Void = {
+        (instanceId, ref, element, index, ifCallback) in
+        
+        
         DispatchQueue.main.async {
-            RenderManager.instance.createView(instanceId, obj: obj)
+            
+            let instanceIdString = instanceId.toString()
+            let componentData = element.toDictionary()
+            let parentRef = ref.toString()
+            let insertIndex = index.toInt32()
+            
+            ComponentManager.instance.addComponent(componentData as! [String : Any], toSupercomponent: parentRef!, atIndex: NSInteger(insertIndex), appendingInTree: false)
         }
+        
     }
     
-    private let createLabel:@convention(block)(String, Dictionary<String,Any>)-> Void = {
-        instanceId, obj in
-        DispatchQueue.main.async {
-            RenderManager.instance.createLabel(instanceId, obj: obj)
-        }
-    }
-    private let createImageView:@convention(block)(String, Dictionary<String,Any>)-> Void = {
-        instanceId, obj in
-        DispatchQueue.main.async {
-            RenderManager.instance.createImageView(instanceId, obj:obj)
-        }
-    }
+//    private let createView:@convention(block)(String, Dictionary<String,Any>)-> Void = {
+//        instanceId, obj in
+//        DispatchQueue.main.async {
+//            RenderManager.instance.createView(instanceId, obj: obj)
+//        }
+//    }
+//    
+//    private let createLabel:@convention(block)(String, Dictionary<String,Any>)-> Void = {
+//        instanceId, obj in
+//        DispatchQueue.main.async {
+//            RenderManager.instance.createLabel(instanceId, obj: obj)
+//        }
+//    }
+//    private let createImageView:@convention(block)(String, Dictionary<String,Any>)-> Void = {
+//        instanceId, obj in
+//        DispatchQueue.main.async {
+//            RenderManager.instance.createImageView(instanceId, obj:obj)
+//        }
+//    }
     
     private let addSubview:@convention(block)(String, String)-> Void = {
         parentId, childId in
@@ -88,12 +104,30 @@ public class Engine {
 // MARK: - RegisterNativeMethods
 private extension Engine {
     
+    func registerDefault() {
+        registerComponents()
+        registerNativeMethods()
+    }
+    
+    func registerComponents() {
+        registerComponent("div", withClass: "DivView")
+        registerComponent("text", withClass: "Label")
+        registerComponent("img", withClass: "ImageView")
+    }
+    
+    func registerComponent(_ tag: String, withClass className:String) {
+        ComponentFactory.instance.registerComponent(tag, withClass: className)
+    }
+    
     func registerNativeMethods() {
+        
+        JSCoreBridge.instance.register(method: addElementBlock, script: "addElement")
+        
         // MARK: Create View
         JSCoreBridge.instance.register(method: createRootView, script: "createRootView")
-        JSCoreBridge.instance.register(method: createView, script: "createView")
-        JSCoreBridge.instance.register(method: createLabel, script: "createLabel")
-        JSCoreBridge.instance.register(method: createImageView, script: "createImageView")
+//        JSCoreBridge.instance.register(method: createView, script: "createView")
+//        JSCoreBridge.instance.register(method: createLabel, script: "createLabel")
+//        JSCoreBridge.instance.register(method: createImageView, script: "createImageView")
         
         // MARK: Operate View
         JSCoreBridge.instance.register(method: addSubview, script: "addSubview")
