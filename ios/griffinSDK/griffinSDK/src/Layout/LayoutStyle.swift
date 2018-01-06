@@ -21,6 +21,10 @@ struct LayoutFrame{
     var y:CGFloat = 0
     var width:CGFloat = 0
     var height:CGFloat = 0
+    
+    static func zero() ->LayoutFrame{
+        return LayoutFrame(x:0,y:0,width:0,height:0)
+    }
 
 }
 
@@ -86,11 +90,11 @@ class LayoutStyle{
         
         for child in self.children{
             if flex_direction == .column{
-                child._layout_frame.y += directionDistance + child.style_margin_top
+                child._layout_frame.y = directionDistance + child.style_margin_top
                 child._layout_frame.x = child.style_margin_left
                 directionDistance = child._layout_frame.y + child._layout_frame.height + child.style_margin_bottom
             }else{
-                child._layout_frame.x += directionDistance + child.style_margin_left
+                child._layout_frame.x = directionDistance + child.style_margin_left
                 child._layout_frame.y = self.style_margin_top
                 directionDistance = child._layout_frame.x +  child._layout_frame.width + child.style_margin_right
             }
