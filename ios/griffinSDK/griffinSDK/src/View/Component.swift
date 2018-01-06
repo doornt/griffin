@@ -12,15 +12,17 @@ class ViewComponent{
     
     lazy var _children:[ViewComponent] = []
     
+    var _parent:ViewComponent?
+    
     lazy var _viewLoaded = false
     
     var _view:UIView?
     
-    var _layout:LayoutNode?
+    var _layout:LayoutStyle?
     
     init(ref:String,styles:Dictionary<String,Any>) {
-        
     }
+    
     
     func addChild(_ child:ViewComponent){
         
@@ -43,12 +45,25 @@ class ViewComponent{
         return v
     }
     
+    var children:[ViewComponent]{
+        return self._children
+    }
+    
     var view:UIView{
         if self._view != nil {
             return self._view!
         }
         self._view = loadView()
         return self._view!
+    }
+    
+    var parent:ViewComponent?{
+        get{
+            return self._parent
+        }
+        set{
+            self._parent = newValue
+        }
     }
     
 }

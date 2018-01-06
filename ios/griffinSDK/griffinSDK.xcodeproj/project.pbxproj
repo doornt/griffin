@@ -28,8 +28,8 @@
 		DBC78B331FEBA0F0008EE450 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC78B321FEBA0F0008EE450 /* View.swift */; };
 		DBC78B371FF09A58008EE450 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC78B361FF09A58008EE450 /* Log.swift */; };
 		DBC78B3A1FFCA86C008EE450 /* Exports.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC78B391FFCA86C008EE450 /* Exports.swift */; };
-		DBC78B3C1FFCAC3B008EE450 /* Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC78B3B1FFCAC3B008EE450 /* Layout.swift */; };
-		DBC78B3E1FFF0D24008EE450 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC78B3D1FFF0D24008EE450 /* Node.swift */; };
+		DBC78B3C1FFCAC3B008EE450 /* Component+Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC78B3B1FFCAC3B008EE450 /* Component+Layout.swift */; };
+		DBC78B3E1FFF0D24008EE450 /* LayoutStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC78B3D1FFF0D24008EE450 /* LayoutStyle.swift */; };
 		DBC78B401FFF59EE008EE450 /* Component.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC78B3F1FFF59EE008EE450 /* Component.swift */; };
 		DBC78B421FFF5FDB008EE450 /* Div.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC78B411FFF5FDB008EE450 /* Div.swift */; };
 /* End PBXBuildFile section */
@@ -58,8 +58,8 @@
 		DBC78B321FEBA0F0008EE450 /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = View.swift; path = ../../../../GriffinSDK/GriffinSDK/src/View/View.swift; sourceTree = "<group>"; };
 		DBC78B361FF09A58008EE450 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Log.swift; path = ../../../../GriffinSDK/GriffinSDK/src/Utils/Log.swift; sourceTree = "<group>"; };
 		DBC78B391FFCA86C008EE450 /* Exports.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Exports.swift; path = ../../../../GriffinSDK/GriffinSDK/src/Layout/Exports.swift; sourceTree = "<group>"; };
-		DBC78B3B1FFCAC3B008EE450 /* Layout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Layout.swift; sourceTree = "<group>"; };
-		DBC78B3D1FFF0D24008EE450 /* Node.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
+		DBC78B3B1FFCAC3B008EE450 /* Component+Layout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Component+Layout.swift"; sourceTree = "<group>"; };
+		DBC78B3D1FFF0D24008EE450 /* LayoutStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutStyle.swift; sourceTree = "<group>"; };
 		DBC78B3F1FFF59EE008EE450 /* Component.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Component.swift; path = ../../../../GriffinSDK/GriffinSDK/src/View/Component.swift; sourceTree = "<group>"; };
 		DBC78B411FFF5FDB008EE450 /* Div.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Div.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -190,8 +190,8 @@
 			isa = PBXGroup;
 			children = (
 				DBC78B391FFCA86C008EE450 /* Exports.swift */,
-				DBC78B3B1FFCAC3B008EE450 /* Layout.swift */,
-				DBC78B3D1FFF0D24008EE450 /* Node.swift */,
+				DBC78B3B1FFCAC3B008EE450 /* Component+Layout.swift */,
+				DBC78B3D1FFF0D24008EE450 /* LayoutStyle.swift */,
 			);
 			path = Layout;
 			sourceTree = "<group>";
@@ -279,7 +279,7 @@
 				A30357EE1FF28A3900B2ABF4 /* ImageView.swift in Sources */,
 				A30357F01FF28C5700B2ABF4 /* UIView+Extension.swift in Sources */,
 				DBC78B2C1FEB87C3008EE450 /* RootViewController.swift in Sources */,
-				DBC78B3E1FFF0D24008EE450 /* Node.swift in Sources */,
+				DBC78B3E1FFF0D24008EE450 /* LayoutStyle.swift in Sources */,
 				DBC78B301FEB9490008EE450 /* Engine.swift in Sources */,
 				3ACB1D1B1FF5333B000A0031 /* GriffinImage.swift in Sources */,
 				DBC78B371FF09A58008EE450 /* Log.swift in Sources */,
@@ -288,7 +288,7 @@
 				A30357EC1FF289CB00B2ABF4 /* Label.swift in Sources */,
 				DBC78B3A1FFCA86C008EE450 /* Exports.swift in Sources */,
 				DBC78B2A1FEA6632008EE450 /* JSCore.swift in Sources */,
-				DBC78B3C1FFCAC3B008EE450 /* Layout.swift in Sources */,
+				DBC78B3C1FFCAC3B008EE450 /* Component+Layout.swift in Sources */,
 				3ACB1D251FF7780B000A0031 /* GriffinLinkedMap.swift in Sources */,
 				3ACB1D211FF6254E000A0031 /* GriffinMemoryCache.swift in Sources */,
 				3AE13ACA1FEDF1F6003CA485 /* Environment.swift in Sources */,
