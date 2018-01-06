@@ -13,10 +13,17 @@ extension ViewComponent{
     
     
     func initLayoutWithStyles(styles:Dictionary<String,Any>){
-//        _layout = LayoutNode.init(styles: styles,owner: self)
+        _layout = LayoutStyle.init(styles: styles,owner: self)
     }
     
-    var layout: LayoutStyle?{
-        return self._layout
+    var layout: LayoutStyle{
+        return self._layout!
+    }
+    
+    func layoutFinish(){
+        let view:UIView = self.loadView()
+        
+        view.frame = CGRect(x: layout._layout_frame.x, y: layout._layout_frame.y, width: layout._layout_frame.width, height: layout._layout_frame.height)
+        
     }
 }

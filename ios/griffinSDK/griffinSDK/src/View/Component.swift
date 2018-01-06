@@ -20,6 +20,8 @@ class ViewComponent {
     
     var _layout:LayoutStyle?
     
+    var ref:String
+    
 
     private var _frame = CGRect.zero
     private var _backgroundColor:String = "#000000"
@@ -30,11 +32,11 @@ class ViewComponent {
     private var _cornerRadius: CGFloat = 0.0
     
     required init(ref:String,styles:Dictionary<String,Any>) {
-        let w:CGFloat = Utils.any2CGFloat(styles["width"]) ?? 0
-        let h:CGFloat = Utils.any2CGFloat(styles["height"]) ?? 0
-        let y:CGFloat = Utils.any2CGFloat(styles["top"]) ?? 0
-        let x:CGFloat = Utils.any2CGFloat(styles["left"]) ?? 0
-        _frame = CGRect(x: x, y: y, width: w, height: h)
+//        let w:CGFloat = Utils.any2CGFloat(styles["width"]) ?? 0
+//        let h:CGFloat = Utils.any2CGFloat(styles["height"]) ?? 0
+//        let y:CGFloat = Utils.any2CGFloat(styles["top"]) ?? 0
+//        let x:CGFloat = Utils.any2CGFloat(styles["left"]) ?? 0
+//        _frame = CGRect(x: x, y: y, width: w, height: h)
 
         _backgroundColor = Utils.any2String(styles["background-color"]) ?? "#000000"
         _isOverflow = Utils.any2Bool(styles["overflow"]) ?? false
@@ -42,6 +44,10 @@ class ViewComponent {
         _borderWidth = Utils.any2CGFloat(styles["borderWidth"]) ?? 0.0
         _borderColor = Utils.any2String(styles["borderColor"]) ?? "#ffffff"
         _cornerRadius = Utils.any2CGFloat(styles["cornerRadius"]) ?? 0
+        self.ref = ref
+
+        self.initLayoutWithStyles(styles: styles)
+        
     }
     
     func addChild(_ child:ViewComponent){
@@ -49,6 +55,10 @@ class ViewComponent {
         let subView = child.view
         
         superView.addSubview(subView)
+        
+        child.parent = self
+        self._children.append(child)
+        self._layout?.update()
     }
     
     func addChildAt(_ child:ViewComponent,_ index:Int){
