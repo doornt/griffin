@@ -19,17 +19,6 @@ protocol ViewProtocol {
 
 // MARK: - Associate Object
 extension UIView {
-    var instanceId: String? {
-        get {
-            guard let value = objc_getAssociatedObject(self, &instanceIdKey) as? String else {
-                return nil
-            }
-            return value
-        }
-        set(newValue) {
-            objc_setAssociatedObject(self, &instanceIdKey, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-        }
-    }
     
     var lifeCycleDict: Dictionary<String, JSValue>? {
         get {

@@ -24,6 +24,10 @@ class Label: ViewComponent {
     required init(ref:String,styles:Dictionary<String,Any>) {
         super.init(ref: ref, styles: styles)
         
+        _config(styles: styles)
+    }
+    
+    private func _config(styles:Dictionary<String,Any>) {
         _text = Utils.any2String(styles["text"]) ?? ""
         _textColorString = Utils.any2String(styles["textColor"]) ?? "#333333"
     }
@@ -51,8 +55,10 @@ class Label: ViewComponent {
         label.sizeToFit()
     }
     
-//    func update(_ dict: Dictionary<String, Any>) {
-//        setup(dict)
-//    }
+
+    override func updateWithStyle(_ styles: Dictionary<String, Any>) {
+        super.updateWithStyle(styles)
+        _config(styles: styles)
+    }
 
 }

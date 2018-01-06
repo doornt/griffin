@@ -73,10 +73,13 @@ var DemoVC = {
 
 
 var DemoLabel = {
+    "type":"label",
+    "styles":{
 text:"hello world",
-        "type":"text",
+    
 top:100,
 left:10
+}
 }
 
 var DemoImageView = {
@@ -90,19 +93,22 @@ cornerRadius:20
 }
 
 var rootView = {
-    
-"background-color":"#FF0000",
-        "type":"div",
-height:300,
-width:300,
-top:70,
-left:0
+    "type":"div",
+        "styles":{
+    "background-color":"#FF0000",
+        
+    height:300,
+    width:300,
+    top:70,
+    left:0
+    }
 }
-
 var DemoLabel1 = {
-text:"hello w11orld",
-        "type":"text",
-top:200
+    "type":"label",
+    "styles":{
+        text:"hello w11orld",
+        top:200
+    }
 }
 
 createRootView("0")
@@ -112,8 +118,8 @@ createRootView("0")
 //    createLabel("22",DemoLabel)
 //}
 var label = createElement("2",DemoLabel)
-var view = createElement("1",rootView)
-var imageView = createElement("3",DemoImageView)
+//var view = createElement("1",rootView)
+//var imageView = createElement("3",DemoImageView)
 
 function func1() {
     var a = 100,b=200;
@@ -141,6 +147,8 @@ function dispatchEventToJs(id, event) {
     NativeLog(id, event["type"]);
     
 }
+
+setTimeout(func2, 57000000)
 
 registerEvent("2","click", func1)
 //unRegisterEvent("2","click", func1)

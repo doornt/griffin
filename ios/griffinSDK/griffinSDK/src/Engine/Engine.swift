@@ -40,10 +40,10 @@ public class Engine {
         }
     }
     
-    private let updateSubview:@convention(block)(String, Dictionary<String,Any>)-> Void = {
+    private let updateElement:@convention(block)(String, Dictionary<String,Any>)-> Void = {
         instanceId, data in
-        DispatchQueue.main.async {
-            RenderManager.instance.updateView(instanceId, data: data)
+        ComponentManager.instance.performOnComponentThread {
+            ComponentManager.instance.updateElement(instanceId, data: data)
         }
     }
     
@@ -98,7 +98,7 @@ private extension Engine {
         
         // MARK: Operate View
         JSCoreBridge.instance.register(method: addSubview, script: "addSubview")
-        JSCoreBridge.instance.register(method: updateSubview, script: "updateView")
+        JSCoreBridge.instance.register(method: updateElement, script: "updateView")
         
         // MARK: Event
         JSCoreBridge.instance.register(method: registerEvent, script: "registerEvent")
