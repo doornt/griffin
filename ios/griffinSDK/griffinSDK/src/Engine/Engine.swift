@@ -82,7 +82,7 @@ private extension Engine {
     
     func registerComponents() {
         registerComponent("div", withClass: DivView.self)
-        registerComponent("text", withClass: Label.self)
+        registerComponent("label", withClass: Label.self)
         registerComponent("img", withClass: ImageView.self)
     }
     
