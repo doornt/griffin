@@ -18,20 +18,31 @@ class ImageView : ViewComponent {
         
     }()
     
+    private var _imageUrl: String = ""
+    
     required init(ref:String,styles:Dictionary<String,Any>) {
         
         super.init(ref: ref, styles: styles)
 
-        self._imageView.setGriffinImage(with: Utils.any2String(styles["url"]) ?? "")
-        
-        if self._imageView.layer.cornerRadius > 0 {
-            self._imageView.layer.masksToBounds = true
-        }
-
+        _imageUrl =  Utils.any2String(styles["url"]) ?? ""
     }
     
     override func loadView() -> UIView {
         return self._imageView;
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        guard let imageView = self._view as? UIImageView else {
+            return
+        }
+        
+        imageView.setGriffinImage(with: _imageUrl)
+        
+        if imageView.layer.cornerRadius > 0 {
+            imageView.layer.masksToBounds = true
+        }
     }
     
 //    func update(_ dict: Dictionary<String, Any>) {

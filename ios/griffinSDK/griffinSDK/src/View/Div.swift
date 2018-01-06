@@ -22,4 +22,8 @@ class DivView : ViewComponent {
     override func loadView() -> UIView {
         return self._divView
     }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
 }
