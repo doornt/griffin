@@ -11,7 +11,7 @@ import JavaScriptCore
 
 class RenderManager {
     
-    private var _rootController:BaseViewController?
+    var _rootController:BaseViewController?
     
     private var viewCollection: [String: UIView] = Dictionary()
     
@@ -45,13 +45,13 @@ extension RenderManager {
 //MARK: - Create Element
 extension RenderManager {
     
-    func createRootView(_ instanceId:String) -> Void {
-        let rootview = View.init(frame: CGRect.init(x: 0, y: 0, width: Environment.instance.screenWidth, height: Environment.instance.screenHeight))
-        rootview.instanceId = instanceId
-        viewCollection[instanceId] = rootview
-        
-        self._rootController?.setRootView(rootview)
-    }
+//    func createRootView(_ instanceId:String) -> Void {
+//        let rootview = View.init(frame: CGRect.init(x: 0, y: 0, width: Environment.instance.screenWidth, height: Environment.instance.screenHeight))
+//        rootview.instanceId = instanceId
+//        viewCollection[instanceId] = rootview
+//        
+//        self._rootController?.setRootView(rootview)
+//    }
     
 //    func createView(_ instanceId:String, obj:Dictionary<String,Any>) {
 //        let view = View.init(dict: obj)

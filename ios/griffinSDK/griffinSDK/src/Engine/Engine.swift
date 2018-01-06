@@ -22,7 +22,7 @@ public class Engine {
     private let createRootView:@convention(block)(String)-> Void = {
         obj in
         DispatchQueue.main.async {
-            RenderManager.instance.createRootView(obj)
+            ComponentManager.instance.createRootView(obj)
         }
     }
     
