@@ -26,14 +26,6 @@ class RenderManager {
 
 //MARK: - Elements Operations
 extension RenderManager {
-    func addSubView(_ parentId:String, childId: String){
-        guard let parentView = viewCollection[parentId],
-            let childView = viewCollection[childId] else {
-                return
-        }
-        parentView.addSubview(childView)
-    }
-    
     func updateView(_ instanceId:String, data: Dictionary<String,Any>) {
         guard let view = viewCollection[instanceId] else {
             return

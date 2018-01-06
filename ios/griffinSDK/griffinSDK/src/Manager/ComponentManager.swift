@@ -94,7 +94,7 @@ class ComponentManager: NSObject {
             return nil
         }
 
-        let viewComponent: ViewComponent =  typeClass.init(ref: instanceId, styles: data)
+        let viewComponent: ViewComponent =  typeClass.init(ref: instanceId, styles: data["styles"] as![String:Any])
         _indexDict[instanceId] = viewComponent
         return viewComponent
     }
