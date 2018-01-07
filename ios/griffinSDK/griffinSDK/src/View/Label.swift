@@ -11,11 +11,9 @@ import UIKit
 class Label: ViewComponent {
     
     lazy var _label: UILabel = {
-        
         let label = UILabel.init()
         label.isUserInteractionEnabled = false
         return UILabel.init()
-        
     }()
     
     private var _text: String = ""
@@ -39,7 +37,7 @@ class Label: ViewComponent {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        guard let label = self._view as? UILabel else {
+        guard let label = self.view as? UILabel else {
             return
         }
     
@@ -54,7 +52,6 @@ class Label: ViewComponent {
         }
         label.sizeToFit()
     }
-    
 
     override func updateWithStyle(_ styles: Dictionary<String, Any>) {
         super.updateWithStyle(styles)

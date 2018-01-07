@@ -15,7 +15,6 @@ class DivView : ViewComponent {
     }()
 
     required init(ref:String,styles:Dictionary<String,Any>) {
-        
         super.init(ref: ref, styles: styles)
     }
     

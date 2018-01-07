@@ -11,7 +11,6 @@
 		3A6B22D420009EA300B04D97 /* ComponentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A6B22D320009EA300B04D97 /* ComponentManager.swift */; };
 		3A6C89F31FECB2850044C326 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A6C89F21FECB2850044C326 /* Utils.swift */; };
 		3A7A993A2000CA1900C5E20C /* Constent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7A99392000CA1900C5E20C /* Constent.swift */; };
-		3A7A995E20010B4800C5E20C /* RenderManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7A995D20010B4800C5E20C /* RenderManager.swift */; };
 		3ACB1D191FF5270C000A0031 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ACB1D181FF5270C000A0031 /* NetworkManager.swift */; };
 		3ACB1D1B1FF5333B000A0031 /* GriffinImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ACB1D1A1FF5333B000A0031 /* GriffinImage.swift */; };
 		3ACB1D1D1FF62203000A0031 /* GriffinCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ACB1D1C1FF62203000A0031 /* GriffinCache.swift */; };
@@ -21,7 +20,6 @@
 		3AE13ACA1FEDF1F6003CA485 /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE13AC91FEDF1F6003CA485 /* Environment.swift */; };
 		A30357EC1FF289CB00B2ABF4 /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = A30357EB1FF289CB00B2ABF4 /* Label.swift */; };
 		A30357EE1FF28A3900B2ABF4 /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A30357ED1FF28A3900B2ABF4 /* ImageView.swift */; };
-		A30357F01FF28C5700B2ABF4 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A30357EF1FF28C5700B2ABF4 /* UIView+Extension.swift */; };
 		DBA513AD1FD437DA007AEE1E /* GriffinSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = DBA513AB1FD437DA007AEE1E /* GriffinSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DBA513B41FD4388F007AEE1E /* sdk.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA513B31FD4388F007AEE1E /* sdk.swift */; };
 		DBA513B81FD43912007AEE1E /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA513B71FD43912007AEE1E /* BaseViewController.swift */; };
@@ -41,7 +39,6 @@
 		3A6B22D320009EA300B04D97 /* ComponentManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentManager.swift; sourceTree = "<group>"; };
 		3A6C89F21FECB2850044C326 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Utils.swift; path = griffinSDK/src/Utils/Utils.swift; sourceTree = SOURCE_ROOT; };
 		3A7A99392000CA1900C5E20C /* Constent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Constent.swift; path = griffinSDK/src/Utils/Constent.swift; sourceTree = SOURCE_ROOT; };
-		3A7A995D20010B4800C5E20C /* RenderManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RenderManager.swift; path = griffinSDK/src/Manager/RenderManager.swift; sourceTree = SOURCE_ROOT; };
 		3ACB1D181FF5270C000A0031 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		3ACB1D1A1FF5333B000A0031 /* GriffinImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GriffinImage.swift; sourceTree = "<group>"; };
 		3ACB1D1C1FF62203000A0031 /* GriffinCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GriffinCache.swift; sourceTree = "<group>"; };
@@ -51,7 +48,6 @@
 		3AE13AC91FEDF1F6003CA485 /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
 		A30357EB1FF289CB00B2ABF4 /* Label.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Label.swift; path = griffinSDK/src/View/Label.swift; sourceTree = SOURCE_ROOT; };
 		A30357ED1FF28A3900B2ABF4 /* ImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageView.swift; sourceTree = "<group>"; };
-		A30357EF1FF28C5700B2ABF4 /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		DBA513A81FD437DA007AEE1E /* GriffinSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GriffinSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBA513AB1FD437DA007AEE1E /* GriffinSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GriffinSDK.h; sourceTree = "<group>"; };
 		DBA513AC1FD437DA007AEE1E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -157,7 +153,6 @@
 		DBA513B91FDA7F76007AEE1E /* Manager */ = {
 			isa = PBXGroup;
 			children = (
-				3A7A995D20010B4800C5E20C /* RenderManager.swift */,
 				3A6B22D11FFFB8BC00B04D97 /* ComponentFactory.swift */,
 				3A6B22D320009EA300B04D97 /* ComponentManager.swift */,
 			);
@@ -183,7 +178,6 @@
 		DBC78B311FEBA0E0008EE450 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				A30357EF1FF28C5700B2ABF4 /* UIView+Extension.swift */,
 				A30357EB1FF289CB00B2ABF4 /* Label.swift */,
 				A30357ED1FF28A3900B2ABF4 /* ImageView.swift */,
 				DBC78B3F1FFF59EE008EE450 /* Component.swift */,
@@ -283,11 +277,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				A30357EE1FF28A3900B2ABF4 /* ImageView.swift in Sources */,
-				A30357F01FF28C5700B2ABF4 /* UIView+Extension.swift in Sources */,
 				DBC78B2C1FEB87C3008EE450 /* RootViewController.swift in Sources */,
 				DBC78B3E1FFF0D24008EE450 /* LayoutStyle.swift in Sources */,
 				DBC78B301FEB9490008EE450 /* Engine.swift in Sources */,
-				3A7A995E20010B4800C5E20C /* RenderManager.swift in Sources */,
 				3ACB1D1B1FF5333B000A0031 /* GriffinImage.swift in Sources */,
 				DBC78B371FF09A58008EE450 /* Log.swift in Sources */,
 				3ACB1D1D1FF62203000A0031 /* GriffinCache.swift in Sources */,

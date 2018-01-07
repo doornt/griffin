@@ -11,11 +11,9 @@ import UIKit
 class ImageView : ViewComponent {
     
     lazy var _imageView: UIImageView = {
-        
         let imageview = UIImageView.init()
         imageview.isUserInteractionEnabled = false
         return UIImageView.init()
-        
     }()
     
     private var _imageUrl: String = ""
@@ -39,7 +37,7 @@ class ImageView : ViewComponent {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        guard let imageView = self._view as? UIImageView else {
+        guard let imageView = self.view as? UIImageView else {
             return
         }
         
@@ -54,5 +52,4 @@ class ImageView : ViewComponent {
         super.updateWithStyle(styles)
         _config(styles: styles)
     }
-
 }

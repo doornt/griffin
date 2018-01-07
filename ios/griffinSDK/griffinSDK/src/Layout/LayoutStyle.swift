@@ -30,7 +30,7 @@ struct LayoutFrame{
 
 class LayoutStyle{
     
-    var _owner:ViewComponent
+    weak var _owner:ViewComponent?
     
     var isDirty:Bool = true
     
@@ -61,14 +61,14 @@ class LayoutStyle{
     
     var children: Array<LayoutStyle>{
         var arry:[LayoutStyle] = []
-        for child in self._owner.children{
+        for child in self._owner!.children{
             arry.append(child.layout)
         }
         return arry
     }
     
     var parent:LayoutStyle?{
-        return self._owner._parent?.layout
+        return self._owner?._parent?.layout
     }
     
     func update(){
@@ -78,7 +78,7 @@ class LayoutStyle{
         
         if needRefresh{
             self.beginLayout()
-            self._owner.layoutFinish()
+            self._owner?.layoutFinish()
         }
         
         

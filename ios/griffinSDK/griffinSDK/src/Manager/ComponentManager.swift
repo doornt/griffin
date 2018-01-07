@@ -13,7 +13,7 @@ class ComponentManager: NSObject {
     
     static let instance = ComponentManager()
     
-    private var _indexDict = [String: ViewComponent]()
+    private var _components = [String: ViewComponent]()
     private let _stopRunning = false
     
     private var _componentThread: Thread?
@@ -23,6 +23,7 @@ class ComponentManager: NSObject {
     private var _rootController:BaseViewController?
     
     func setRootController(root:BaseViewController){
+        Log.InfoLog("Init RootController \(root)")
         self._rootController = root
     }
     
@@ -70,13 +71,14 @@ class ComponentManager: NSObject {
 
 //MARK: - Elements Operations
 extension ComponentManager {
+    
     func createRootView(_ instanceId:String) -> Void {
-        let component = DivView.init(ref: instanceId, styles: ["background-color":"#FF0000",
+        let component = DivView.init(ref: instanceId, styles: ["background-color":"#FFFFFF",
                                                                "height":Environment.instance.screenHeight,
                                                                "width":Environment.instance.screenWidth,
                                                                "top":0,
                                                                "left":0])
-        _indexDict[instanceId] = component
+        _components[instanceId] = component
         
         _addUITask {
             self._rootController?.setRootView(component.view)
@@ -88,7 +90,7 @@ extension ComponentManager {
     }
     
     func updateElement(_ instanceId:String, data: Dictionary<String,Any>) {
-        guard let component = _indexDict[instanceId] else {
+        guard let component = _components[instanceId] else {
             return
         }
         component.updateWithStyle(data["styles"] as![String:Any])
@@ -98,8 +100,8 @@ extension ComponentManager {
     }
     
     func addElement(_ parentId:String, childId: String){
-        guard let superComponent = _indexDict[parentId],
-            let childComponent = _indexDict[childId] else {
+        guard let superComponent = _components[parentId],
+            let childComponent = _components[childId] else {
                 return
         }
         _addUITask {
@@ -118,8 +120,30 @@ extension ComponentManager {
         }
         
         let viewComponent: ViewComponent =  typeClass.init(ref: instanceId, styles: data["styles"] as![String:Any])
-        _indexDict[instanceId] = viewComponent
+        _components[instanceId] = viewComponent
         return viewComponent
+    }
+}
+
+extension ComponentManager {
+    func register(event:String, instanceId:String,  callBack: JSValue){
+        Log.InfoLog("register \(instanceId) for \(event), withCallBack: \(callBack)")
+        
+        guard let component = _components[instanceId] else {
+            return
+        }
+        
+        component.register(event: event, callBack: callBack)
+    }
+    
+    func unRegister(event: String, instanceId:String, callBack: JSValue){
+        Log.InfoLog("unRegister \(instanceId) for \(event), withCallBack: \(callBack)")
+        
+        guard let component = _components[instanceId] else {
+            return
+        }
+        
+        component.unRegister(event: event, callBack: callBack)
     }
 }
 

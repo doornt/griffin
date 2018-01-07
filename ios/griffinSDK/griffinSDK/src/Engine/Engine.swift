@@ -18,7 +18,7 @@ public class Engine {
         registerDefault()
     }
     
-    // MARK: - Native Methods
+    // MARK: - Component
     private let createRootView:@convention(block)(String)-> Void = {
         obj in
         ComponentManager.instance.performOnComponentThread {
@@ -47,20 +47,22 @@ public class Engine {
         }
     }
     
+    // MARK: - Event
     private let registerEvent:@convention(block)(String, String, JSValue)-> Void = {
         instanceId, event, callBack in
-        DispatchQueue.main.async {
-            RenderManager.instance.register(event: event, instanceId: instanceId, callBack: callBack)
+        ComponentManager.instance.performOnComponentThread {
+            ComponentManager.instance.register(event: event, instanceId: instanceId, callBack: callBack)
         }
     }
     
     private let unRegisterEvent:@convention(block)(String, String, JSValue)-> Void = {
         instanceId, event, callBack in
-        DispatchQueue.main.async {
-            RenderManager.instance.unRegister(event: event, instanceId: instanceId, callBack: callBack)
+        ComponentManager.instance.performOnComponentThread {
+            ComponentManager.instance.unRegister(event: event, instanceId: instanceId, callBack: callBack)
         }
     }
     
+    // MARK: - Network
     private let fetch:@convention(block)(String, [String: String], JSValue)-> Void = {
         url, params, callback in
         DispatchQueue.main.async {
@@ -72,7 +74,7 @@ public class Engine {
     }
 }
 
-// MARK: - RegisterNativeMethods
+// MARK: - Register
 private extension Engine {
     
     func registerDefault() {
@@ -80,6 +82,7 @@ private extension Engine {
         registerNativeMethods()
     }
     
+    // MARK: - Register Component
     func registerComponents() {
         registerComponent("div", withClass: DivView.self)
         registerComponent("label", withClass: Label.self)
@@ -90,6 +93,7 @@ private extension Engine {
         ComponentFactory.instance.registerComponent(tag, withClass: className)
     }
     
+    // MARK: - Register Methods
     func registerNativeMethods() {
         
         // MARK: Create View

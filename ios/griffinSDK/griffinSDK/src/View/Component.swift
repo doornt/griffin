@@ -7,22 +7,23 @@
 //
 
 import Foundation
+import JavaScriptCore
 
 class ViewComponent {
     
-    lazy var _children: [ViewComponent] = []
+    lazy private var _children: [ViewComponent] = []
     
     var _parent:ViewComponent?
     
-    lazy var _viewLoaded = false
+    private lazy var _viewLoaded = false
     
-    var _view:UIView?
+    private var _view:UIView?
     
     var _layout:LayoutStyle?
     
-    var ref:String
+    private var ref:String
+    private var _events:Dictionary<String, Array<JSValue>> = Dictionary<String, Array<JSValue>>()
     
-
     private var _frame = CGRect.zero
     private var _backgroundColor:String = "#000000"
     private var _isOverflow:Bool = false
@@ -32,17 +33,17 @@ class ViewComponent {
     private var _cornerRadius: CGFloat = 0.0
     
     required init(ref:String,styles:Dictionary<String,Any>) {
+        Log.InfoLog("ref:\(ref); styles: \(styles)")
+        
         self.ref = ref
         _config(styles: styles)
     }
     
+    func updateWithStyle(_ styles: Dictionary<String,Any>) {
+        _config(styles: styles)
+    }
+    
     private func _config(styles:Dictionary<String,Any>) {
-//        let w:CGFloat = Utils.any2CGFloat(styles["width"]) ?? 0
-//        let h:CGFloat = Utils.any2CGFloat(styles["height"]) ?? 0
-//        let y:CGFloat = Utils.any2CGFloat(styles["top"]) ?? 0
-//        let x:CGFloat = Utils.any2CGFloat(styles["left"]) ?? 0
-//        _frame = CGRect(x: x, y: y, width: w, height: h)
-
         _backgroundColor = Utils.any2String(styles["background-color"]) ?? "#000000"
         _isOverflow = Utils.any2Bool(styles["overflow"]) ?? false
         _alpha = Utils.any2CGFloat(styles["opacity"]) ?? 1.0
@@ -50,32 +51,7 @@ class ViewComponent {
         _borderColor = Utils.any2String(styles["borderColor"]) ?? "#ffffff"
         _cornerRadius = Utils.any2CGFloat(styles["cornerRadius"]) ?? 0
         
-
         self.initLayoutWithStyles(styles: styles)
-        
-    }
-    
-    func addChild(_ child:ViewComponent){
-        let superView = self.view
-        let subView = child.view
-        
-        superView.addSubview(subView)
-        
-        child.parent = self
-        self._children.append(child)
-        self._layout?.update()
-    }
-    
-    func addChildAt(_ child:ViewComponent,_ index:Int){
-        
-    }
-    
-    func removeChild(_ child:ViewComponent){
-        
-    }
-    
-    func removeChildren(){
-        
     }
     
     func loadView() -> UIView{
@@ -87,15 +63,7 @@ class ViewComponent {
         setupView()
     }
     
-    func updateWithStyle(_ styles: Dictionary<String,Any>) {
-        _config(styles: styles)
-    }
-    
     func viewDidLoad() {}
-    
-    var children:[ViewComponent]{
-        return self._children
-    }
     
     private func setupView() {
         
@@ -119,27 +87,47 @@ class ViewComponent {
         self._view?.layer.cornerRadius = _cornerRadius
         
         self.viewDidLoad()
-        //        for subview in view.subviews {
-        //            subview.removeFromSuperview()
-        //        }
+    }
+}
+
+// MARK: - Component Operation
+extension ViewComponent {
+    func addChild(_ child:ViewComponent){
+        let superView = self.view
+        let subView = child.view
         
-        //        for child in Utils.any2Array(dict["children"]) {
-        //            let rChild = child as? Dictionary<String, Any>
-        //            guard let realChild = rChild else {
-        //                continue
-        //            }
-        //            let childView: View = View(dict: realChild)
-        //            view.addSubview(childView)
-        //        }
+        superView.addSubview(subView)
+        
+        child.parent = self
+        self._children.append(child)
+        self._layout?.update()
     }
     
-    var view:UIView{
+    func addChildAt(_ child:ViewComponent,_ index:Int){
+        
+    }
+    
+    func removeChild(_ child:ViewComponent){
+        
+    }
+    
+    func removeChildren(){
+        
+    }
+}
+
+// MARK: - Caluate Property
+
+extension ViewComponent {
+    var children:[ViewComponent]{
+        return self._children
+    }
+    
+    var view: UIView {
         if self._view != nil {
             return self._view!
         }
         setupView()
-        
-        
         return self._view!
     }
     
@@ -151,5 +139,64 @@ class ViewComponent {
             self._parent = newValue
         }
     }
+}
+
+extension ViewComponent {
+    func register(event: String, callBack: JSValue) {
+        Log.InfoLog("register \(event), withCallBack: \(callBack)")
+        
+        if self._events[event] == nil {
+            var array: [JSValue] = Array()
+            array.append(callBack)
+            self._events[event] = array
+        } else {
+            var array = self._events[event]
+            array?.append(callBack)
+        }
+        
+        if event == "click" {
+            addTapGesture()
+        }
+    }
     
+    func unRegister(event: String, callBack: JSValue) {
+        Log.InfoLog("unRegister \(event), withCallBack: \(callBack)")
+        
+        guard let eventArr = self._events[event] else {
+            return
+        }
+        self._events[event] = eventArr.filter { $0 != callBack }
+        
+        if event == "click" {
+            removeTapGesuture()
+        }
+    }
+}
+
+// MARK: - Gesture
+extension ViewComponent {
+    
+    func addTapGesture() {
+        DispatchQueue.main.async {
+            self.view.isUserInteractionEnabled = true
+            // add tap gensture
+            let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
+            self.view.addGestureRecognizer(tap)
+        }
+    }
+    
+    func removeTapGesuture() {
+        DispatchQueue.main.async {
+            self.view.isUserInteractionEnabled = false
+        }
+    }
+    
+    @objc func handleTap(_ sender: UITapGestureRecognizer) {
+        guard let clicks = self._events["click"] else {
+            return
+        }
+        for click in clicks {
+            click.callWithoutArguments()
+        }
+    }
 }
