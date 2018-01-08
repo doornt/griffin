@@ -40,7 +40,7 @@ class ComponentManager: NSObject {
     }
     
     @objc private func _handleDisplayLink(){
-        assert(Thread.current == self._componentThread, "_handleDisplayLink should be called in _componentThread")
+//        assert(Thread.current == self._componentThread, "_handleDisplayLink should be called in _componentThread")
         _layoutAndSyncUI()
     }
     

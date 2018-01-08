@@ -133,7 +133,7 @@ extension ViewComponent {
     }
     
     var view: UIView {
-        assert(Thread.current != Thread.main, "get view must be called in main thread")
+//        assert(Thread.current == Thread.main, "get view must be called in main thread")
         if self._view != nil {
             return self._view!
         }
