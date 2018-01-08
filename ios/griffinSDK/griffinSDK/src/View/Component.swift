@@ -33,7 +33,7 @@ class ViewComponent {
     private var _cornerRadius: CGFloat = 0.0
     
     required init(ref:String,styles:Dictionary<String,Any>) {
-        Log.InfoLog("ref:\(ref); styles: \(styles)")
+        Log.LogInfo("ref:\(ref); styles: \(styles)")
         
         self.ref = ref
         _config(styles: styles)
@@ -60,16 +60,18 @@ class ViewComponent {
     }
     
     func refresh() {
+        assert(Thread.current == Thread.main, "refresh must be called in main thread")
         setupView()
     }
     
     func viewDidLoad() {}
     
     private func setupView() {
+        assert(Thread.current == Thread.main, "setupView must be called in main thread")
         
         self._view = loadView()
         
-        self._view?.frame = _frame
+        self._layout?.update()
         
         if Utils.hexString2UIColor(_backgroundColor) != nil {
             self._view?.backgroundColor = Utils.hexString2UIColor(_backgroundColor)
@@ -93,6 +95,9 @@ class ViewComponent {
 // MARK: - Component Operation
 extension ViewComponent {
     func addChild(_ child:ViewComponent){
+        
+        assert(Thread.current == Thread.main, "addChild must be called in main thread")
+        
         let superView = self.view
         let subView = child.view
         
@@ -114,6 +119,10 @@ extension ViewComponent {
     func removeChildren(){
         
     }
+    
+    func needsLayout() -> Bool {
+        return true
+    }
 }
 
 // MARK: - Caluate Property
@@ -124,6 +133,7 @@ extension ViewComponent {
     }
     
     var view: UIView {
+//        assert(Thread.current == Thread.main, "get view must be called in main thread")
         if self._view != nil {
             return self._view!
         }
@@ -141,9 +151,10 @@ extension ViewComponent {
     }
 }
 
+// MARK: -Register Event
 extension ViewComponent {
     func register(event: String, callBack: JSValue) {
-        Log.InfoLog("register \(event), withCallBack: \(callBack)")
+        Log.LogInfo("register \(event), withCallBack: \(callBack)")
         
         if self._events[event] == nil {
             var array: [JSValue] = Array()
@@ -160,7 +171,7 @@ extension ViewComponent {
     }
     
     func unRegister(event: String, callBack: JSValue) {
-        Log.InfoLog("unRegister \(event), withCallBack: \(callBack)")
+        Log.LogInfo("unRegister \(event), withCallBack: \(callBack)")
         
         guard let eventArr = self._events[event] else {
             return

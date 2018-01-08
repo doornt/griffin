@@ -25,7 +25,7 @@ class BaseViewController : UIViewController {
     private var sourceUrl:URL?
     
     func setRootView(_ view: UIView) {
-        Log.InfoLog("Init rootview \(view)")
+        Log.LogInfo("Init rootview \(view)")
         self.rootView = view
         self.view.addSubview(self.rootView!)
     }

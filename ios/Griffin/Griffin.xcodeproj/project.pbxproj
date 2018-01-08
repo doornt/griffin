@@ -7,15 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0E63C48CF1CC56F5EF7E11B9 /* Pods_Griffin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8D54C86F7BEC2A53D99EFC6 /* Pods_Griffin.framework */; };
 		3A0AC10A1FD523BB003EDECB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A0AC1091FD523BB003EDECB /* AppDelegate.swift */; };
 		3A0AC10C1FD523BB003EDECB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A0AC10B1FD523BB003EDECB /* ViewController.swift */; };
 		3A0AC10F1FD523BB003EDECB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A0AC10D1FD523BB003EDECB /* Main.storyboard */; };
 		3A0AC1111FD523BB003EDECB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3A0AC1101FD523BB003EDECB /* Assets.xcassets */; };
 		3A0AC1141FD523BB003EDECB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A0AC1121FD523BB003EDECB /* LaunchScreen.storyboard */; };
-		3A0AC1221FD524DB003EDECB /* GriffinSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A0AC1211FD524DB003EDECB /* GriffinSDK.framework */; };
-		3A0AC1231FD524DB003EDECB /* GriffinSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3A0AC1211FD524DB003EDECB /* GriffinSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3A7286A41FDA713B00773C7C /* index.js in Resources */ = {isa = PBXBuildFile; fileRef = 3A7286A31FDA713B00773C7C /* index.js */; };
 		3A78FA951FF7911700BC6D26 /* GriffinTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A78FA941FF7911700BC6D26 /* GriffinTests.swift */; };
+		3A7A995F2003179500C5E20C /* GriffinSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A7A99602003179500C5E20C /* GriffinSDK.framework */; };
 		3AE705D01FF38DC600748063 /* bundle.js in Resources */ = {isa = PBXBuildFile; fileRef = 3AE705CF1FF38DC600748063 /* bundle.js */; };
 /* End PBXBuildFile section */
 
@@ -36,7 +36,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				3A0AC1231FD524DB003EDECB /* GriffinSDK.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -51,12 +50,15 @@
 		3A0AC1101FD523BB003EDECB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3A0AC1131FD523BB003EDECB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3A0AC1151FD523BB003EDECB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		3A0AC1211FD524DB003EDECB /* GriffinSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GriffinSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A7286A31FDA713B00773C7C /* index.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = index.js; sourceTree = "<group>"; };
 		3A78FA921FF7911700BC6D26 /* GriffinTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GriffinTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A78FA941FF7911700BC6D26 /* GriffinTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GriffinTests.swift; sourceTree = "<group>"; };
 		3A78FA961FF7911700BC6D26 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3A7A99602003179500C5E20C /* GriffinSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GriffinSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AE705CF1FF38DC600748063 /* bundle.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = bundle.js; sourceTree = "<group>"; };
+		863DF30B77FC4DFBEF221F70 /* Pods-Griffin.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Griffin.release.xcconfig"; path = "Pods/Target Support Files/Pods-Griffin/Pods-Griffin.release.xcconfig"; sourceTree = "<group>"; };
+		88BEFB263BE86EEFC7948E15 /* Pods-Griffin.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Griffin.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Griffin/Pods-Griffin.debug.xcconfig"; sourceTree = "<group>"; };
+		B8D54C86F7BEC2A53D99EFC6 /* Pods_Griffin.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Griffin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,7 +66,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3A0AC1221FD524DB003EDECB /* GriffinSDK.framework in Frameworks */,
+				3A7A995F2003179500C5E20C /* GriffinSDK.framework in Frameworks */,
+				0E63C48CF1CC56F5EF7E11B9 /* Pods_Griffin.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,13 +81,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		196D1385772945AC5D82F1E8 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				88BEFB263BE86EEFC7948E15 /* Pods-Griffin.debug.xcconfig */,
+				863DF30B77FC4DFBEF221F70 /* Pods-Griffin.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		3A0AC0FD1FD523BB003EDECB = {
 			isa = PBXGroup;
 			children = (
-				3A0AC1211FD524DB003EDECB /* GriffinSDK.framework */,
 				3A0AC1081FD523BB003EDECB /* Griffin */,
 				3A78FA931FF7911700BC6D26 /* GriffinTests */,
 				3A0AC1071FD523BB003EDECB /* Products */,
+				196D1385772945AC5D82F1E8 /* Pods */,
+				5FBEF81460B6470D8F39D825 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -121,6 +134,15 @@
 			path = GriffinTests;
 			sourceTree = "<group>";
 		};
+		5FBEF81460B6470D8F39D825 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3A7A99602003179500C5E20C /* GriffinSDK.framework */,
+				B8D54C86F7BEC2A53D99EFC6 /* Pods_Griffin.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -128,10 +150,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3A0AC1181FD523BB003EDECB /* Build configuration list for PBXNativeTarget "Griffin" */;
 			buildPhases = (
+				AA0DFF3C7E65C08FCB92865B /* [CP] Check Pods Manifest.lock */,
 				3A0AC1021FD523BB003EDECB /* Sources */,
 				3A0AC1031FD523BB003EDECB /* Frameworks */,
 				3A0AC1041FD523BB003EDECB /* Resources */,
 				3A0AC1241FD524DB003EDECB /* Embed Frameworks */,
+				9C4C72A213495D68379EF873 /* [CP] Embed Pods Frameworks */,
+				490C17E235BC7D7EB3A7B693 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -172,7 +197,7 @@
 				TargetAttributes = {
 					3A0AC1051FD523BB003EDECB = {
 						CreatedOnToolsVersion = 9.0;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 					};
 					3A78FA911FF7911700BC6D26 = {
 						CreatedOnToolsVersion = 9.2;
@@ -221,6 +246,62 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		490C17E235BC7D7EB3A7B693 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Griffin/Pods-Griffin-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9C4C72A213495D68379EF873 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Griffin/Pods-Griffin-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Yoga/yoga.framework",
+				"${BUILT_PRODUCTS_DIR}/YogaKit/YogaKit.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/yoga.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YogaKit.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Griffin/Pods-Griffin-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AA0DFF3C7E65C08FCB92865B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Griffin-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		3A0AC1021FD523BB003EDECB /* Sources */ = {
@@ -379,11 +460,12 @@
 		};
 		3A0AC1191FD523BB003EDECB /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 88BEFB263BE86EEFC7948E15 /* Pods-Griffin.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = TC77MBA7RR;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Griffin/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -397,11 +479,12 @@
 		};
 		3A0AC11A1FD523BB003EDECB /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 863DF30B77FC4DFBEF221F70 /* Pods-Griffin.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = TC77MBA7RR;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Griffin/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
