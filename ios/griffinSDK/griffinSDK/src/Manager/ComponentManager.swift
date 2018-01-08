@@ -19,11 +19,12 @@ class ComponentManager: NSObject {
     private var _componentThread: Thread?
     private var _uiTaskQueue = [()->Void]()
     private var _displayLink: CADisplayLink?
+    private var _noTaskTickCount = 0
     
     private var _rootController:BaseViewController?
     
     func setRootController(root:BaseViewController){
-        Log.InfoLog("Init RootController \(root)")
+        Log.LogInfo("Init RootController \(root)")
         self._rootController = root
     }
     
@@ -39,14 +40,8 @@ class ComponentManager: NSObject {
     }
     
     @objc private func _handleDisplayLink(){
-        let blocks = _uiTaskQueue
-        _uiTaskQueue = [()->Void]()
-        
-        DispatchQueue.main.async {
-            for item in blocks {
-                item()
-            }
-        }
+        assert(Thread.current == self._componentThread, "_handleDisplayLink should be called in _componentThread")
+        _layoutAndSyncUI()
     }
     
     @objc private func _run() {
@@ -67,6 +62,97 @@ class ComponentManager: NSObject {
     func _addUITask(_ block: @escaping () -> Void) {
         _uiTaskQueue.append(block)
     }
+    
+    func startComponentTasks() {
+        _awakeDisplayLink()
+    }
+    
+    func _layoutAndSyncUI() {
+        
+        _layout()
+        if(_uiTaskQueue.count > 0){
+            _syncUITasks()
+            _noTaskTickCount = 0
+        } else {
+            // suspend display link when there's no task for 1 second, in order to save CPU time.
+            _noTaskTickCount += 1
+            if (_noTaskTickCount > 60) {
+                _suspendDisplayLink()
+            }
+        }
+    }
+    
+    func _layout() {
+        var needsLayout = false
+        for (_, value) in _components {
+            if value.needsLayout() {
+                needsLayout = true
+                break
+            }
+        }
+        
+        if (!needsLayout) {
+            return;
+        }
+        
+//        layoutNode(_rootCSSNode, _rootCSSNode->style.dimensions[CSS_WIDTH], _rootCSSNode->style.dimensions[CSS_HEIGHT], CSS_DIRECTION_INHERIT);
+//
+//        if ([_rootComponent needsLayout]) {
+//            if ([WXLog logLevel] >= WXLogLevelDebug) {
+//                print_css_node(_rootCSSNode, CSS_PRINT_LAYOUT | CSS_PRINT_STYLE | CSS_PRINT_CHILDREN);
+//            }
+//        }
+        
+//        NSMutableSet<WXComponent *> *dirtyComponents = [NSMutableSet set];
+//        [_rootComponent _calculateFrameWithSuperAbsolutePosition:CGPointZero gatherDirtyComponents:dirtyComponents];
+//        [self _calculateRootFrame];
+//
+//        for (WXComponent *dirtyComponent in dirtyComponents) {
+//            [self _addUITask:^{
+//                [dirtyComponent _layoutDidFinish];
+//                }];
+//        }
+    }
+    
+    func _syncUITasks() {
+        let blocks = _uiTaskQueue
+        _uiTaskQueue = [()->Void]()
+        
+        DispatchQueue.main.async {
+            for item in blocks {
+                item()
+            }
+        }
+    }
+}
+
+extension ComponentManager {
+    
+    func _awakeDisplayLink() {
+        
+        assert(Thread.current == self._componentThread, "_awakeDisplayLink should be called in _componentThread")
+        
+        if (_displayLink != nil && _displayLink?.isPaused == true) {
+            _displayLink?.isPaused = false
+        }
+    }
+    
+    func _stopDisplayLink() {
+        assert(Thread.current == self._componentThread, "_stopDisplayLink should be called in _componentThread")
+        
+        if _displayLink != nil {
+            _displayLink?.invalidate()
+            _displayLink = nil
+        }
+    }
+    
+    func _suspendDisplayLink() {
+        assert(Thread.current == self._componentThread, "_suspendDisplayLink should be called in _componentThread")
+    
+        if (_displayLink != nil && _displayLink?.isPaused == false) {
+            _displayLink?.isPaused = true
+        }
+    }
 }
 
 //MARK: - Elements Operations
@@ -86,6 +172,7 @@ extension ComponentManager {
     }
     
     func createElement(_ instanceId: String, withData componentData:[String: Any]) {
+        Log.LogInfo("instanceID:\(instanceId) data: \(componentData)")
         let _ = _buildComponent(instanceId, withData:componentData)
     }
     
@@ -112,10 +199,12 @@ extension ComponentManager {
     func _buildComponent(_ instanceId: String, withData data:[String: Any]) -> ViewComponent? {
         
         guard let type = Utils.any2String(data["type"]) else {
+            Log.LogError("type cannot be nil")
             return nil
         }
         
         guard let typeClass = ComponentFactory.instance.component(withTag:type) as? ViewComponent.Type else {
+            Log.LogError("cannot get class for \(type)")
             return nil
         }
         
@@ -126,10 +215,12 @@ extension ComponentManager {
 }
 
 extension ComponentManager {
+    
     func register(event:String, instanceId:String,  callBack: JSValue){
-        Log.InfoLog("register \(instanceId) for \(event), withCallBack: \(callBack)")
+        Log.LogInfo("register \(instanceId) for \(event), withCallBack: \(callBack)")
         
         guard let component = _components[instanceId] else {
+            Log.LogError("register failed! Cannot find instance \(instanceId)")
             return
         }
         
@@ -137,12 +228,12 @@ extension ComponentManager {
     }
     
     func unRegister(event: String, instanceId:String, callBack: JSValue){
-        Log.InfoLog("unRegister \(instanceId) for \(event), withCallBack: \(callBack)")
+        Log.LogInfo("unRegister \(instanceId) for \(event), withCallBack: \(callBack)")
         
         guard let component = _components[instanceId] else {
+            Log.LogError("unRegister failed! Cannot find instance \(instanceId)")
             return
         }
-        
         component.unRegister(event: event, callBack: callBack)
     }
 }

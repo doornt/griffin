@@ -23,20 +23,18 @@ class Log {
         self.log(level: "info", fileName: fileName, line: line, message: message)
     }
     
-    static func InfoLog<T>(_ message:T, file:String = #file, function:String = #function,
+    static func LogInfo<T>(_ message:T, file:String = #file, function:String = #function,
                   line:Int = #line) {
         Log(level: "info", file: file, line: line, function: function, message: message)
     }
     
-    static func WarningLog<T>(_ message:T, file:String = #file, function:String = #function,
+    static func LogWarning<T>(_ message:T, file:String = #file, function:String = #function,
                            line:Int = #line) {
         Log(level: "warning", file: file, line: line, function: function, message: message)
     }
     
-    static func ErrorLog<T>(_ message:T, file:String = #file, function:String = #function,
+    static func LogError<T>(_ message:T, file:String = #file, function:String = #function,
                            line:Int = #line) {
         Log(level: "error", file: file, line: line, function: function, message: message)
     }
 }
-
-

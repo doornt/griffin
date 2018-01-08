@@ -24,7 +24,7 @@ class ComponentFactory {
         
         componentType = _componentConfigs[tag] as? ViewComponent.Type
         if componentType == nil {
-            Log.ErrorLog("\(tag) does not registered with any class")
+            Log.LogError("\(tag) does not registered with any class")
         }
         
         _lock.unlock()
@@ -38,10 +38,10 @@ class ComponentFactory {
         
         let component = _componentConfigs[tag] as? ViewComponent.Type
         if component != nil {
-            Log.WarningLog("\(tag) has already been registered with class \(className)")
+            Log.LogWarning("\(tag) has already been registered with class \(className)")
         }
         
-        Log.InfoLog("\(tag) has been registered with class \(className) successfully")
+        Log.LogInfo("\(tag) has been registered with class \(className) successfully")
         
         _componentConfigs[tag] = className
         
