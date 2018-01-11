@@ -7,11 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A36387B9200790C0009FA82F /* GriffinSDK-Bridging-Header.h in Headers */ = {isa = PBXBuildFile; fileRef = A36387B8200790C0009FA82F /* GriffinSDK-Bridging-Header.h */; };
 		DB2FFE30200712DC001C4908 /* JSCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2FFDFC200712DC001C4908 /* JSCore.swift */; };
 		DB2FFE31200712DC001C4908 /* LayoutStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2FFDFE200712DC001C4908 /* LayoutStyle.swift */; };
 		DB2FFE32200712DC001C4908 /* Component+Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2FFDFF200712DC001C4908 /* Component+Layout.swift */; };
 		DB2FFE33200712DC001C4908 /* Exports.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2FFE00200712DC001C4908 /* Exports.swift */; };
-		DB2FFE34200712DC001C4908 /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = DB2FFE01200712DC001C4908 /* .gitkeep */; };
 		DB2FFE35200712DC001C4908 /* GriffinImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2FFE03200712DC001C4908 /* GriffinImage.swift */; };
 		DB2FFE36200712DD001C4908 /* GriffinMemoryCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2FFE05200712DC001C4908 /* GriffinMemoryCache.swift */; };
 		DB2FFE37200712DD001C4908 /* GriffinLinkedMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2FFE06200712DC001C4908 /* GriffinLinkedMap.swift */; };
@@ -48,12 +48,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A36387B8200790C0009FA82F /* GriffinSDK-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GriffinSDK-Bridging-Header.h"; sourceTree = "<group>"; };
 		DB2FFDD12007126E001C4908 /* GriffinSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GriffinSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB2FFDFC200712DC001C4908 /* JSCore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSCore.swift; sourceTree = "<group>"; };
 		DB2FFDFE200712DC001C4908 /* LayoutStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutStyle.swift; sourceTree = "<group>"; };
 		DB2FFDFF200712DC001C4908 /* Component+Layout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Component+Layout.swift"; sourceTree = "<group>"; };
 		DB2FFE00200712DC001C4908 /* Exports.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Exports.swift; sourceTree = "<group>"; };
-		DB2FFE01200712DC001C4908 /* .gitkeep */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		DB2FFE03200712DC001C4908 /* GriffinImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GriffinImage.swift; sourceTree = "<group>"; };
 		DB2FFE05200712DC001C4908 /* GriffinMemoryCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GriffinMemoryCache.swift; sourceTree = "<group>"; };
 		DB2FFE06200712DC001C4908 /* GriffinLinkedMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GriffinLinkedMap.swift; sourceTree = "<group>"; };
@@ -128,11 +128,11 @@
 		DB2FFDE1200712DC001C4908 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				A36387B8200790C0009FA82F /* GriffinSDK-Bridging-Header.h */,
 				DB2FFE4B2007159C001C4908 /* Yoga */,
 				DB2FFE562007159C001C4908 /* YogaKit */,
 				DB2FFDFB200712DC001C4908 /* Bridge */,
 				DB2FFDFD200712DC001C4908 /* Layout */,
-				DB2FFE01200712DC001C4908 /* .gitkeep */,
 				DB2FFE02200712DC001C4908 /* Utils */,
 				DB2FFE0E200712DC001C4908 /* Controller */,
 				DB2FFE11200712DC001C4908 /* Manager */,
@@ -266,6 +266,7 @@
 			files = (
 				DB2FFE642007159C001C4908 /* YGNodeList.h in Headers */,
 				DB2FFE602007159C001C4908 /* YGEnums.h in Headers */,
+				A36387B9200790C0009FA82F /* GriffinSDK-Bridging-Header.h in Headers */,
 				DB2FFE6B2007159C001C4908 /* YGLayout.h in Headers */,
 				DB2FFE632007159C001C4908 /* Yoga.h in Headers */,
 				DB2FFE6D2007159C001C4908 /* UIView+Yoga.h in Headers */,
@@ -332,7 +333,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DB2FFE34200712DC001C4908 /* .gitkeep in Resources */,
 				DB2FFE48200712DD001C4908 /* .gitkeep in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -509,6 +509,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.doornt.GriffinSDK;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "GriffinSDK/Classes/GriffinSDK-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -531,6 +532,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.doornt.GriffinSDK;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "GriffinSDK/Classes/GriffinSDK-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

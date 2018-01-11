@@ -18,7 +18,7 @@ class ComponentManager: NSObject {
     
     private var _componentThread: Thread?
     private var _uiTaskQueue = [()->Void]()
-//    private var _displayLink: CADisplayLink?
+    private var _displayLink: CADisplayLink?
     private var _noTaskTickCount = 0
     
     private var _rootController:BaseViewController?
@@ -35,8 +35,8 @@ class ComponentManager: NSObject {
         _componentThread?.name = ComponentThreadName
         _componentThread?.start()
         
-//        _displayLink = CADisplayLink.init(target: self, selector: #selector(self._handleDisplayLink))
-//        _displayLink?.add(to: RunLoop.current, forMode: .defaultRunLoopMode)
+        _displayLink = CADisplayLink.init(target: self, selector: #selector(self._handleDisplayLink))
+        _displayLink?.add(to: RunLoop.current, forMode: .defaultRunLoopMode)
     }
     
     @objc private func _handleDisplayLink(){
@@ -64,22 +64,22 @@ class ComponentManager: NSObject {
     }
     
     func startComponentTasks() {
-//        _awakeDisplayLink()
+        _awakeDisplayLink()
     }
     
     func _layoutAndSyncUI() {
         
-//        _layout()
-//        if(_uiTaskQueue.count > 0){
-//            _syncUITasks()
-//            _noTaskTickCount = 0
-//        } else {
-//            // suspend display link when there's no task for 1 second, in order to save CPU time.
-//            _noTaskTickCount += 1
-//            if (_noTaskTickCount > 60) {
-//                _suspendDisplayLink()
-//            }
-//        }
+        _layout()
+        if(_uiTaskQueue.count > 0){
+            _syncUITasks()
+            _noTaskTickCount = 0
+        } else {
+            // suspend display link when there's no task for 1 second, in order to save CPU time.
+            _noTaskTickCount += 1
+            if (_noTaskTickCount > 60) {
+                _suspendDisplayLink()
+            }
+        }
     }
     
     func _layout() {
@@ -128,38 +128,38 @@ class ComponentManager: NSObject {
 
 extension ComponentManager {
     
-//    func _awakeDisplayLink() {
-//
-//        assert(Thread.current == self._componentThread, "_awakeDisplayLink should be called in _componentThread")
-//        
-//        if (_displayLink != nil && _displayLink?.isPaused == true) {
-//            _displayLink?.isPaused = false
-//        }
-//    }
-//
-//    func _stopDisplayLink() {
-//        assert(Thread.current == self._componentThread, "_stopDisplayLink should be called in _componentThread")
-//
-//        if _displayLink != nil {
-//            _displayLink?.invalidate()
-//            _displayLink = nil
-//        }
-//    }
-//
-//    func _suspendDisplayLink() {
-////        assert(Thread.current == self._componentThread, "_suspendDisplayLink should be called in _componentThread")
-//
-//        if (_displayLink != nil && _displayLink?.isPaused == false) {
-//            _displayLink?.isPaused = true
-//        }
-//    }
+    func _awakeDisplayLink() {
+
+        assert(Thread.current == self._componentThread, "_awakeDisplayLink should be called in _componentThread")
+    
+        if (_displayLink != nil && _displayLink?.isPaused == true) {
+            _displayLink?.isPaused = false
+        }
+    }
+
+    func _stopDisplayLink() {
+        assert(Thread.current == self._componentThread, "_stopDisplayLink should be called in _componentThread")
+
+        if _displayLink != nil {
+            _displayLink?.invalidate()
+            _displayLink = nil
+        }
+    }
+
+    func _suspendDisplayLink() {
+//        assert(Thread.current == self._componentThread, "_suspendDisplayLink should be called in _componentThread")
+
+        if (_displayLink != nil && _displayLink?.isPaused == false) {
+            _displayLink?.isPaused = true
+        }
+    }
 }
 
 //MARK: - Elements Operations
 extension ComponentManager {
     
     func createRootView(_ instanceId:String) -> Void {
-        let component = DivView.init(ref: instanceId, styles: ["background-color":"#FFFFFF",
+        let component = DivView.init(ref: instanceId, styles: ["background-color":"#FF0000",
                                                                "height":Environment.instance.screenHeight,
                                                                "width":Environment.instance.screenWidth,
                                                                "top":0,
