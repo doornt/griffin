@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import YogaKit
+//import YogaKit
 
 //struct position {
 //    var left:Float = 0
@@ -110,8 +110,6 @@ class LayoutStyle{
         if let m_bottom = Utils.any2CGFloat(styles["margin-bottom"]){
             self.margin_bottom = YGValue(m_bottom)
         }
-        
-
     }
     
     
