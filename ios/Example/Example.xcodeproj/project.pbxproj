@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		3A24DBF0200485780071CE77 /* bundle.js in Resources */ = {isa = PBXBuildFile; fileRef = 3A24DBEE200485770071CE77 /* bundle.js */; };
 		3A24DBF1200485780071CE77 /* index.js in Resources */ = {isa = PBXBuildFile; fileRef = 3A24DBEF200485770071CE77 /* index.js */; };
-		51AB5138E9BED532052D434E /* Pods_GriffinSDK_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A04F0019EE5A1AD5E82231F /* Pods_GriffinSDK_Example.framework */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACD81AFB9204008FA782 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* ViewController.swift */; };
 		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
@@ -17,6 +16,7 @@
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
 		A6DDE5C31A4373EF5519F95C /* Pods_GriffinSDK_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCB69E284E2C5B1B727E930D /* Pods_GriffinSDK_Tests.framework */; };
+		DB2FFE492007150C001C4908 /* GriffinSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB2FFE4A2007150C001C4908 /* GriffinSDK.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +48,7 @@
 		8C6CDDEF53F842F8F16B2114 /* Pods-GriffinSDK_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GriffinSDK_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-GriffinSDK_Tests/Pods-GriffinSDK_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		BCB69E284E2C5B1B727E930D /* Pods_GriffinSDK_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GriffinSDK_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFF1A31B010837BE22A51E1A /* Pods-GriffinSDK_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GriffinSDK_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-GriffinSDK_Example/Pods-GriffinSDK_Example.release.xcconfig"; sourceTree = "<group>"; };
+		DB2FFE4A2007150C001C4908 /* GriffinSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GriffinSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EBC7EEEF143D7A7B790B738B /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		ECB8A1DEFCD52DC04A398DA7 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		FF0BFE0F97F34EC305BD1182 /* Pods-GriffinSDK_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GriffinSDK_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GriffinSDK_Example/Pods-GriffinSDK_Example.debug.xcconfig"; sourceTree = "<group>"; };
@@ -58,7 +59,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				51AB5138E9BED532052D434E /* Pods_GriffinSDK_Example.framework in Frameworks */,
+				DB2FFE492007150C001C4908 /* GriffinSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -76,6 +77,7 @@
 		1753A8FC33FA4168953D30EB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DB2FFE4A2007150C001C4908 /* GriffinSDK.framework */,
 				7A04F0019EE5A1AD5E82231F /* Pods_GriffinSDK_Example.framework */,
 				BCB69E284E2C5B1B727E930D /* Pods_GriffinSDK_Tests.framework */,
 			);
@@ -172,12 +174,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 607FACEF1AFB9204008FA782 /* Build configuration list for PBXNativeTarget "GriffinSDK_Example" */;
 			buildPhases = (
-				967AE600DC1ECA9DA9D39262 /* [CP] Check Pods Manifest.lock */,
 				607FACCC1AFB9204008FA782 /* Sources */,
 				607FACCD1AFB9204008FA782 /* Frameworks */,
 				607FACCE1AFB9204008FA782 /* Resources */,
-				52676863B6B840C828CAEF47 /* [CP] Embed Pods Frameworks */,
-				A973CF47853272E628C645DA /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -230,7 +229,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 607FACCB1AFB9204008FA782 /* Build configuration list for PBXProject "GriffinSDK" */;
+			buildConfigurationList = 607FACCB1AFB9204008FA782 /* Build configuration list for PBXProject "Example" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -272,28 +271,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		52676863B6B840C828CAEF47 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-GriffinSDK_Example/Pods-GriffinSDK_Example-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/GriffinSDK/GriffinSDK.framework",
-				"${BUILT_PRODUCTS_DIR}/Yoga/yoga.framework",
-				"${BUILT_PRODUCTS_DIR}/YogaKit/YogaKit.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GriffinSDK.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/yoga.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YogaKit.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-GriffinSDK_Example/Pods-GriffinSDK_Example-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		894C39BDAE091E5B292DE681 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -316,39 +293,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-GriffinSDK_Tests/Pods-GriffinSDK_Tests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		967AE600DC1ECA9DA9D39262 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-GriffinSDK_Example-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A973CF47853272E628C645DA /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-GriffinSDK_Example/Pods-GriffinSDK_Example-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		C35F29DC917E9E99FA193A6A /* [CP] Check Pods Manifest.lock */ = {
@@ -604,7 +548,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		607FACCB1AFB9204008FA782 /* Build configuration list for PBXProject "GriffinSDK" */ = {
+		607FACCB1AFB9204008FA782 /* Build configuration list for PBXProject "Example" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				607FACED1AFB9204008FA782 /* Debug */,

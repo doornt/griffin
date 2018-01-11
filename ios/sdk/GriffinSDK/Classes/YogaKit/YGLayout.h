@@ -153,9 +153,4 @@ typedef NS_OPTIONS(NSInteger, YGDimensionFlexibility) {
  */
 - (void)markDirty;
 
-
-@property (nonatomic, readonly, assign) BOOL needsLayout;
-
-@property (nonatomic, readonly, assign) CGRect requestFrame;
-
 @end
