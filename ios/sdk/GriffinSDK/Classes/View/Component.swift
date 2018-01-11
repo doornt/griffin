@@ -8,6 +8,7 @@
 
 import Foundation
 import JavaScriptCore
+import UIKit
 
 class ViewComponent {
     

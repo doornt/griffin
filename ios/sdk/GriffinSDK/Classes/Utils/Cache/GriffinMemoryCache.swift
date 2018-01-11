@@ -55,7 +55,7 @@ class GriffinMemoryCache {
         pthread_mutex_lock(&lock)
         let node = lru.dic[key]
         if node != nil {
-            node!.time = CACurrentMediaTime()
+//            node!.time = CACurrentMediaTime()
             lru.bringNodeTo(head: node!)
         }
         pthread_mutex_unlock(&lock)
@@ -81,7 +81,7 @@ class GriffinMemoryCache {
         let node = lru.dic[key]
         
         if node != nil {
-            node!.time = CACurrentMediaTime()
+//            node!.time = CACurrentMediaTime()
             node!.value = object
             
             lru.totalCost += cost
@@ -95,7 +95,7 @@ class GriffinMemoryCache {
             linkedNode.value = object
             linkedNode.key = key
             linkedNode.cost = cost
-            linkedNode.time = CACurrentMediaTime()
+//            linkedNode.time = CACurrentMediaTime()
             lru.insertNodeAt(head: linkedNode)
         }
         
@@ -288,51 +288,51 @@ private extension GriffinMemoryCache {
     }
     
     func _trimToAge(_ age: TimeInterval) {
-        var finish = false
-        
-        let now = CACurrentMediaTime()
-        
-        pthread_mutex_lock(&lock)
-        if age <= 0 {
-            lru.removeAll()
-            finish = true
-        } else if (lru.tail != nil && (now - (lru.tail?.time)!) <= Double(age)) {
-            finish = true
-        }
-        pthread_mutex_unlock(&lock)
-        if finish {
-            return
-        }
-        
-        var holder: [LinkedNode] = [LinkedNode]()
-        while !finish {
-            
-            if pthread_mutex_trylock(&lock) == 0 {
-                
-                if lru.tail != nil && (now - (lru.tail?.time)!) > Double(age) {
-                    
-                    let node = lru.removeTail()
-                    if node != nil {
-                        holder.append(node!)
-                    }
-                } else {
-                    finish = true
-                }
-                
-                pthread_mutex_unlock(&lock)
-            } else {
-                usleep(10 * 1000)
-            }
-            
-        }
-        
-        if holder.count > 0 {
-            let queue = lru.releaseOnMainThread ? DispatchQueue.main :
-                DispatchQueue.global(qos: .utility)
-            queue.async {
-                let _ = holder.count
-            }
-        }
+//        var finish = false
+//        
+//        let now = CACurrentMediaTime()
+//        
+//        pthread_mutex_lock(&lock)
+//        if age <= 0 {
+//            lru.removeAll()
+//            finish = true
+//        } else if (lru.tail != nil && (now - (lru.tail?.time)!) <= Double(age)) {
+//            finish = true
+//        }
+//        pthread_mutex_unlock(&lock)
+//        if finish {
+//            return
+//        }
+//        
+//        var holder: [LinkedNode] = [LinkedNode]()
+//        while !finish {
+//            
+//            if pthread_mutex_trylock(&lock) == 0 {
+//                
+//                if lru.tail != nil && (now - (lru.tail?.time)!) > Double(age) {
+//                    
+//                    let node = lru.removeTail()
+//                    if node != nil {
+//                        holder.append(node!)
+//                    }
+//                } else {
+//                    finish = true
+//                }
+//                
+//                pthread_mutex_unlock(&lock)
+//            } else {
+//                usleep(10 * 1000)
+//            }
+//            
+//        }
+//        
+//        if holder.count > 0 {
+//            let queue = lru.releaseOnMainThread ? DispatchQueue.main :
+//                DispatchQueue.global(qos: .utility)
+//            queue.async {
+//                let _ = holder.count
+//            }
+//        }
     }
     
     

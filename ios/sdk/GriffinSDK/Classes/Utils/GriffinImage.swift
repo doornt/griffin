@@ -12,32 +12,33 @@ class GriffinImage {
     
 }
 
-extension UIImageView {
-    func setGriffinImage(with url: String) {
-        
-        // find in mem.
-        // find in disk.
-        
-        // download
-        guard let url = URL(string: url) else {
-            return
-        }
-        
-        let downloadTask = URLSession.shared.downloadTask(with: url) { (url, response, error) in
-            if error != nil {
-                return
-            }
-            
-            guard let url = url, let data = try? Data.init(contentsOf: url) else {
-                return
-            }
-            
-            DispatchQueue.main.async {
-                self.image = UIImage.init(data: data)
-            }
-        }
-        downloadTask.resume()
-    }
-    
-    
-}
+//extension UIImageView {
+//    func setGriffinImage(with url: String) {
+//
+//        // find in mem.
+//        // find in disk.
+//        
+//        // download
+//        guard let url = URL(string: url) else {
+//            return
+//        }
+//
+//        let downloadTask = URLSession.shared.downloadTask(with: url) { (url, response, error) in
+//            if error != nil {
+//                return
+//            }
+//
+//            guard let url = url, let data = try? Data.init(contentsOf: url) else {
+//                return
+//            }
+//
+//            DispatchQueue.main.async {
+//                self.image = UIImage.init(data: data)
+//            }
+//        }
+//        downloadTask.resume()
+//    }
+//
+//
+//}
+
