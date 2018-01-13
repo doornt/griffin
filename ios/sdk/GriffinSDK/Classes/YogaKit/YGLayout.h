@@ -152,8 +152,6 @@ typedef NS_OPTIONS(NSInteger, YGDimensionFlexibility) {
  */
 @property (nonatomic, readonly, assign) BOOL isDirty;
 
-@property (nonatomic,readwrite,assign) BOOL needLayout;
-
 @property (nonatomic,readwrite,assign) CGRect requestFrame;
 
 

@@ -126,7 +126,6 @@ static YGConfigRef globalConfig;
     YGNodeSetContext(_node, (__bridge void *) view);
     _isEnabled = NO;
     _isIncludedInLayout = YES;
-      _needLayout = YES;
       _requestFrame = CGRectZero;
   }
 
@@ -412,30 +411,33 @@ static void YGApplyLayoutToViewHierarchy(UIView *view, BOOL preserveOrigin)
   if (!yoga.isIncludedInLayout) {
      return;
   }
+    if(yoga.isDirty){
+        YGNodeRef node = yoga.node;
+        const CGPoint topLeft = {
+            YGNodeLayoutGetLeft(node),
+            YGNodeLayoutGetTop(node),
+        };
+        
+        const CGPoint bottomRight = {
+            topLeft.x + YGNodeLayoutGetWidth(node),
+            topLeft.y + YGNodeLayoutGetHeight(node),
+        };
+        
+        const CGPoint origin = preserveOrigin ? view.frame.origin : CGPointZero;
+        yoga.requestFrame = (CGRect) {
+            .origin = {
+                .x = YGRoundPixelValue(topLeft.x + origin.x),
+                .y = YGRoundPixelValue(topLeft.y + origin.y),
+            },
+            .size = {
+                .width = YGRoundPixelValue(bottomRight.x) - YGRoundPixelValue(topLeft.x),
+                .height = YGRoundPixelValue(bottomRight.y) - YGRoundPixelValue(topLeft.y),
+            },
+        };
+    }
 
-  YGNodeRef node = yoga.node;
-  const CGPoint topLeft = {
-    YGNodeLayoutGetLeft(node),
-    YGNodeLayoutGetTop(node),
-  };
-
-  const CGPoint bottomRight = {
-    topLeft.x + YGNodeLayoutGetWidth(node),
-    topLeft.y + YGNodeLayoutGetHeight(node),
-  };
-
-  const CGPoint origin = preserveOrigin ? view.frame.origin : CGPointZero;
-  yoga.requestFrame = (CGRect) {
-    .origin = {
-      .x = YGRoundPixelValue(topLeft.x + origin.x),
-      .y = YGRoundPixelValue(topLeft.y + origin.y),
-    },
-    .size = {
-      .width = YGRoundPixelValue(bottomRight.x) - YGRoundPixelValue(topLeft.x),
-      .height = YGRoundPixelValue(bottomRight.y) - YGRoundPixelValue(topLeft.y),
-    },
-  };
-    yoga.needLayout = YES;
+ 
+//    yoga.needLayout = YES;
 
   if (!yoga.isLeaf) {
     for (NSUInteger i=0; i<view.subviews.count; i++) {

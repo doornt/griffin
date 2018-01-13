@@ -125,7 +125,7 @@ extension ViewComponent {
             return false
         }
         
-        return yoga.needLayout
+        return yoga.isDirty
     }
 }
 
