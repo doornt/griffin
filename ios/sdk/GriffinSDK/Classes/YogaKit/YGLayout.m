@@ -126,6 +126,8 @@ static YGConfigRef globalConfig;
     YGNodeSetContext(_node, (__bridge void *) view);
     _isEnabled = NO;
     _isIncludedInLayout = YES;
+      _needLayout = YES;
+      _requestFrame = CGRectZero;
   }
 
   return self;
@@ -165,7 +167,7 @@ static YGConfigRef globalConfig;
 
 - (BOOL)isLeaf
 {
-  NSAssert([NSThread isMainThread], @"This method must be called on the main thread.");
+//  NSAssert([NSThread isMainThread], @"This method must be called on the main thread.");
   if (self.isEnabled) {
     for (UIView *subview in self.view.subviews) {
       YGLayout *const yoga = subview.yoga;
@@ -273,7 +275,7 @@ YG_PROPERTY(CGFloat, aspectRatio, AspectRatio)
 
 - (CGSize)calculateLayoutWithSize:(CGSize)size
 {
-  NSAssert([NSThread isMainThread], @"Yoga calculation must be done on main.");
+//  NSAssert([NSThread isMainThread], @"Yoga calculation must be done on main.");
   NSAssert(self.isEnabled, @"Yoga is not enabled for this view.");
 
   YGAttachNodesFromViewHierachy(self.view);
@@ -403,7 +405,7 @@ static CGFloat YGRoundPixelValue(CGFloat value)
 
 static void YGApplyLayoutToViewHierarchy(UIView *view, BOOL preserveOrigin)
 {
-  NSCAssert([NSThread isMainThread], @"Framesetting should only be done on the main thread.");
+//  NSCAssert([NSThread isMainThread], @"Framesetting should only be done on the main thread.");
 
   const YGLayout *yoga = view.yoga;
 
@@ -423,7 +425,7 @@ static void YGApplyLayoutToViewHierarchy(UIView *view, BOOL preserveOrigin)
   };
 
   const CGPoint origin = preserveOrigin ? view.frame.origin : CGPointZero;
-  view.frame = (CGRect) {
+  yoga.requestFrame = (CGRect) {
     .origin = {
       .x = YGRoundPixelValue(topLeft.x + origin.x),
       .y = YGRoundPixelValue(topLeft.y + origin.y),
@@ -433,6 +435,7 @@ static void YGApplyLayoutToViewHierarchy(UIView *view, BOOL preserveOrigin)
       .height = YGRoundPixelValue(bottomRight.y) - YGRoundPixelValue(topLeft.y),
     },
   };
+    yoga.needLayout = YES;
 
   if (!yoga.isLeaf) {
     for (NSUInteger i=0; i<view.subviews.count; i++) {

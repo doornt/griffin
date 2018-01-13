@@ -152,6 +152,11 @@ typedef NS_OPTIONS(NSInteger, YGDimensionFlexibility) {
  */
 @property (nonatomic, readonly, assign) BOOL isDirty;
 
+@property (nonatomic,readwrite,assign) BOOL needLayout;
+
+@property (nonatomic,readwrite,assign) CGRect requestFrame;
+
+
 /**
  Mark that a view's layout needs to be recalculated. Only works for leaf views.
  */

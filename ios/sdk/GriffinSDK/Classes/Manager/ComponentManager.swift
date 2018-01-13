@@ -23,6 +23,8 @@ class ComponentManager: NSObject {
     
     private var _rootController:BaseViewController?
     
+    private var _rootComponent:ViewComponent?
+    
     func setRootController(root:BaseViewController){
         Log.LogInfo("Init RootController \(root)")
         self._rootController = root
@@ -92,8 +94,14 @@ class ComponentManager: NSObject {
         }
         
         if (!needsLayout) {
-            return;
+            return
         }
+        
+        guard let root = self._rootComponent else {
+            return
+        }
+        
+        root.yoga?.applyLayout(preservingOrigin: true)
         
 //        layoutNode(_rootCSSNode, _rootCSSNode->style.dimensions[CSS_WIDTH], _rootCSSNode->style.dimensions[CSS_HEIGHT], CSS_DIRECTION_INHERIT);
 //
@@ -165,7 +173,7 @@ extension ComponentManager {
                                                                "top":0,
                                                                "left":0])
         _components[instanceId] = component
-        
+        self._rootComponent = component
         _addUITask {
             self._rootController?.setRootView(component.view)
         }

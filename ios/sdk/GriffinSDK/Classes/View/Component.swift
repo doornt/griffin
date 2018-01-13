@@ -106,7 +106,6 @@ extension ViewComponent {
         
         child.parent = self
         self._children.append(child)
-        self._layout?.update()
     }
     
     func addChildAt(_ child:ViewComponent,_ index:Int){
@@ -122,7 +121,11 @@ extension ViewComponent {
     }
     
     func needsLayout() -> Bool {
-        return true
+        guard let yoga = self.yoga else{
+            return false
+        }
+        
+        return yoga.needLayout
     }
 }
 

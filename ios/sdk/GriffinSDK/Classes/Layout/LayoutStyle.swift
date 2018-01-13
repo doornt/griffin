@@ -111,6 +111,8 @@ class LayoutStyle{
         if let m_bottom = Utils.any2CGFloat(styles["margin-bottom"]){
             self.margin_bottom = YGValue(m_bottom)
         }
+        
+        self.update()
     }
     
     

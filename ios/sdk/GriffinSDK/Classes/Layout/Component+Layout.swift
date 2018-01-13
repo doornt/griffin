@@ -21,6 +21,11 @@ extension ViewComponent{
         return self._layout!
     }
     
+    var yoga:YGLayout?{
+        let view:UIView = self.loadView()
+        return view.yoga
+    }
+    
     func layoutFinish(){
         let view:UIView = self.loadView()
 //
