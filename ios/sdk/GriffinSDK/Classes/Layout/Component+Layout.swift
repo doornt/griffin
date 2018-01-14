@@ -26,6 +26,7 @@ extension ViewComponent{
     func layoutFinish(){
         let view:UIView = self.loadView()
         view.frame = view.yoga.requestFrame
+        self._needsLayout = false
     }
     
     var needsLayout : Bool{

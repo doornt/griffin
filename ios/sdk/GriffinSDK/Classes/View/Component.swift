@@ -108,6 +108,8 @@ extension ViewComponent {
         
         child.parent = self
         self._children.append(child)
+        
+        self._needsLayout = true
     }
     
     func addChildAt(_ child:ViewComponent,_ index:Int){
