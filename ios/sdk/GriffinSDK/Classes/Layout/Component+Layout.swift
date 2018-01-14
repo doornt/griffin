@@ -24,6 +24,7 @@ extension ViewComponent{
     }
     
     func layoutFinish(){
+        assert(Thread.current == Thread.main, "layoutFinish must be called in main thread")
         let view:UIView = self.loadView()
         view.frame = view.yoga.requestFrame
         self._needsLayout = false

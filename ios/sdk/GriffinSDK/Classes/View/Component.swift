@@ -57,7 +57,8 @@ class ViewComponent {
         self.initLayoutWithStyles(styles: styles)
     }
     
-    func loadView() -> UIView{
+    func loadView() -> UIView {
+        assert(Thread.current == Thread.main, "loadView must be called in main thread")
         let v = UIView.init()
         return v
     }
@@ -133,7 +134,7 @@ extension ViewComponent {
     }
     
     var view: UIView {
-//        assert(Thread.current == Thread.main, "get view must be called in main thread")
+        assert(Thread.current == Thread.main, "get view must be called in main thread")
         if self._view != nil {
             return self._view!
         }
