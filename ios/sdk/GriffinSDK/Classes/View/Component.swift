@@ -33,6 +33,8 @@ class ViewComponent {
     private var _borderColor = "#ffffff"
     private var _cornerRadius: CGFloat = 0.0
     
+    var _needsLayout:Bool = true
+    
     required init(ref:String,styles:Dictionary<String,Any>) {
         Log.LogInfo("ref:\(ref); styles: \(styles)")
         
@@ -118,14 +120,6 @@ extension ViewComponent {
     
     func removeChildren(){
         
-    }
-    
-    func needsLayout() -> Bool {
-        guard let yoga = self.yoga else{
-            return false
-        }
-        
-        return yoga.isDirty
     }
 }
 

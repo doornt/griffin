@@ -10,11 +10,8 @@
 
 extension ViewComponent{
     
-    
-    
     func initLayoutWithStyles(styles:Dictionary<String,Any>){
         _layout = LayoutStyle.init(styles: styles,owner: self)
-
     }
     
     var layout: LayoutStyle{
@@ -28,12 +25,10 @@ extension ViewComponent{
     
     func layoutFinish(){
         let view:UIView = self.loadView()
-//
-//        if layout._layout_frame.width == 0{
-//            return
-//        }
-//
-//        view.frame = CGRect(x: layout._layout_frame.x, y: layout._layout_frame.y, width: layout._layout_frame.width, height: layout._layout_frame.height)
-
+        view.frame = view.yoga.requestFrame
+    }
+    
+    var needsLayout : Bool{
+        return self._needsLayout
     }
 }

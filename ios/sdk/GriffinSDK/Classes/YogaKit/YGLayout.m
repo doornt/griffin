@@ -411,7 +411,7 @@ static void YGApplyLayoutToViewHierarchy(UIView *view, BOOL preserveOrigin)
   if (!yoga.isIncludedInLayout) {
      return;
   }
-    if(yoga.isDirty){
+//    if(yoga.isDirty){
         YGNodeRef node = yoga.node;
         const CGPoint topLeft = {
             YGNodeLayoutGetLeft(node),
@@ -434,7 +434,7 @@ static void YGApplyLayoutToViewHierarchy(UIView *view, BOOL preserveOrigin)
                 .height = YGRoundPixelValue(bottomRight.y) - YGRoundPixelValue(topLeft.y),
             },
         };
-    }
+//    }
 
  
 //    yoga.needLayout = YES;

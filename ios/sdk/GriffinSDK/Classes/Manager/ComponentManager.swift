@@ -72,22 +72,22 @@ class ComponentManager: NSObject {
     func _layoutAndSyncUI() {
         
         _layout()
-        if(_uiTaskQueue.count > 0){
+//        if(_uiTaskQueue.count > 0){
             _syncUITasks()
             _noTaskTickCount = 0
-        } else {
-            // suspend display link when there's no task for 1 second, in order to save CPU time.
-            _noTaskTickCount += 1
-            if (_noTaskTickCount > 60) {
-                _suspendDisplayLink()
-            }
-        }
+//        } else {
+//            // suspend display link when there's no task for 1 second, in order to save CPU time.
+//            _noTaskTickCount += 1
+//            if (_noTaskTickCount > 60) {
+//                _suspendDisplayLink()
+//            }
+//        }
     }
     
     func _layout() {
         var needsLayout = false
-        for (_, value) in _components {
-            if value.needsLayout() {
+        for (_, o) in _components {
+            if o.needsLayout {
                 needsLayout = true
                 break
             }
@@ -102,6 +102,10 @@ class ComponentManager: NSObject {
         }
         
         root.yoga?.applyLayout(preservingOrigin: true)
+        
+        for (_,o) in _components{
+            o.layoutFinish()
+        }
         
 //        layoutNode(_rootCSSNode, _rootCSSNode->style.dimensions[CSS_WIDTH], _rootCSSNode->style.dimensions[CSS_HEIGHT], CSS_DIRECTION_INHERIT);
 //
@@ -202,6 +206,7 @@ extension ComponentManager {
         _addUITask {
             superComponent.addChild(childComponent)
         }
+        
     }
     
     func _buildComponent(_ instanceId: String, withData data:[String: Any]) -> ViewComponent? {
