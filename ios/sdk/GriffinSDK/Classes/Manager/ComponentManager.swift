@@ -72,16 +72,16 @@ class ComponentManager: NSObject {
     func _layoutAndSyncUI() {
         
         _layout()
-//        if(_uiTaskQueue.count > 0){
+        if(_uiTaskQueue.count > 0){
             _syncUITasks()
             _noTaskTickCount = 0
-//        } else {
-//            // suspend display link when there's no task for 1 second, in order to save CPU time.
-//            _noTaskTickCount += 1
-//            if (_noTaskTickCount > 60) {
-//                _suspendDisplayLink()
-//            }
-//        }
+        } else {
+            // suspend display link when there's no task for 1 second, in order to save CPU time.
+            _noTaskTickCount += 1
+            if (_noTaskTickCount > 60) {
+                _suspendDisplayLink()
+            }
+        }
     }
     
     func _layout() {
