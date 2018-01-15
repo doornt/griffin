@@ -36,6 +36,10 @@ class ComponentManager: NSObject {
         _componentThread = Thread.init(target: self, selector: #selector(self._run), object: nil)
         _componentThread?.name = ComponentThreadName
         _componentThread?.start()
+        
+        performOnComponentThread {
+            startDisplayLink()
+        }
     }
     
     @objc private func _handleDisplayLink(){
@@ -98,7 +102,10 @@ class ComponentManager: NSObject {
             return
         }
         
-        root.yoga?.applyLayout(preservingOrigin: true)
+        _addUITask {
+            root.yoga?.applyLayout(preservingOrigin: true)
+        }
+        
         
         for (_,o) in _components {
             _addUITask {
@@ -139,7 +146,7 @@ class ComponentManager: NSObject {
 
 extension ComponentManager {
     
-    private func _startDisplayLink() {
+    public func startDisplayLink() {
         assert(Thread.current == self._componentThread, "_startDisplayLink should be called in _componentThread")
         
         if self._displayLink != nil {
@@ -182,8 +189,6 @@ extension ComponentManager {
     func createRootView(_ instanceId:String) -> Void {
         assert(Thread.current == self._componentThread, "createRootView should be called in _componentThread")
         
-        _startDisplayLink()
-        
         let component = DivView.init(ref: instanceId, styles: ["background-color":"#FF0000",
                                                                "height":Environment.instance.screenHeight,
                                                                "width":Environment.instance.screenWidth,
@@ -200,8 +205,6 @@ extension ComponentManager {
         
         assert(Thread.current == self._componentThread, "createElement should be called in _componentThread")
         
-        _startDisplayLink()
-        
         Log.LogInfo("instanceID:\(instanceId) data: \(componentData)")
         let _ = _buildComponent(instanceId, withData:componentData)
     }
@@ -209,8 +212,6 @@ extension ComponentManager {
     func updateElement(_ instanceId:String, data: Dictionary<String,Any>) {
         
         assert(Thread.current == self._componentThread, "updateElement should be called in _componentThread")
-        
-        _startDisplayLink()
         
         guard let component = _components[instanceId] else {
             return
@@ -224,8 +225,6 @@ extension ComponentManager {
     func addElement(_ parentId:String, childId: String){
         
         assert(Thread.current == self._componentThread, "addElement should be called in _componentThread")
-        
-        _startDisplayLink()
         
         guard let superComponent = _components[parentId],
             let childComponent = _components[childId] else {
@@ -263,8 +262,6 @@ extension ComponentManager {
         
         assert(Thread.current == self._componentThread, "register should be called in _componentThread")
         
-        _startDisplayLink()
-        
         Log.LogInfo("register \(instanceId) for \(event), withCallBack: \(callBack)")
         
         guard let component = _components[instanceId] else {
@@ -278,8 +275,6 @@ extension ComponentManager {
     func unRegister(event: String, instanceId:String, callBack: JSValue){
         
         assert(Thread.current == self._componentThread, "unRegister should be called in _componentThread")
-        
-        _startDisplayLink()
         
         Log.LogInfo("unRegister \(instanceId) for \(event), withCallBack: \(callBack)")
         

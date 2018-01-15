@@ -10,7 +10,7 @@ import UIKit
 
 class Label: ViewComponent {
     
-    lazy var _label: UILabel = {
+    private lazy var _label: UILabel = {
         let label = UILabel.init()
         label.isUserInteractionEnabled = false
         return UILabel.init()
@@ -31,7 +31,7 @@ class Label: ViewComponent {
     }
     
     override func loadView() -> UIView {
-        return self._label;
+        return self._label
     }
     
     override func viewDidLoad() {

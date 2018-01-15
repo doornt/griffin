@@ -51,12 +51,12 @@ class BaseViewController : UIViewController {
         
         self.sourceUrl = url
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.renderWithUrl()
-        
+
 //        let urlString = "http://api.ffan.com/travelHotel/v1/getRecommendBanner"
 //        NetworkManager.instance.get(url: urlString, params: ["InterfaceVersion":"2"], completionHandler: {
 //            (data, error) in

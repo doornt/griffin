@@ -58,9 +58,7 @@ class ViewComponent {
     }
     
     func loadView() -> UIView {
-        assert(Thread.current == Thread.main, "loadView must be called in main thread")
-        let v = UIView.init()
-        return v
+        preconditionFailure("loadView method must be overridden")
     }
     
     func refresh() {
