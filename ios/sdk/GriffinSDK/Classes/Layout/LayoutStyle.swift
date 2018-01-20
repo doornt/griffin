@@ -260,6 +260,10 @@ class LayoutStyle{
     }
     
     var isLeaf:Bool{
+        let len = self._owner.childrenLayouts.count
+        if len == 0{
+            return true
+        }
         return false
     }
     
