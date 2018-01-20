@@ -104,7 +104,9 @@ class ComponentManager: NSObject {
         root.yoga?.applyLayout(preservingOrigin: true)
         
         for (_,o) in _components{
-            o.layoutFinish()
+            _addUITask{
+                o.layoutFinish()
+            }
         }
         
 //        layoutNode(_rootCSSNode, _rootCSSNode->style.dimensions[CSS_WIDTH], _rootCSSNode->style.dimensions[CSS_HEIGHT], CSS_DIRECTION_INHERIT);

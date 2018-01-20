@@ -74,8 +74,6 @@ class ViewComponent {
         
         self._view = loadView()
         
-        self._layout?.update()
-        
         if Utils.hexString2UIColor(_backgroundColor) != nil {
             self._view?.backgroundColor = Utils.hexString2UIColor(_backgroundColor)
         }
@@ -108,7 +106,6 @@ extension ViewComponent {
         
         child.parent = self
         self._children.append(child)
-        
         self._needsLayout = true
     }
     

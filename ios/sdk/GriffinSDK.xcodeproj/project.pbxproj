@@ -87,6 +87,7 @@
 		DB2FFE5C2007159C001C4908 /* YGLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGLayout.m; sourceTree = "<group>"; };
 		DB2FFE5E2007159C001C4908 /* UIView+Yoga.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Yoga.m"; sourceTree = "<group>"; };
 		DB2FFE5F2007159C001C4908 /* YGLayoutExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YGLayoutExtensions.swift; sourceTree = "<group>"; };
+		DB2FFE79200B9F37001C4908 /* GriffinSDK-Swift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GriffinSDK-Swift.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,6 +129,7 @@
 		DB2FFDE1200712DC001C4908 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				DB2FFE79200B9F37001C4908 /* GriffinSDK-Swift.h */,
 				A36387B8200790C0009FA82F /* GriffinSDK-Bridging-Header.h */,
 				DB2FFE4B2007159C001C4908 /* Yoga */,
 				DB2FFE562007159C001C4908 /* YogaKit */,
