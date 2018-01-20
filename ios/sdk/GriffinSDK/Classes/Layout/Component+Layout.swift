@@ -19,11 +19,19 @@ extension ViewComponent{
     }
     
     var yoga:YGLayout?{
-        let view:UIView = self.loadView()
-        return view.yoga
+        var view:UIView? = nil
+
+        if Thread.main != Thread.current {
+            DispatchQueue.main.sync {
+                view = self.loadView()
+            }
+        } else {
+            view = self.loadView()        }
+        return view?.yoga
     }
     
     func layoutFinish(){
+        assert(Thread.current == Thread.main, "layoutFinish must be called in main thread")
         let view:UIView = self.loadView()
         view.frame = view.yoga.requestFrame
         self._needsLayout = false

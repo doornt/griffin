@@ -57,9 +57,8 @@ class ViewComponent {
         self.initLayoutWithStyles(styles: styles)
     }
     
-    func loadView() -> UIView{
-        let v = UIView.init()
-        return v
+    func loadView() -> UIView {
+        preconditionFailure("loadView method must be overridden")
     }
     
     func refresh() {
@@ -130,7 +129,7 @@ extension ViewComponent {
     }
     
     var view: UIView {
-//        assert(Thread.current == Thread.main, "get view must be called in main thread")
+        assert(Thread.current == Thread.main, "get view must be called in main thread")
         if self._view != nil {
             return self._view!
         }

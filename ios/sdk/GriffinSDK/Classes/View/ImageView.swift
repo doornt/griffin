@@ -10,7 +10,7 @@ import UIKit
 
 class ImageView : ViewComponent {
     
-    lazy var _imageView: UIImageView = {
+    private lazy var _imageView: UIImageView = {
         let imageview = UIImageView.init()
         imageview.isUserInteractionEnabled = false
         return UIImageView.init()

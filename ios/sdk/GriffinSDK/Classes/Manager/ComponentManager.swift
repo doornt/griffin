@@ -37,12 +37,13 @@ class ComponentManager: NSObject {
         _componentThread?.name = ComponentThreadName
         _componentThread?.start()
         
-        _displayLink = CADisplayLink.init(target: self, selector: #selector(self._handleDisplayLink))
-        _displayLink?.add(to: RunLoop.current, forMode: .defaultRunLoopMode)
+        performOnComponentThread {
+            startDisplayLink()
+        }
     }
     
     @objc private func _handleDisplayLink(){
-//        assert(Thread.current == self._componentThread, "_handleDisplayLink should be called in _componentThread")
+        assert(Thread.current == self._componentThread, "_handleDisplayLink should be called in _componentThread")
         _layoutAndSyncUI()
     }
     
@@ -61,15 +62,15 @@ class ComponentManager: NSObject {
         }
     }
     
-    func _addUITask(_ block: @escaping () -> Void) {
+    private func _addUITask(_ block: @escaping () -> Void) {
         _uiTaskQueue.append(block)
     }
     
-    func startComponentTasks() {
+    private func startComponentTasks() {
         _awakeDisplayLink()
     }
     
-    func _layoutAndSyncUI() {
+    private func _layoutAndSyncUI() {
         
         _layout()
         if(_uiTaskQueue.count > 0){
@@ -84,7 +85,7 @@ class ComponentManager: NSObject {
         }
     }
     
-    func _layout() {
+    private func _layout() {
         var needsLayout = false
         for (_, o) in _components {
             if o.needsLayout {
@@ -101,10 +102,13 @@ class ComponentManager: NSObject {
             return
         }
         
-        root.yoga?.applyLayout(preservingOrigin: true)
+        _addUITask {
+            root.yoga?.applyLayout(preservingOrigin: true)
+        }
         
-        for (_,o) in _components{
-            _addUITask{
+        
+        for (_,o) in _components {
+            _addUITask {
                 o.layoutFinish()
             }
         }
@@ -128,7 +132,7 @@ class ComponentManager: NSObject {
 //        }
     }
     
-    func _syncUITasks() {
+    private func _syncUITasks() {
         let blocks = _uiTaskQueue
         _uiTaskQueue = [()->Void]()
         
@@ -142,7 +146,17 @@ class ComponentManager: NSObject {
 
 extension ComponentManager {
     
-    func _awakeDisplayLink() {
+    public func startDisplayLink() {
+        assert(Thread.current == self._componentThread, "_startDisplayLink should be called in _componentThread")
+        
+        if self._displayLink != nil {
+            return
+        }
+        _displayLink = CADisplayLink.init(target: self, selector: #selector(self._handleDisplayLink))
+        _displayLink?.add(to: RunLoop.current, forMode: .defaultRunLoopMode)
+    }
+    
+    private func _awakeDisplayLink() {
 
         assert(Thread.current == self._componentThread, "_awakeDisplayLink should be called in _componentThread")
     
@@ -151,7 +165,7 @@ extension ComponentManager {
         }
     }
 
-    func _stopDisplayLink() {
+    private func _stopDisplayLink() {
         assert(Thread.current == self._componentThread, "_stopDisplayLink should be called in _componentThread")
 
         if _displayLink != nil {
@@ -160,8 +174,8 @@ extension ComponentManager {
         }
     }
 
-    func _suspendDisplayLink() {
-//        assert(Thread.current == self._componentThread, "_suspendDisplayLink should be called in _componentThread")
+    private func _suspendDisplayLink() {
+        assert(Thread.current == self._componentThread, "_suspendDisplayLink should be called in _componentThread")
 
         if (_displayLink != nil && _displayLink?.isPaused == false) {
             _displayLink?.isPaused = true
@@ -173,6 +187,8 @@ extension ComponentManager {
 extension ComponentManager {
     
     func createRootView(_ instanceId:String) -> Void {
+        assert(Thread.current == self._componentThread, "createRootView should be called in _componentThread")
+        
         let component = DivView.init(ref: instanceId, styles: ["background-color":"#FF0000",
                                                                "height":Environment.instance.screenHeight,
                                                                "width":Environment.instance.screenWidth,
@@ -186,11 +202,17 @@ extension ComponentManager {
     }
     
     func createElement(_ instanceId: String, withData componentData:[String: Any]) {
+        
+        assert(Thread.current == self._componentThread, "createElement should be called in _componentThread")
+        
         Log.LogInfo("instanceID:\(instanceId) data: \(componentData)")
         let _ = _buildComponent(instanceId, withData:componentData)
     }
     
     func updateElement(_ instanceId:String, data: Dictionary<String,Any>) {
+        
+        assert(Thread.current == self._componentThread, "updateElement should be called in _componentThread")
+        
         guard let component = _components[instanceId] else {
             return
         }
@@ -201,6 +223,9 @@ extension ComponentManager {
     }
     
     func addElement(_ parentId:String, childId: String){
+        
+        assert(Thread.current == self._componentThread, "addElement should be called in _componentThread")
+        
         guard let superComponent = _components[parentId],
             let childComponent = _components[childId] else {
                 return
@@ -211,7 +236,9 @@ extension ComponentManager {
         
     }
     
-    func _buildComponent(_ instanceId: String, withData data:[String: Any]) -> ViewComponent? {
+    private func _buildComponent(_ instanceId: String, withData data:[String: Any]) -> ViewComponent? {
+        
+        assert(Thread.current == self._componentThread, "_buildComponent should be called in _componentThread")
         
         guard let type = Utils.any2String(data["type"]) else {
             Log.LogError("type cannot be nil")
@@ -232,6 +259,9 @@ extension ComponentManager {
 extension ComponentManager {
     
     func register(event:String, instanceId:String,  callBack: JSValue){
+        
+        assert(Thread.current == self._componentThread, "register should be called in _componentThread")
+        
         Log.LogInfo("register \(instanceId) for \(event), withCallBack: \(callBack)")
         
         guard let component = _components[instanceId] else {
@@ -243,6 +273,9 @@ extension ComponentManager {
     }
     
     func unRegister(event: String, instanceId:String, callBack: JSValue){
+        
+        assert(Thread.current == self._componentThread, "unRegister should be called in _componentThread")
+        
         Log.LogInfo("unRegister \(instanceId) for \(event), withCallBack: \(callBack)")
         
         guard let component = _components[instanceId] else {

@@ -112,14 +112,23 @@ class LayoutStyle{
             self.margin_bottom = YGValue(m_bottom)
         }
         
-//        self.update()
+        self.update()
     }
     
     
-    func applyLayout(){
+    func update(){
         
-        let view:UIView = self._owner.view
-        view.configureLayout { (layout) in
+        var view:UIView? = nil
+        
+        if Thread.main != Thread.current {
+            DispatchQueue.main.sync {
+                view = self._owner.loadView()
+            }
+        } else {
+            view = self._owner.loadView()
+        }
+        
+        view?.configureLayout { (layout) in
 //            layout.position = .absolute
             layout.flexDirection = self.flex_direction
             layout.isEnabled = true
@@ -148,7 +157,9 @@ class LayoutStyle{
                 layout.marginBottom = self.margin_bottom!
             }
 
-//            layout.applyLayout(preservingOrigin: true)
+            DispatchQueue.main.async {
+                layout.applyLayout(preservingOrigin: true)
+            }
         }
         
         

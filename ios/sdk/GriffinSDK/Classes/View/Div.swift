@@ -10,7 +10,7 @@ import UIKit
 
 class DivView : ViewComponent {
     
-    lazy var _divView: UIView = {
+    private lazy var _divView: UIView = {
         return UIView.init()
     }()
 
