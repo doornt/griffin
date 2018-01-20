@@ -7,71 +7,207 @@
 //
 
 import Foundation
-import UIKit
-//import YogaKit
-
-//struct position {
-//    var left:Float = 0
-//    var top:Float = 0
-//    var right:Float = 0
-//    var bottom:Float = 0
-//
-//}
-
-struct LayoutFrame{
-    var x:CGFloat = 0
-    var y:CGFloat = 0
-    var width:CGFloat = 0
-    var height:CGFloat = 0
-    
-    static func zero() ->LayoutFrame{
-        return LayoutFrame(x:0,y:0,width:0,height:0)
-    }
-
-}
 
 class LayoutStyle{
     
     weak var _owner:ViewComponent!
+
+    var _layoutConifg:YGConfigRef
     
-    lazy var flex_direction:YGFlexDirection = YGFlexDirectionColumn
-
+    var _node:YGNodeRef!
+    
+    /**
+     The property that decides if we should include this view when calculating layout. Defaults to YES.
+     */
+    var isIncludedInLayout:Bool = true
+    
+    /**
+     The property that decides during layout/sizing whether or not styling properties should be applied.
+     Defaults to NO.
+     */
+    var isEnabled:Bool?
+    
+    var direction:YGDirection{
+        get{
+            return YGNodeStyleGetDirection(self.node)
+        }
+        set{
+            YGNodeStyleSetDirection(self.node, newValue)
+        }
+    }
+    var flexDirection:YGFlexDirection{
+        get{
+            return YGNodeStyleGetFlexDirection(self.node)
+        }
+        set{
+            YGNodeStyleSetFlexDirection(self.node, newValue)
+        }
+    }
+    
+    var justifyContent:YGJustify{
+        get{
+            return YGNodeStyleGetJustifyContent(self.node)
+        }
+        set{
+            YGNodeStyleSetJustifyContent(self.node, newValue)
+        }
+    }
+    
+    var alignContent:YGAlign{
+        get{
+            return YGNodeStyleGetAlignContent(self.node)
+        }
+        set{
+            YGNodeStyleSetAlignContent(self.node, newValue)
+        }
+    }
+    
+    var alignItems:YGAlign{
+        get{
+            return YGNodeStyleGetAlignItems(self.node)
+        }
+        set{
+            YGNodeStyleSetAlignItems(self.node, newValue)
+        }
+    }
+    
+    var alignSelf:YGAlign?
     var position:YGPositionType?
-
-    var align_items:YGAlign?
-    var justify_content:YGJustify?
-
-
-    var margin_left:YGValue?
-    var margin_top:YGValue?
-    var margin_bottom:YGValue?
-    var margin_right:YGValue?
-
-    var width:YGValue?
-    var height:YGValue?
+    var flexWrap:YGWrap?
+    var overflow:YGOverflow?
+    var display:YGDisplay?
+    
+    var flexGrow:CGFloat?
+    var flexShrink:CGFloat?
+    var flexBasis:YGValue?
+    
+    var left:YGValue?
+    var top:YGValue?
+    var right:YGValue?
+    var bottom:YGValue?
+    var start:YGValue?
+    var end:YGValue?
+    
+    var marginLeft:YGValue{
+        get{
+            return YGNodeStyleGetMargin(self.node, YGEdgeLeft)
+        }
+        set{
+            YGNodeStyleSetMargin(self.node, YGEdgeLeft, newValue.value)
+        }
+    }
+    var marginTop:YGValue{
+        get{
+            return YGNodeStyleGetMargin(self.node, YGEdgeTop)
+        }
+        set{
+            YGNodeStyleSetMargin(self.node, YGEdgeTop, newValue.value)
+        }
+    }
+    var marginRight:YGValue{
+        get{
+            return YGNodeStyleGetMargin(self.node, YGEdgeRight)
+        }
+        set{
+            YGNodeStyleSetMargin(self.node, YGEdgeRight, newValue.value)
+        }
+    }
+    var marginBottom:YGValue{
+        get{
+            return YGNodeStyleGetMargin(self.node, YGEdgeBottom)
+        }
+        set{
+            YGNodeStyleSetMargin(self.node, YGEdgeBottom, newValue.value)
+        }
+    }
+    
+    var marginStart:YGValue?
+    var marginEnd:YGValue?
+    var marginHorizontal:YGValue?
+    var marginVertical:YGValue?
+    var margin:YGValue?
+    
+    var paddingLeft:YGValue?
+    var paddingTop:YGValue?
+    var paddingRight:YGValue?
+    var paddingBottom:YGValue?
+    var paddingStart:YGValue?
+    var paddingEnd:YGValue?
+    var paddingHorizontal:YGValue?
+    var paddingVertical:YGValue?
+    var padding:YGValue?
+    
+    var borderLeftWidth:CGFloat?
+    var borderTopWidth:CGFloat?
+    var borderRightWidth:CGFloat?
+    var borderBottomWidth:CGFloat?
+    var borderStartWidth:CGFloat?
+    var borderEndWidth:CGFloat?
+    var borderWidth:CGFloat?
+    
+    var width:YGValue{
+        get{
+            return YGNodeStyleGetWidth(self.node)
+        }
+        set{
+            YGNodeStyleSetWidth(self.node, newValue.value)
+        }
+    }
+    var height:YGValue{
+        get{
+            return YGNodeStyleGetHeight(self.node)
+        }
+        set{
+            YGNodeStyleSetHeight(self.node, newValue.value)
+        }
+    }
+    
+    var minWidth:YGValue?
+    
+    var minHeight:YGValue?
+    var maxWidth:YGValue?
+    var maxHeight:YGValue?
+    
+    // Yoga specific properties, not compatible with flexbox specification
+    var aspectRatio:CGFloat?
+    
+    /**
+     Get the resolved direction of this node. This won't be YGDirectionInherit
+     */
+    var resolvedDirection:YGDirection?
+    
+    lazy var requestFrame:CGRect = CGRect.zero
+    
+    var node:YGNodeRef{
+        return self._node
+    }
     
     
     init(styles:Dictionary<String,Any>,owner:ViewComponent) {
         self._owner = owner
+        self._layoutConifg = YGConfigNew()
+        YGConfigSetExperimentalFeatureEnabled(_layoutConifg, YGExperimentalFeatureWebFlexBasis, true)
+        YGConfigSetPointScaleFactor(_layoutConifg, Float(UIScreen.main.scale))
+        self._node = YGNodeNewWithConfig(_layoutConifg)
         
         if let direction = styles["flex-direction"] as? String{
             switch(direction){
             case "row":
-                self.flex_direction = YGFlexDirectionRow
+                self.flexDirection = YGFlexDirectionRow
                 break
             case "column":
-                self.flex_direction = YGFlexDirectionColumn
+                self.flexDirection = YGFlexDirectionColumn
                 break
 
             default:
-                self.flex_direction = YGFlexDirectionColumn
+                self.flexDirection = YGFlexDirectionColumn
             }
         }
 
         if let a_i = styles["align-items"] as? String{
             switch(a_i){
             case "center":
-                    self.align_items = YGAlignCenter
+                    self.alignItems = YGAlignCenter
                 break
             default:
                 break
@@ -81,7 +217,7 @@ class LayoutStyle{
         if let j_t = styles["justify-content"] as? String{
             switch(j_t){
             case "center":
-                self.justify_content = YGJustifyCenter
+                self.justifyContent = YGJustifyCenter
                 break
             default:
                 break
@@ -97,73 +233,172 @@ class LayoutStyle{
         }
 
         if let m_left = Utils.any2CGFloat(styles["margin-left"]){
-            self.margin_left = YGValue(m_left)
+            self.marginLeft = YGValue(m_left)
         }
 
         if let m_top = Utils.any2CGFloat(styles["margin-top"]){
-            self.margin_top = YGValue(m_top)
+            self.marginTop = YGValue(m_top)
         }
 
         if let m_right = Utils.any2CGFloat(styles["margin-right"]){
-            self.margin_right = YGValue(m_right)
+            self.marginRight = YGValue(m_right)
         }
 
         if let m_bottom = Utils.any2CGFloat(styles["margin-bottom"]){
-            self.margin_bottom = YGValue(m_bottom)
+            self.marginBottom = YGValue(m_bottom)
         }
         
         self.update()
+        
+        
     }
     
     
     func update(){
+        self.applyLayoutPreservingOrigin(preserveOrigin: true)
+        YGNodePrint(node,YGPrintOptions(rawValue: YGPrintOptions.RawValue(UInt8(YGPrintOptionsLayout.rawValue)|UInt8(YGPrintOptionsStyle.rawValue)|UInt8(YGPrintOptionsChildren.rawValue))))
+    }
+    
+    var isLeaf:Bool{
+        return false
+    }
+    
+    
+    static func YGMeasureView(_ node:YGNodeRef,_ width:CGFloat,_ widthMode:YGMeasureMode,_ height:CGFloat,_ heightMode:YGMeasureMode )->YGSize{
         
-        var view:UIView? = nil
+        let constrainedWidth = (widthMode == YGMeasureModeUndefined) ?
+            CGFloat.greatestFiniteMagnitude : width
+        let constrainedHeight = (heightMode == YGMeasureModeUndefined) ? CGFloat.greatestFiniteMagnitude: height
+    
+//        UIView *view = (__bridge UIView*) YGNodeGetContext(node);
+//        const CGSize sizeThatFits = [view sizeThatFits:(CGSize) {
+//        .width = constrainedWidth,
+//        .height = constrainedHeight,
+//        }];
+//
+      
+        return YGSize(width: Float(LayoutStyle.YGSanitizeMeasurement(constrainedWidth, constrainedWidth,widthMode)), height: Float(LayoutStyle.YGSanitizeMeasurement(constrainedHeight, constrainedHeight, heightMode)))
+    }
+    
+    
+    func calculateLayoutWithSize(_ width:Float,_ height:Float)->CGSize{
+    
+        LayoutStyle.YGAttachNodesFromViewHierachy(self);
         
-        if Thread.main != Thread.current {
-            DispatchQueue.main.sync {
-                view = self._owner.loadView()
-            }
-        } else {
-            view = self._owner.loadView()
-        }
+        YGNodeCalculateLayout(
+        self.node,
+        width,
+        height,
+        YGNodeStyleGetDirection(node));
         
-        view?.configureLayout { (layout) in
-//            layout.position = .absolute
-            layout.flexDirection = self.flex_direction
-            layout.isEnabled = true
-            if self.width != nil {
-                layout.width = self.width!
-            }
-            if self.height != nil{
-                layout.height = self.height!
-            }
-            if self.align_items != nil{
-                layout.alignItems = self.align_items!
-            }
-            if self.justify_content != nil{
-                layout.justifyContent = self.justify_content!
-            }
-            if self.margin_left != nil{
-                layout.marginLeft = self.margin_left!
-            }
-            if self.margin_top != nil{
-                layout.marginTop = self.margin_top!
-            }
-            if self.margin_right != nil{
-                layout.marginRight = self.margin_right!
-            }
-            if self.margin_bottom != nil{
-                layout.marginBottom = self.margin_bottom!
-            }
-
-            DispatchQueue.main.async {
-                layout.applyLayout(preservingOrigin: true)
-            }
-        }
-        
+        return CGSize(width: CGFloat(YGNodeLayoutGetWidth(node)), height: CGFloat(YGNodeLayoutGetHeight(node)))
         
     }
     
+    func applyLayoutPreservingOrigin(preserveOrigin:Bool){
+//        [ calculateLayoutWithSize:self.view.bounds.size];
+        self.calculateLayoutWithSize(self.width.value,self.height.value)
+        LayoutStyle.YGApplyLayoutToViewHierarchy(self, preserveOrigin);
+    }
+    
+    static func YGRemoveAllChildren(_ node:YGNodeRef){
+    
+        while (YGNodeGetChildCount(node) > 0) {
+            YGNodeRemoveChild(node, YGNodeGetChild(node, YGNodeGetChildCount(node) - 1));
+        }
+    }
+    
+    static func YGAttachNodesFromViewHierachy(_ layout:LayoutStyle){
+//        YGLayout *const yoga = view.yoga;
+//        const YGNodeRef node = yoga.node;
+        let node = layout.node
+    
+        // Only leaf nodes should have a measure function
+        if (layout.isLeaf) {
+            LayoutStyle.YGRemoveAllChildren(node);
+//            YGNodeSetMeasureFunc(node, LayoutStyle.YGMeasureView);
+        } else {
+            YGNodeSetMeasureFunc(node, nil);
+            var subviewsToInclude:[LayoutStyle] = []
+        
+            for child in layout._owner.childrenLayouts{
+                if child.isIncludedInLayout{
+//                    subviewsToInclude.append(child)
+                    YGAttachNodesFromViewHierachy(child);
+                }
+            }
+    
+//            if (!YGNodeHasExactSameChildren(node, subviewsToInclude)) {
+//                YGRemoveAllChildren(node);
+//                for (int i=0; i<subviewsToInclude.count; i++) {
+//                    YGNodeInsertChild(node, subviewsToInclude[i].yoga.node, i);
+//                }
+//            }
+//
+//
+//
+//            for (UIView *const subview in subviewsToInclude) {
+//                YGAttachNodesFromViewHierachy(subview);
+//            }
+        }
+    }
+    
+    static func YGSanitizeMeasurement(_ constrainedSize:CGFloat,_ measuredSize:CGFloat,
+                               _ measureMode:YGMeasureMode)->CGFloat{
+        var result:CGFloat
+        if (measureMode == YGMeasureModeExactly) {
+            result = constrainedSize
+        } else if (measureMode == YGMeasureModeAtMost) {
+            result = min(constrainedSize, measuredSize)
+        } else {
+            result = measuredSize;
+        }
+        return result
+    }
+    
+    static func YGApplyLayoutToViewHierarchy(_ layout:LayoutStyle,_ preserveOrigin:Bool)
+    {
+        //  NSCAssert([NSThread isMainThread], @"Framesetting should only be done on the main thread.");
+        
+//        const YGLayout *yoga = view.yoga;
+        
+//        if (!yoga.isIncludedInLayout) {
+//        return;
+//        }
+        //    if(yoga.isDirty){
+        let node:YGNodeRef  = layout.node;
+ 
+
+        let left = YGNodeLayoutGetLeft(node)
+        let top = YGNodeLayoutGetTop(node)
+        let rigth = left + YGNodeLayoutGetWidth(node)
+        let bottom = top + YGNodeLayoutGetHeight(node)
+
+        layout.requestFrame = CGRect(x: CGFloat(left), y: CGFloat(top), width: CGFloat(rigth - left), height: CGFloat(bottom - top))
+//        const CGPoint origin = preserveOrigin ? view.frame.origin : CGPointZero;
+//        yoga.requestFrame = (CGRect) {
+//        .origin = {
+//        .x = YGRoundPixelValue(topLeft.x + origin.x),
+//        .y = YGRoundPixelValue(topLeft.y + origin.y),
+//        },
+//        .size = {
+//        .width = YGRoundPixelValue(bottomRight.x) - YGRoundPixelValue(topLeft.x),
+//        .height = YGRoundPixelValue(bottomRight.y) - YGRoundPixelValue(topLeft.y),
+//        },
+//        };
+        //    }
+        
+        
+        //    yoga.needLayout = YES;
+        
+//        if !layout.isLeaf {
+//            for child in layout._owner.childrenLayouts{
+//                LayoutStyle.YGApplyLayoutToViewHierarchy(child,false)
+//            }
+//            for (NSUInteger i=0; i<view.subviews.count; i++) {
+//                YGApplyLayoutToViewHierarchy(view.subviews[i], NO);
+//            }
+//        }
+    }
     
 }

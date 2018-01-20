@@ -102,9 +102,9 @@ class ComponentManager: NSObject {
             return
         }
         
-        _addUITask {
-            root.yoga?.applyLayout(preservingOrigin: true)
-        }
+//        _addUITask {
+        root.applyLayout()
+//        }
         
         
         for (_,o) in _components {
