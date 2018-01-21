@@ -80,9 +80,24 @@ class LayoutStyle{
     var position:YGPositionType?
     var flexWrap:YGWrap?
     var overflow:YGOverflow?
-    var display:YGDisplay?
     
-    var flexGrow:CGFloat?
+    var display:YGDisplay{
+        get{
+            return YGNodeStyleGetDisplay(self.node)
+        }
+        set{
+            YGNodeStyleSetDisplay(self.node, newValue)
+        }
+    }
+    
+    var flexGrow:Float{
+        get{
+            return YGNodeStyleGetFlexGrow(self.node)
+        }
+        set{
+            YGNodeStyleSetFlexGrow(self.node, newValue)
+        }
+    }
     var flexShrink:CGFloat?
     var flexBasis:YGValue?
     
@@ -193,6 +208,8 @@ class LayoutStyle{
         self._owner = owner
         self._node = YGNodeNewWithConfig(LayoutStyle._layoutConifg)
         
+        self.display = YGDisplayFlex
+        
         if let direction = styles["flex-direction"] as? String{
             switch(direction){
             case "row":
@@ -247,13 +264,18 @@ class LayoutStyle{
             self.marginRight = YGValue(m_right)
         }
 
+//        print(styles["margin-bottom"].)
+//        print(styles["margin-bottom"] as CGFloat)
+        
         if let m_bottom = Utils.any2CGFloat(styles["margin-bottom"]){
             self.marginBottom = YGValue(m_bottom)
         }
         
+        if let flex_grow = Utils.any2Float(styles["flex-grow"]){
+            self.flexGrow = flex_grow
+        }
+        
         self.update()
-        
-        
     }
     
     

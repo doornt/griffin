@@ -18,6 +18,10 @@ class Utils {
         return obj as? CGFloat
     }
     
+    class func any2Float(_ obj: Any?) -> Float? {
+        return obj as? Float
+    }
+    
     class func any2String(_ obj: Any?) -> String? {
         return obj as? String ?? ""
     }
