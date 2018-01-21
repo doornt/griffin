@@ -16,18 +16,24 @@ class ImageView : ViewComponent {
         return UIImageView.init()
     }()
     
-    private var _imageUrl: String = ""
+    private var _imageUrl: String?
     
     required init(ref:String,styles:Dictionary<String,Any>) {
         
         super.init(ref: ref, styles: styles)
-
-        _config(styles: styles)
-        
     }
     
-    func _config(styles:Dictionary<String,Any>) {
-        _imageUrl =  Utils.any2String(styles["url"]) ?? ""
+    override var styles: Dictionary<String, Any>{
+        get{
+            return super.styles
+        }
+        set{
+            super.styles = newValue
+            
+            if let url = newValue.toString(key: "url"){
+                _imageUrl = url
+            }
+        }
     }
     
     override func loadView() -> UIView {
@@ -50,6 +56,5 @@ class ImageView : ViewComponent {
     
     override func updateWithStyle(_ styles: Dictionary<String, Any>) {
         super.updateWithStyle(styles)
-        _config(styles: styles)
     }
 }

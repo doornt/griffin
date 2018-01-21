@@ -25,13 +25,11 @@ class ViewComponent {
     private var ref:String
     private var _events:Dictionary<String, Array<JSValue>> = Dictionary<String, Array<JSValue>>()
     
-    private var _frame = CGRect.zero
-    private var _backgroundColor:String = "#000000"
-    private var _isOverflow:Bool = false
-    private var _alpha: CGFloat = 1.0
-    private var _borderWidth: CGFloat = 0.0
-    private var _borderColor = "#ffffff"
-    private var _cornerRadius: CGFloat = 0.0
+    private var _backgroundColor:String?
+    private var _alpha: CGFloat?
+
+    
+    private var _styles:Dictionary<String,Any> = [:]
     
     var _needsLayout:Bool = true
     
@@ -39,24 +37,36 @@ class ViewComponent {
         Log.LogInfo("ref:\(ref); styles: \(styles)")
         
         self.ref = ref
-        _config(styles: styles)
-    }
-    
-    func updateWithStyle(_ styles: Dictionary<String,Any>) {
-        _config(styles: styles)
-    }
-    
-    private func _config(styles:Dictionary<String,Any>) {
-        _backgroundColor = Utils.any2String(styles["background-color"]) ?? "#000000"
-        _isOverflow = Utils.any2Bool(styles["overflow"]) ?? false
-        _alpha = Utils.any2CGFloat(styles["opacity"]) ?? 1.0
-        _borderWidth = Utils.any2CGFloat(styles["borderWidth"]) ?? 0.0
-        _borderColor = Utils.any2String(styles["borderColor"]) ?? "#ffffff"
-        _cornerRadius = Utils.any2CGFloat(styles["cornerRadius"]) ?? 0
+        
+        self.styles = styles
         
         self.initLayoutWithStyles(styles: styles)
     }
     
+    var styles:Dictionary<String,Any>{
+        set{
+            if let bg = newValue.toString(key: "background-color"){
+                self._backgroundColor = bg
+            }
+            
+            if let alpha = newValue.toCGFloat(key: "opacity"){
+                self._alpha = alpha
+                self._needsLayout = true
+            }
+            
+        }
+        get{
+            return [:]
+        }
+
+    }
+
+    
+    func updateWithStyle(_ styles: Dictionary<String,Any>) {
+        self.styles = styles
+    }
+    
+
     func loadView() -> UIView {
         preconditionFailure("loadView method must be overridden")
     }
@@ -73,20 +83,21 @@ class ViewComponent {
         
         self._view = loadView()
         
-        if Utils.hexString2UIColor(_backgroundColor) != nil {
+        if _backgroundColor != nil{
             self._view?.backgroundColor = Utils.hexString2UIColor(_backgroundColor)
         }
+   
         
-        self._view?.clipsToBounds = _isOverflow
-        self._view?.alpha = _alpha
+//        self._view?.clipsToBounds = _isOverflow
+//        self._view?.alpha = _alpha
         
-        self._view?.layer.borderWidth = _borderWidth
+//        self._view?.layer.borderWidth = _borderWidth
         
-        if Utils.hexString2UIColor(_borderColor) != nil {
-            self._view?.layer.borderColor = Utils.hexString2UIColor(_borderColor)!.cgColor
-        }
+//        if Utils.hexString2UIColor(_borderColor) != nil {
+//            self._view?.layer.borderColor = Utils.hexString2UIColor(_borderColor)!.cgColor
+//        }
         
-        self._view?.layer.cornerRadius = _cornerRadius
+//        self._view?.layer.cornerRadius = _cornerRadius
         
         self.viewDidLoad()
     }
