@@ -50,7 +50,16 @@ class Label: ViewComponent {
         if label.layer.cornerRadius > 0 {
             label.layer.masksToBounds = true
         }
-        label.sizeToFit()
+        
+        let size = label.sizeThatFits(CGSize(width: CGFloat(self.layout.width.value), height: CGFloat(self.layout.height.value)))
+        
+        self.layout.width = YGValue(size.width)
+        self.layout.height = YGValue(size.height)
+        
+        self._needsLayout = true
+        
+//        label.sizeThatFits(<#T##size: CGSize##CGSize#>)
+//        label.sizeToFit()
     }
 
     override func updateWithStyle(_ styles: Dictionary<String, Any>) {

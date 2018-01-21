@@ -270,37 +270,21 @@ class LayoutStyle{
         return false
     }
     
-    static let YGMeasureView: @convention(c) (Optional<OpaquePointer>, Float, YGMeasureMode,Float, YGMeasureMode ) -> YGSize = {
-        
-        (node, width, widthMode, height, heightMode) in
-        let constrainedWidth = (widthMode == YGMeasureModeUndefined) ?
-            Float.greatestFiniteMagnitude : width
-        let constrainedHeight = (heightMode == YGMeasureModeUndefined) ? Float.greatestFiniteMagnitude: height
-        
-        //        UIView *view = (__bridge UIView*) YGNodeGetContext(node);
-        //        const CGSize sizeThatFits = [view sizeThatFits:(CGSize) {
-        //        .width = constrainedWidth,
-        //        .height = constrainedHeight,
-        //        }];
-        //
-        
-        return YGSize(width: Float(LayoutStyle.YGSanitizeMeasurement(CGFloat(constrainedWidth), CGFloat(constrainedWidth),widthMode)), height: Float(LayoutStyle.YGSanitizeMeasurement(CGFloat(constrainedHeight), CGFloat(constrainedHeight), heightMode)))
-    }
-    
-//    static func YGMeasureView(_ node:YGNodeRef,_ width:CGFloat,_ widthMode:YGMeasureMode,_ height:CGFloat,_ heightMode:YGMeasureMode )->YGSize{
+//    static let YGMeasureView: @convention(c) (Optional<OpaquePointer>, Float, YGMeasureMode,Float, YGMeasureMode ) -> YGSize = {
 //
+//        (node, width, widthMode, height, heightMode) in
 //        let constrainedWidth = (widthMode == YGMeasureModeUndefined) ?
-//            CGFloat.greatestFiniteMagnitude : width
-//        let constrainedHeight = (heightMode == YGMeasureModeUndefined) ? CGFloat.greatestFiniteMagnitude: height
-    
-//        UIView *view = (__bridge UIView*) YGNodeGetContext(node);
-//        const CGSize sizeThatFits = [view sizeThatFits:(CGSize) {
-//        .width = constrainedWidth,
-//        .height = constrainedHeight,
-//        }];
+//            Float.greatestFiniteMagnitude : width
+//        let constrainedHeight = (heightMode == YGMeasureModeUndefined) ? Float.greatestFiniteMagnitude: height
 //
-      
-//        return YGSize(width: Float(LayoutStyle.YGSanitizeMeasurement(constrainedWidth, constrainedWidth,widthMode)), height: Float(LayoutStyle.YGSanitizeMeasurement(constrainedHeight, constrainedHeight, heightMode)))
+//        //        UIView *view = (__bridge UIView*) YGNodeGetContext(node);
+//        //        const CGSize sizeThatFits = [view sizeThatFits:(CGSize) {
+//        //        .width = constrainedWidth,
+//        //        .height = constrainedHeight,
+//        //        }];
+//        //
+//
+//        return YGSize(width: Float(LayoutStyle.YGSanitizeMeasurement(CGFloat(constrainedWidth), CGFloat(constrainedWidth),widthMode)), height: Float(LayoutStyle.YGSanitizeMeasurement(CGFloat(constrainedHeight), CGFloat(constrainedHeight), heightMode)))
 //    }
     
     
@@ -330,98 +314,83 @@ class LayoutStyle{
         }
     }
     
+    static func YGNodeHasExactSameChildren(_ node:YGNodeRef, _ children:[LayoutStyle])->Bool{
+        if (YGNodeGetChildCount(node) != children.count) {
+            return false
+        }
+        
+        for (i ,child) in children.enumerated() {
+            if YGNodeGetChild(node, UInt32(i)) != child.node{
+                return false
+            }
+        }
+        
+        return true
+    }
+    
     
     static func YGAttachNodesFromViewHierachy(_ layout:LayoutStyle){
-//        YGLayout *const yoga = view.yoga;
-//        const YGNodeRef node = yoga.node;
         let node = layout.node
     
         // Only leaf nodes should have a measure function
         if (layout.isLeaf) {
             LayoutStyle.YGRemoveAllChildren(node);
-            YGNodeSetMeasureFunc(node, LayoutStyle.YGMeasureView);
+//            YGNodeSetMeasureFunc(node, LayoutStyle.YGMeasureView);
         } else {
             YGNodeSetMeasureFunc(node, nil);
-//            var subviewsToInclude:[LayoutStyle] = []
+            var subviewsToInclude:[LayoutStyle] = []
         
             for child in layout._owner.childrenLayouts{
                 if child.isIncludedInLayout{
-//                    subviewsToInclude.append(child)
-                    YGAttachNodesFromViewHierachy(child);
+                    subviewsToInclude.append(child)
                 }
             }
     
-//            if (!YGNodeHasExactSameChildren(node, subviewsToInclude)) {
-//                YGRemoveAllChildren(node);
-//                for (int i=0; i<subviewsToInclude.count; i++) {
-//                    YGNodeInsertChild(node, subviewsToInclude[i].yoga.node, i);
-//                }
-//            }
-//
-//
-//
-//            for (UIView *const subview in subviewsToInclude) {
-//                YGAttachNodesFromViewHierachy(subview);
-//            }
+            if (!YGNodeHasExactSameChildren(node, subviewsToInclude)) {
+                YGRemoveAllChildren(node);
+
+                for (index,child) in subviewsToInclude.enumerated(){
+                    YGNodeInsertChild(node, child.node, UInt32(index))
+                }
+
+            }
+
+            for child in subviewsToInclude{
+                YGAttachNodesFromViewHierachy(child)
+            }
+
         }
     }
     
-    static func YGSanitizeMeasurement(_ constrainedSize:CGFloat,_ measuredSize:CGFloat,
-                               _ measureMode:YGMeasureMode)->CGFloat{
-        var result:CGFloat
-        if (measureMode == YGMeasureModeExactly) {
-            result = constrainedSize
-        } else if (measureMode == YGMeasureModeAtMost) {
-            result = min(constrainedSize, measuredSize)
-        } else {
-            result = measuredSize;
-        }
-        return result
-    }
+//    static func YGSanitizeMeasurement(_ constrainedSize:CGFloat,_ measuredSize:CGFloat,
+//                               _ measureMode:YGMeasureMode)->CGFloat{
+//        var result:CGFloat
+//        if (measureMode == YGMeasureModeExactly) {
+//            result = constrainedSize
+//        } else if (measureMode == YGMeasureModeAtMost) {
+//            result = min(constrainedSize, measuredSize)
+//        } else {
+//            result = measuredSize;
+//        }
+//        return result
+//    }
     
     static func YGApplyLayoutToViewHierarchy(_ layout:LayoutStyle,_ preserveOrigin:Bool)
     {
-        //  NSCAssert([NSThread isMainThread], @"Framesetting should only be done on the main thread.");
-        
-//        const YGLayout *yoga = view.yoga;
-        
-//        if (!yoga.isIncludedInLayout) {
-//        return;
-//        }
-        //    if(yoga.isDirty){
         let node:YGNodeRef  = layout.node;
- 
 
         let left = YGNodeLayoutGetLeft(node)
         let top = YGNodeLayoutGetTop(node)
-        let rigth = left + YGNodeLayoutGetWidth(node)
-        let bottom = top + YGNodeLayoutGetHeight(node)
+        let width = YGNodeLayoutGetWidth(node)
+        let height = YGNodeLayoutGetHeight(node)
 
-        layout.requestFrame = CGRect(x: CGFloat(left), y: CGFloat(top), width: CGFloat(rigth - left), height: CGFloat(bottom - top))
-//        const CGPoint origin = preserveOrigin ? view.frame.origin : CGPointZero;
-//        yoga.requestFrame = (CGRect) {
-//        .origin = {
-//        .x = YGRoundPixelValue(topLeft.x + origin.x),
-//        .y = YGRoundPixelValue(topLeft.y + origin.y),
-//        },
-//        .size = {
-//        .width = YGRoundPixelValue(bottomRight.x) - YGRoundPixelValue(topLeft.x),
-//        .height = YGRoundPixelValue(bottomRight.y) - YGRoundPixelValue(topLeft.y),
-//        },
-//        };
-        //    }
+        layout.requestFrame = CGRect(x: CGFloat(left), y: CGFloat(top), width: CGFloat(width), height: CGFloat(height))
         
-        
-        //    yoga.needLayout = YES;
-        
-//        if !layout.isLeaf {
-//            for child in layout._owner.childrenLayouts{
-//                LayoutStyle.YGApplyLayoutToViewHierarchy(child,false)
-//            }
-//            for (NSUInteger i=0; i<view.subviews.count; i++) {
-//                YGApplyLayoutToViewHierarchy(view.subviews[i], NO);
-//            }
-//        }
+        if !layout.isLeaf {
+            for child in layout._owner.childrenLayouts{
+                LayoutStyle.YGApplyLayoutToViewHierarchy(child,false)
+            }
+        }
     }
     
 }
