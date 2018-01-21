@@ -12,6 +12,7 @@ class Environment {
     
     let screenWidth  = UIScreen.main.bounds.size.width
     let screenHeight = UIScreen.main.bounds.size.height
+    let screenScale = Float(UIScreen.main.scale)
     
     lazy var homePath = {
         return NSHomeDirectory()

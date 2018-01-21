@@ -63,14 +63,12 @@ class ComponentManager: NSObject {
     }
     
     private func _addUITask(_ block: @escaping () -> Void) {
+        assert(Thread.current == self._componentThread, "_addUITask should be called in _componentThread")
         _uiTaskQueue.append(block)
     }
-    
-    private func startComponentTasks() {
-        _awakeDisplayLink()
-    }
-    
+
     private func _layoutAndSyncUI() {
+        assert(Thread.current == self._componentThread, "_layoutAndSyncUI should be called in _componentThread")
         
         _layout()
         if(_uiTaskQueue.count > 0){
@@ -86,6 +84,8 @@ class ComponentManager: NSObject {
     }
     
     private func _layout() {
+        assert(Thread.current == self._componentThread, "_layout should be called in _componentThread")
+        
         var needsLayout = false
         for (_, o) in _components {
             if o.needsLayout {
@@ -133,6 +133,8 @@ class ComponentManager: NSObject {
     }
     
     private func _syncUITasks() {
+        assert(Thread.current == self._componentThread, "_syncUITasks should be called in _componentThread")
+        
         let blocks = _uiTaskQueue
         _uiTaskQueue = [()->Void]()
         
