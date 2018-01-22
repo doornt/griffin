@@ -191,7 +191,7 @@ extension ComponentManager {
     func createRootView(_ instanceId:String) -> Void {
         assert(Thread.current == self._componentThread, "createRootView should be called in _componentThread")
         
-        let component = DivView.init(ref: instanceId, styles: ["background-color":"#FF0000",
+        let component = DivView.init(ref: instanceId, styles: ["background-color":"#FFFFFF",
                                                                "height":Environment.instance.screenHeight,
                                                                "width":Environment.instance.screenWidth,
                                                                "top":0,

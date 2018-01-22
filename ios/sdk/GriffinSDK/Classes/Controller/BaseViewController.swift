@@ -78,6 +78,9 @@ class BaseViewController : UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        self.navigationController?.setNavigationBarHidden(true, animated: true)
+        
         dispatchVCLifeCycle2Js(period: ViewControllerLifeCycle.ViewWillAppear.rawValue)
     }
     
@@ -88,6 +91,8 @@ class BaseViewController : UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
         dispatchVCLifeCycle2Js(period: ViewControllerLifeCycle.ViewWillDisappear.rawValue)
     }
     

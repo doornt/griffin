@@ -27,7 +27,7 @@ class Label: ViewComponent {
     
     private func _config(styles:Dictionary<String,Any>) {
         _text = Utils.any2String(styles["text"]) ?? ""
-        _textColorString = Utils.any2String(styles["textColor"]) ?? "#333333"
+        _textColorString = Utils.any2String(styles["color"]) ?? "#333333"
     }
     
     override func loadView() -> UIView {
