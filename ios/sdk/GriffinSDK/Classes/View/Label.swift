@@ -58,8 +58,6 @@ class Label: ViewComponent {
         
         self._needsLayout = true
         
-//        label.sizeThatFits(<#T##size: CGSize##CGSize#>)
-//        label.sizeToFit()
     }
 
     override func updateWithStyle(_ styles: Dictionary<String, Any>) {

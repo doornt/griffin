@@ -8,6 +8,8 @@
 
 import UIKit
 
+
+
 class Utils {
     
     class func any2Int(_ obj: Any?) -> Int? {
@@ -16,6 +18,10 @@ class Utils {
     
     class func any2CGFloat(_ obj: Any?) -> CGFloat? {
         return obj as? CGFloat
+    }
+    
+    class func any2Float(_ obj: Any?) -> Float? {
+        return obj as? Float
     }
     
     class func any2String(_ obj: Any?) -> String? {
@@ -56,3 +62,5 @@ class Utils {
         )
     }
 }
+
+

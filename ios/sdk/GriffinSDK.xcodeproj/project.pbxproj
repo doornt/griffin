@@ -45,6 +45,7 @@
 		DB2FFE6F2007159C001C4908 /* YGLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = DB2FFE5C2007159C001C4908 /* YGLayout.m */; };
 		DB2FFE712007159C001C4908 /* UIView+Yoga.m in Sources */ = {isa = PBXBuildFile; fileRef = DB2FFE5E2007159C001C4908 /* UIView+Yoga.m */; };
 		DB2FFE722007159C001C4908 /* YGLayoutExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2FFE5F2007159C001C4908 /* YGLayoutExtensions.swift */; };
+		DB6CC19F2014CF1000F783FF /* DictionaryExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6CC19E2014CF1000F783FF /* DictionaryExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -88,6 +89,7 @@
 		DB2FFE5E2007159C001C4908 /* UIView+Yoga.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Yoga.m"; sourceTree = "<group>"; };
 		DB2FFE5F2007159C001C4908 /* YGLayoutExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YGLayoutExtensions.swift; sourceTree = "<group>"; };
 		DB2FFE79200B9F37001C4908 /* GriffinSDK-Swift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GriffinSDK-Swift.h"; sourceTree = "<group>"; };
+		DB6CC19E2014CF1000F783FF /* DictionaryExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -172,6 +174,7 @@
 				DB2FFE0B200712DC001C4908 /* NetworkManager.swift */,
 				DB2FFE0C200712DC001C4908 /* Utils.swift */,
 				DB2FFE0D200712DC001C4908 /* Constent.swift */,
+				DB6CC19E2014CF1000F783FF /* DictionaryExtension.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -373,6 +376,7 @@
 				DB2FFE40200712DD001C4908 /* RootViewController.swift in Sources */,
 				DB2FFE38200712DD001C4908 /* GriffinDiskCache.swift in Sources */,
 				DB2FFE692007159C001C4908 /* YGNodeList.c in Sources */,
+				DB6CC19F2014CF1000F783FF /* DictionaryExtension.swift in Sources */,
 				DB2FFE3D200712DD001C4908 /* Utils.swift in Sources */,
 				DB2FFE33200712DC001C4908 /* Exports.swift in Sources */,
 			);
