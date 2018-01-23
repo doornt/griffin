@@ -239,6 +239,9 @@ class LayoutStyle{
             case "center":
                 self.justifyContent = YGJustifyCenter
                 break
+            case "space-between":
+                self.justifyContent = YGJustifySpaceBetween
+                break
             default:
                 break
             }
