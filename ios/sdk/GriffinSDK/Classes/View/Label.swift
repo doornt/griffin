@@ -18,6 +18,7 @@ class Label: ViewComponent {
     
     private var _text: String = ""
     private var _textColorString: String = "#333333"
+    private var _fontSize: CGFloat?
     
     required init(ref:String,styles:Dictionary<String,Any>) {
         super.init(ref: ref, styles: styles)
@@ -28,6 +29,7 @@ class Label: ViewComponent {
     private func _config(styles:Dictionary<String,Any>) {
         _text = Utils.any2String(styles["text"]) ?? ""
         _textColorString = Utils.any2String(styles["color"]) ?? "#333333"
+        _fontSize = Utils.any2CGFloat(styles["font-size"])
     }
     
     override func loadView() -> UIView {
@@ -45,6 +47,11 @@ class Label: ViewComponent {
         
         if Utils.hexString2UIColor(_textColorString) != nil {
             label.textColor = Utils.hexString2UIColor(_textColorString)
+        }
+        
+        if _fontSize != nil {
+            label.font = UIFont.systemFont(ofSize: _fontSize!)
+            
         }
         
         if label.layer.cornerRadius > 0 {
