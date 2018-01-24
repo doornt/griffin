@@ -47,7 +47,7 @@ class ImageView : ViewComponent {
             return
         }
         
-//        imageView.setGriffinImage(with: _imageUrl)
+        imageView.setGriffinImage(with: _imageUrl!)
         
         if imageView.layer.cornerRadius > 0 {
             imageView.layer.masksToBounds = true
