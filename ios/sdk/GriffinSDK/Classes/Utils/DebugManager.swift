@@ -15,6 +15,8 @@ class DebugManager {
        return DebugManager()
     }()
     
+    static var errorCount = 0
+    
     private init() {
         startFetchJSFile(isFirst: "1")
     }
@@ -24,6 +26,10 @@ class DebugManager {
         NetworkManager.instance.get(url: urlString, params: ["isFirst": isFirst], completionHandler: {
             [weak self] (data, error) in
             guard let data = data as? [String: String] else {
+                DebugManager.errorCount += 1
+                if (DebugManager.errorCount > 3) {
+                    return
+                }
                 self?.startFetchJSFile(isFirst: "0")
                 return
             }
@@ -31,6 +37,7 @@ class DebugManager {
         
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "FileChanged"), object: nil, userInfo: ["script": data["data"]!])
             
+            DebugManager.errorCount = 0
             self?.startFetchJSFile(isFirst: "0")
         })
     }
