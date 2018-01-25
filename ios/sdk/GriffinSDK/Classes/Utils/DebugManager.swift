@@ -16,19 +16,22 @@ class DebugManager {
     }()
     
     private init() {
-        startFetchJSFile()
+        startFetchJSFile(isFirst: "1")
     }
     
-    private func startFetchJSFile() {
+    private func startFetchJSFile(isFirst: String) {
         let urlString = "http://127.0.0.1:8081/"
-        NetworkManager.instance.get(url: urlString, params: nil, completionHandler: {
+        NetworkManager.instance.get(url: urlString, params: ["isFirst": isFirst], completionHandler: {
             [weak self] (data, error) in
             guard let data = data as? [String: String] else {
+                self?.startFetchJSFile(isFirst: "0")
                 return
             }
             
-            let _ = JSCoreBridge.instance.executeJavascript(script: data["data"]!)
-            self?.startFetchJSFile()
+        
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "FileChanged"), object: nil, userInfo: ["script": data["data"]!])
+            
+            self?.startFetchJSFile(isFirst: "0")
         })
     }
 }

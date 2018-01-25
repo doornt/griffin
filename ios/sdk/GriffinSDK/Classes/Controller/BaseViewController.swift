@@ -54,16 +54,18 @@ class BaseViewController : UIViewController {
         self.sourceUrl = url
     }
 
+    @objc func handleFileChanged(_ notification: Notification) {
+        self.rootView?.removeFromSuperview()
+        self.rootView = nil
+        let _ = JSCoreBridge.instance.executeJavascript(script: notification.userInfo!["script"] as! String)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.renderWithUrl()
-
-        let urlString = "http://127.0.0.1:8081/"
-        NetworkManager.instance.get(url: urlString, params: nil, completionHandler: {
-            (data, error) in
-            print(data ?? "")
-        })
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(handleFileChanged(_:)), name: NSNotification.Name(rawValue: "FileChanged"), object: nil)
         
 //        let imageView = UIImageView.init(frame: CGRect.init(x: 0, y: 64, width: 100, height: 100))
 //        self.view .addSubview(imageView)
@@ -120,5 +122,9 @@ class BaseViewController : UIViewController {
     
     private func dispatchVCLifeCycle2Js(period: String) {
 //        JSCoreBridge.instance.dispatchEventToJs(rootviewId: rootView?.instanceId ?? "", data: ["type": period])
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 }
