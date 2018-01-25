@@ -31,19 +31,21 @@ class BaseViewController : UIViewController {
     }
     
     private func renderWithUrl(){
-        if sourceUrl == nil{
-            return
-        }
-        if FileManager.default.fileExists(atPath:sourceUrl!.path){
-            do{
-                let jsSourceContents = try String(contentsOfFile:sourceUrl!.path)
-                let _ = JSCoreBridge.instance.executeJavascript(script: jsSourceContents)
-            }
-            catch{
-                print(error.localizedDescription)
-            }
-            
-        }
+        let _ = DebugManager.instance
+        
+//        if sourceUrl == nil{
+//            return
+//        }
+//        if FileManager.default.fileExists(atPath:sourceUrl!.path){
+//            do{
+//                let jsSourceContents = try String(contentsOfFile:sourceUrl!.path)
+//                let _ = JSCoreBridge.instance.executeJavascript(script: jsSourceContents)
+//            }
+//            catch{
+//                print(error.localizedDescription)
+//            }
+//
+//        }
     }
     
     convenience init(url:URL?){
@@ -57,11 +59,11 @@ class BaseViewController : UIViewController {
         
         self.renderWithUrl()
 
-//        let urlString = "http://api.ffan.com/travelHotel/v1/getRecommendBanner"
-//        NetworkManager.instance.get(url: urlString, params: ["InterfaceVersion":"2"], completionHandler: {
-//            (data, error) in
-//            print(data ?? "")
-//        })
+        let urlString = "http://127.0.0.1:8081/"
+        NetworkManager.instance.get(url: urlString, params: nil, completionHandler: {
+            (data, error) in
+            print(data ?? "")
+        })
         
 //        let imageView = UIImageView.init(frame: CGRect.init(x: 0, y: 64, width: 100, height: 100))
 //        self.view .addSubview(imageView)
