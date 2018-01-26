@@ -55,9 +55,11 @@ class BaseViewController : UIViewController {
     }
 
     @objc func handleFileChanged(_ notification: Notification) {
-        self.rootView?.removeFromSuperview()
-        self.rootView = nil
-        let _ = JSCoreBridge.instance.executeJavascript(script: notification.userInfo!["script"] as! String)
+        DispatchQueue.main.async {
+            self.rootView?.removeFromSuperview()
+            self.rootView = nil
+            let _ = JSCoreBridge.instance.executeJavascript(script: notification.userInfo!["script"] as! String)
+        }
     }
     
     override func viewDidLoad() {
