@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import JavaScriptCore
 
 extension Dictionary where Key == String {
     
@@ -20,5 +21,8 @@ extension Dictionary where Key == String {
 
     func toString(key:String)->String?{
         return self[key] as? String
+    }
+    func toJSValue(key:String)->JSValue?{
+        return self[key] as? JSValue
     }
 }

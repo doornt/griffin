@@ -27,7 +27,8 @@ class ViewComponent {
     
     private var _backgroundColor:String?
     private var _alpha: CGFloat?
-
+    
+    private var _clickHandler: String?
     
     private var _styles:Dictionary<String,Any> = [:]
     
@@ -54,6 +55,9 @@ class ViewComponent {
                 self._needsLayout = true
             }
             
+            if let click = newValue.toString(key: "click"){
+                self._clickHandler = click
+            }
         }
         get{
             return [:]
@@ -87,6 +91,9 @@ class ViewComponent {
             self._view?.backgroundColor = Utils.hexString2UIColor(_backgroundColor)
         }
    
+        if _clickHandler != nil{
+//            self.addTapGesture()
+        }
         
 //        self._view?.clipsToBounds = _isOverflow
 //        self._view?.alpha = _alpha
@@ -210,11 +217,6 @@ extension ViewComponent {
     }
     
     @objc func handleTap(_ sender: UITapGestureRecognizer) {
-        guard let clicks = self._events["click"] else {
-            return
-        }
-        for click in clicks {
-            click.callWithoutArguments()
-        }
+        print("handleTap")
     }
 }
