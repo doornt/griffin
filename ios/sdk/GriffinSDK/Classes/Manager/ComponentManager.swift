@@ -144,6 +144,10 @@ class ComponentManager: NSObject {
             }
         }
     }
+    
+    public var rootComponent: ViewComponent {
+        return self._rootComponent!
+    }
 }
 
 extension ComponentManager {

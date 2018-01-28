@@ -72,6 +72,20 @@ public class Engine {
             }
         }
     }
+    
+    private let navigatorPush:@convention(block)(String, Bool, JSValue)-> Void = {
+        url, animated, callback in
+        DispatchQueue.main.async {
+            print("\(animated) \(url)")
+        }
+    }
+    
+    private let navigatorPop:@convention(block)(Bool, JSValue)-> Void = {
+        animated, callback in
+        DispatchQueue.main.async {
+            print(animated)
+        }
+    }
 }
 
 // MARK: - Register
@@ -110,5 +124,8 @@ private extension Engine {
         
         // MARK: Network
         JSCoreBridge.instance.register(method: fetch, script: "fetch")
+        
+        JSCoreBridge.instance.register(method: navigatorPush, script: "NavigatorPush")
+        JSCoreBridge.instance.register(method: navigatorPop, script: "NavigatorPop")
     }
 }

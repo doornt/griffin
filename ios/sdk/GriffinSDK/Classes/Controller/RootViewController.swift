@@ -15,4 +15,6 @@ public class RootViewController : UINavigationController{
         self.init(rootViewController: root)
         ComponentManager.instance.setRootController(root: root)
     }
+    
+    
 }

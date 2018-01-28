@@ -66,19 +66,6 @@ class BaseViewController : UIViewController {
         super.viewDidLoad()
         
         self.renderWithUrl()
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(handleFileChanged(_:)), name: NSNotification.Name(rawValue: "FileChanged"), object: nil)
-        
-//        let imageView = UIImageView.init(frame: CGRect.init(x: 0, y: 64, width: 100, height: 100))
-//        self.view .addSubview(imageView)
-//        imageView.backgroundColor = .red
-//        imageView.setGriffinImage(with: "https://op.meituan.net/oppkit_pic/2ndfloor_portal_headpic/157e291c008894a2db841f0dda0d64c.png")
-
-//        let home = NSHomeDirectory()
-//        let cache = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true)
-//        print("\n home: \(home) cache: \(cache)")
-
-        
         dispatchVCLifeCycle2Js(period: ViewControllerLifeCycle.ViewDidLoad.rawValue)
     }
     
@@ -87,6 +74,8 @@ class BaseViewController : UIViewController {
         
         self.navigationController?.setNavigationBarHidden(true, animated: true)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(handleFileChanged(_:)), name: NSNotification.Name(rawValue: "FileChanged"), object: nil)
+
         dispatchVCLifeCycle2Js(period: ViewControllerLifeCycle.ViewWillAppear.rawValue)
     }
     
@@ -99,6 +88,9 @@ class BaseViewController : UIViewController {
         super.viewWillDisappear(animated)
         
         self.navigationController?.setNavigationBarHidden(false, animated: true)
+        
+        NotificationCenter.default.removeObserver(self)
+        
         dispatchVCLifeCycle2Js(period: ViewControllerLifeCycle.ViewWillDisappear.rawValue)
     }
     
@@ -124,9 +116,5 @@ class BaseViewController : UIViewController {
     
     private func dispatchVCLifeCycle2Js(period: String) {
 //        JSCoreBridge.instance.dispatchEventToJs(rootviewId: rootView?.instanceId ?? "", data: ["type": period])
-    }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
     }
 }

@@ -92,7 +92,7 @@ class ViewComponent {
         }
    
         if _clickHandler != nil{
-//            self.addTapGesture()
+            self.addTapGesture()
         }
         
 //        self._view?.clipsToBounds = _isOverflow
@@ -217,6 +217,6 @@ extension ViewComponent {
     }
     
     @objc func handleTap(_ sender: UITapGestureRecognizer) {
-        print("handleTap")
+        JSCoreBridge.instance.dispatchEventToJs(rootviewId: ComponentManager.instance.rootComponent.ref, data: ["nodeId":self.ref, "event": "click"])
     }
 }

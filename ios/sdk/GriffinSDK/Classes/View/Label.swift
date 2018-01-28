@@ -12,16 +12,9 @@ class Label: ViewComponent {
     
     private lazy var _label: UILabel = {
         let label = UILabel.init()
-        label.isUserInteractionEnabled = true
-        let tap = UITapGestureRecognizer.init(target: self, action: #selector(handleClick))
-        label.addGestureRecognizer(tap)
-        label.backgroundColor = .blue
         return label
     }()
     
-    @objc private func handleClick() {
-        
-    }
     private var _text: String = ""
     private var _textColorString: String = "#333333"
     private var _fontSize: CGFloat?
@@ -63,11 +56,11 @@ class Label: ViewComponent {
         if label.layer.cornerRadius > 0 {
             label.layer.masksToBounds = true
         }
-        label.backgroundColor = .blue
+
         let size = label.sizeThatFits(CGSize(width: CGFloat(self.layout.width.value), height: CGFloat(self.layout.height.value)))
         
         self.layout.width = YGValue(size.width)
-        self.layout.height = 100;//YGValue(size.height)
+        self.layout.height = YGValue(size.height)
         
         self._needsLayout = true
         
