@@ -31,8 +31,9 @@ class BaseViewController : UIViewController {
     }
     
     private func renderWithUrl(){
-        let _ = DebugManager.instance
+        let instance = DebugManager.instance
         
+        instance.logToServer()
 //        if sourceUrl == nil{
 //            return
 //        }

@@ -51,7 +51,37 @@ class NetworkManager {
         task.resume()
     }
     
-    func post(url: String) -> Void {
+    func post(url: String, params: [String: String]?, completionHandler: ((Any?, Error?) -> Void)?) -> Void {
+        guard let url = URL(string: url) else {
+            return
+        }
+        
+        let mutableReq = NSMutableURLRequest.init(url: url)
+        mutableReq.httpMethod = "POST"
+        
+        if params != nil {
+            mutableReq.httpBody =  params!.toJsonString()?.data(using: String.Encoding.utf8)
+        }
+        
+        mutableReq.url = url
+        
+        let task = URLSession.shared.dataTask(with: mutableReq as URLRequest) { (data, response, error) in
+            
+            if let error = error {
+                completionHandler?(nil, error)
+                return
+            }
+            
+            guard let data = data else {
+                return
+            }
+            
+            let jsonData = try? JSONSerialization.jsonObject(with: data, options: [])
+            
+            completionHandler?(jsonData, nil)
+        }
+        
+        task.resume()
         
     }
 }

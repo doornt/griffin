@@ -25,4 +25,15 @@ extension Dictionary where Key == String {
     func toJSValue(key:String)->JSValue?{
         return self[key] as? JSValue
     }
+    
+    func toJsonString() -> String? {
+        if !JSONSerialization.isValidJSONObject(self) {
+            return nil
+        }
+        
+        guard let data = try? JSONSerialization.data(withJSONObject: self, options: .prettyPrinted) else {
+            return nil
+        }
+        return String.init(data: data, encoding: .utf8)
+    }
 }

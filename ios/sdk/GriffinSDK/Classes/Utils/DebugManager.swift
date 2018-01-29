@@ -41,4 +41,11 @@ class DebugManager {
             self?.startFetchJSFile(isFirst: "0")
         })
     }
+    
+    public func logToServer() {
+        let urlString = "http://127.0.0.1:8081/log"
+        NetworkManager.instance.post(url: urlString, params: ["isFirst": "isfor"], completionHandler: {
+            (data, error) in
+        })
+    }
 }
