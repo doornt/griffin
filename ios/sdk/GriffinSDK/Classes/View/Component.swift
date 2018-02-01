@@ -34,8 +34,6 @@ class ViewComponent {
     var _needsLayout:Bool = true
     
     required init(ref:String,styles:Dictionary<String,Any>) {
-        Log.LogInfo("ref:\(ref); styles: \(styles)")
-        
         self.ref = ref
         
         self.styles = styles

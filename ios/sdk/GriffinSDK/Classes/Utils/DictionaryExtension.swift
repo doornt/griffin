@@ -21,4 +21,8 @@ extension Dictionary where Key == String {
     func toString(key:String)->String?{
         return self[key] as? String
     }
+    
+    func toBool(key:String)->Bool?{
+        return self[key] as? Bool
+    }
 }

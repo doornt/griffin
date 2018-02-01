@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		A36387B9200790C0009FA82F /* GriffinSDK-Bridging-Header.h in Headers */ = {isa = PBXBuildFile; fileRef = A36387B8200790C0009FA82F /* GriffinSDK-Bridging-Header.h */; };
+		DB0427912014D80400285A06 /* Slider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0427902014D80400285A06 /* Slider.swift */; };
 		DB2FFE30200712DC001C4908 /* JSCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2FFDFC200712DC001C4908 /* JSCore.swift */; };
 		DB2FFE31200712DC001C4908 /* LayoutStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2FFDFE200712DC001C4908 /* LayoutStyle.swift */; };
 		DB2FFE32200712DC001C4908 /* Component+Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2FFDFF200712DC001C4908 /* Component+Layout.swift */; };
@@ -50,6 +51,7 @@
 
 /* Begin PBXFileReference section */
 		A36387B8200790C0009FA82F /* GriffinSDK-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GriffinSDK-Bridging-Header.h"; sourceTree = "<group>"; };
+		DB0427902014D80400285A06 /* Slider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Slider.swift; sourceTree = "<group>"; };
 		DB2FFDD12007126E001C4908 /* GriffinSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GriffinSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB2FFDFC200712DC001C4908 /* JSCore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSCore.swift; sourceTree = "<group>"; };
 		DB2FFDFE200712DC001C4908 /* LayoutStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutStyle.swift; sourceTree = "<group>"; };
@@ -215,6 +217,7 @@
 				DB2FFE16200712DC001C4908 /* Div.swift */,
 				DB2FFE17200712DC001C4908 /* Component.swift */,
 				DB2FFE18200712DC001C4908 /* ImageView.swift */,
+				DB0427902014D80400285A06 /* Slider.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -353,6 +356,7 @@
 				DB2FFE41200712DD001C4908 /* ComponentManager.swift in Sources */,
 				DB2FFE662007159C001C4908 /* YGEnums.c in Sources */,
 				DB2FFE6F2007159C001C4908 /* YGLayout.m in Sources */,
+				DB0427912014D80400285A06 /* Slider.swift in Sources */,
 				DB2FFE47200712DD001C4908 /* Engine.swift in Sources */,
 				DB2FFE30200712DC001C4908 /* JSCore.swift in Sources */,
 				DB2FFE682007159C001C4908 /* Yoga.c in Sources */,
