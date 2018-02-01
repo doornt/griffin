@@ -12,22 +12,23 @@ class Label: ViewComponent {
     
     private lazy var _label: UILabel = {
         let label = UILabel.init()
-        label.isUserInteractionEnabled = false
-        return UILabel.init()
+        return label
     }()
     
     private var _text: String = ""
     private var _textColorString: String = "#333333"
+    private var _fontSize: CGFloat?
     
-    required init(ref:String,styles:Dictionary<String,Any>) {
-        super.init(ref: ref, styles: styles)
+    required init(ref:String,styles:Dictionary<String,Any>,props:Dictionary<String,Any>) {
+        super.init(ref: ref, styles: styles,props: props)
         
         _config(styles: styles)
     }
     
     private func _config(styles:Dictionary<String,Any>) {
         _text = Utils.any2String(styles["text"]) ?? ""
-        _textColorString = Utils.any2String(styles["textColor"]) ?? "#333333"
+        _textColorString = Utils.any2String(styles["color"]) ?? "#333333"
+        _fontSize = Utils.any2CGFloat(styles["font-size"])
     }
     
     override func loadView() -> UIView {
@@ -47,10 +48,15 @@ class Label: ViewComponent {
             label.textColor = Utils.hexString2UIColor(_textColorString)
         }
         
+        if _fontSize != nil {
+            label.font = UIFont.systemFont(ofSize: _fontSize!)
+            
+        }
+        
         if label.layer.cornerRadius > 0 {
             label.layer.masksToBounds = true
         }
-        
+
         let size = label.sizeThatFits(CGSize(width: CGFloat(self.layout.width.value), height: CGFloat(self.layout.height.value)))
         
         self.layout.width = YGValue(size.width)

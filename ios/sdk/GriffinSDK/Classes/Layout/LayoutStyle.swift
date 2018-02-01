@@ -101,10 +101,38 @@ class LayoutStyle{
     var flexShrink:CGFloat?
     var flexBasis:YGValue?
     
-    var left:YGValue?
-    var top:YGValue?
-    var right:YGValue?
-    var bottom:YGValue?
+    var left:YGValue {
+        get {
+            return YGNodeStyleGetPosition(self.node, YGEdgeLeft)
+        }
+        set {
+            YGNodeStyleSetPosition(self.node, YGEdgeLeft, newValue.value)
+        }
+    }
+    var top:YGValue {
+        get {
+            return YGNodeStyleGetPosition(self.node, YGEdgeTop)
+        }
+        set {
+            YGNodeStyleSetPosition(self.node,YGEdgeTop, newValue.value)
+        }
+    }
+    var right:YGValue {
+        get {
+            return YGNodeStyleGetPosition(self.node, YGEdgeRight)
+        }
+        set {
+            YGNodeStyleSetPosition(self.node, YGEdgeRight, newValue.value)
+        }
+    }
+    var bottom:YGValue {
+        get {
+            return YGNodeStyleGetPosition(self.node, YGEdgeBottom)
+        }
+        set {
+            YGNodeStyleSetPosition(self.node, YGEdgeBottom, newValue.value)
+        }
+    }
     var start:YGValue?
     var end:YGValue?
     
@@ -210,6 +238,14 @@ class LayoutStyle{
         
         self.display = YGDisplayFlex
         
+        if let left = Utils.any2CGFloat(styles["left"]){
+            self.left = YGValue(left)
+        }
+        
+        if let top = Utils.any2CGFloat(styles["top"]){
+            self.top = YGValue(top)
+        }
+        
         if let direction = styles["flex-direction"] as? String{
             switch(direction){
             case "row":
@@ -238,6 +274,15 @@ class LayoutStyle{
             switch(j_t){
             case "center":
                 self.justifyContent = YGJustifyCenter
+                break
+            case "space-between":
+                self.justifyContent = YGJustifySpaceBetween
+                break
+            case "space-around":
+                self.justifyContent = YGJustifySpaceAround
+                break
+            case "flex-start":
+                self.justifyContent = YGJustifyFlexStart
                 break
             default:
                 break
@@ -282,6 +327,7 @@ class LayoutStyle{
     func update(){
         self.applyLayoutPreservingOrigin(preserveOrigin: true)
         YGNodePrint(node,YGPrintOptions(rawValue: YGPrintOptions.RawValue(UInt8(YGPrintOptionsLayout.rawValue)|UInt8(YGPrintOptionsStyle.rawValue)|UInt8(YGPrintOptionsChildren.rawValue))))
+        print("\n")
     }
     
     var isLeaf:Bool{

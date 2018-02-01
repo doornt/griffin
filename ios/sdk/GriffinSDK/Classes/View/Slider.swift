@@ -14,9 +14,10 @@ class SliderView : DivView{
     
     private var _autoPlay:Bool = false
     
-    required init(ref: String, styles: Dictionary<String, Any>) {
-        super.init(ref: ref, styles: styles)
+    required init(ref: String, styles: Dictionary<String, Any>,props:Dictionary<String, Any>) {
+        super.init(ref: ref, styles: styles, props: props)
     }
+    
     
     override var styles: Dictionary<String, Any>{
         get{

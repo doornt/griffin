@@ -31,19 +31,22 @@ class BaseViewController : UIViewController {
     }
     
     private func renderWithUrl(){
-        if sourceUrl == nil{
-            return
-        }
-        if FileManager.default.fileExists(atPath:sourceUrl!.path){
-            do{
-                let jsSourceContents = try String(contentsOfFile:sourceUrl!.path)
-                let _ = JSCoreBridge.instance.executeJavascript(script: jsSourceContents)
-            }
-            catch{
-                print(error.localizedDescription)
-            }
-            
-        }
+        let instance = DebugManager.instance
+        
+        instance.logToServer()
+//        if sourceUrl == nil{
+//            return
+//        }
+//        if FileManager.default.fileExists(atPath:sourceUrl!.path){
+//            do{
+//                let jsSourceContents = try String(contentsOfFile:sourceUrl!.path)
+//                let _ = JSCoreBridge.instance.executeJavascript(script: jsSourceContents)
+//            }
+//            catch{
+//                print(error.localizedDescription)
+//            }
+//
+//        }
     }
     
     convenience init(url:URL?){
@@ -52,32 +55,28 @@ class BaseViewController : UIViewController {
         self.sourceUrl = url
     }
 
+    @objc func handleFileChanged(_ notification: Notification) {
+        DispatchQueue.main.async {
+            self.rootView?.removeFromSuperview()
+            self.rootView = nil
+            let _ = JSCoreBridge.instance.executeJavascript(script: notification.userInfo!["script"] as! String)
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.renderWithUrl()
-
-//        let urlString = "http://api.ffan.com/travelHotel/v1/getRecommendBanner"
-//        NetworkManager.instance.get(url: urlString, params: ["InterfaceVersion":"2"], completionHandler: {
-//            (data, error) in
-//            print(data ?? "")
-//        })
-        
-//        let imageView = UIImageView.init(frame: CGRect.init(x: 0, y: 64, width: 100, height: 100))
-//        self.view .addSubview(imageView)
-//        imageView.backgroundColor = .red
-//        imageView.setGriffinImage(with: "https://op.meituan.net/oppkit_pic/2ndfloor_portal_headpic/157e291c008894a2db841f0dda0d64c.png")
-
-//        let home = NSHomeDirectory()
-//        let cache = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true)
-//        print("\n home: \(home) cache: \(cache)")
-
-        
         dispatchVCLifeCycle2Js(period: ViewControllerLifeCycle.ViewDidLoad.rawValue)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        self.navigationController?.setNavigationBarHidden(true, animated: true)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(handleFileChanged(_:)), name: NSNotification.Name(rawValue: "FileChanged"), object: nil)
+
         dispatchVCLifeCycle2Js(period: ViewControllerLifeCycle.ViewWillAppear.rawValue)
     }
     
@@ -88,6 +87,11 @@ class BaseViewController : UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        
+        NotificationCenter.default.removeObserver(self)
+        
         dispatchVCLifeCycle2Js(period: ViewControllerLifeCycle.ViewWillDisappear.rawValue)
     }
     

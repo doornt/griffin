@@ -13,14 +13,14 @@ class ImageView : ViewComponent {
     private lazy var _imageView: UIImageView = {
         let imageview = UIImageView.init()
         imageview.isUserInteractionEnabled = false
-        return UIImageView.init()
+        return imageview
     }()
     
     private var _imageUrl: String?
     
-    required init(ref:String,styles:Dictionary<String,Any>) {
+    required init(ref:String,styles:Dictionary<String,Any>,props:Dictionary<String,Any>) {
         
-        super.init(ref: ref, styles: styles)
+        super.init(ref: ref, styles: styles, props: props)
     }
     
     override var styles: Dictionary<String, Any>{
@@ -47,7 +47,7 @@ class ImageView : ViewComponent {
             return
         }
         
-//        imageView.setGriffinImage(with: _imageUrl)
+        imageView.setGriffinImage(with: _imageUrl!)
         
         if imageView.layer.cornerRadius > 0 {
             imageView.layer.masksToBounds = true

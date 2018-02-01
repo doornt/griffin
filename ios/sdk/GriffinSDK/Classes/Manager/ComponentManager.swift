@@ -144,6 +144,10 @@ class ComponentManager: NSObject {
             }
         }
     }
+    
+    public var rootComponent: ViewComponent {
+        return self._rootComponent!
+    }
 }
 
 extension ComponentManager {
@@ -191,11 +195,11 @@ extension ComponentManager {
     func createRootView(_ instanceId:String) -> Void {
         assert(Thread.current == self._componentThread, "createRootView should be called in _componentThread")
         
-        let component = DivView.init(ref: instanceId, styles: ["background-color":"#FF0000",
+        let component = DivView.init(ref: instanceId, styles: ["background-color":"#FFFFFF",
                                                                "height":Environment.instance.screenHeight,
                                                                "width":Environment.instance.screenWidth,
                                                                "top":0,
-                                                               "left":0])
+                                                               "left":0],props: [:])
         _components[instanceId] = component
         self._rootComponent = component
         _addUITask {
@@ -252,7 +256,7 @@ extension ComponentManager {
             return nil
         }
         
-        let viewComponent: ViewComponent =  typeClass.init(ref: instanceId, styles: data["styles"] as![String:Any])
+        let viewComponent: ViewComponent =  typeClass.init(ref: instanceId, styles: data["styles"] as![String:Any],props:data["props"] as! [String:Any])
         _components[instanceId] = viewComponent
         return viewComponent
     }

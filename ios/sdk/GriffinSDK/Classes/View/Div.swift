@@ -11,11 +11,12 @@ import UIKit
 class DivView : ViewComponent {
     
     private lazy var _divView: UIView = {
-        return UIView.init()
+        let view = UIView.init()
+        return view
     }()
-
-    required init(ref:String,styles:Dictionary<String,Any>) {
-        super.init(ref: ref, styles: styles)
+    
+    required init(ref:String,styles:Dictionary<String,Any>,props:Dictionary<String,Any>) {
+        super.init(ref: ref, styles: styles, props:props)
     }
     
     override func loadView() -> UIView {
