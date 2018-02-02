@@ -23,6 +23,12 @@ class ImageView : ViewComponent {
         super.init(ref: ref, styles: styles, props: props)
     }
     
+    override func updateProps(_ props: Dictionary<String, Any>) {
+        if let url = props.toString(key: "url"){
+            _imageUrl = url
+        }
+    }
+    
     override var styles: Dictionary<String, Any>{
         get{
             return super.styles
@@ -30,9 +36,7 @@ class ImageView : ViewComponent {
         set{
             super.styles = newValue
             
-            if let url = newValue.toString(key: "url"){
-                _imageUrl = url
-            }
+            
         }
     }
     

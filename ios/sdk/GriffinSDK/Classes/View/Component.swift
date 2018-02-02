@@ -28,7 +28,7 @@ class ViewComponent {
     private var _backgroundColor:String?
     private var _alpha: CGFloat?
     
-    private var _clickHandler: String?
+    private var _clickable: Bool = false
     
     private var _styles:Dictionary<String,Any> = [:]
     
@@ -38,6 +38,8 @@ class ViewComponent {
         self.ref = ref
         
         self.styles = styles
+        
+        self.updateProps(props)
         
         self.initLayoutWithStyles(styles: styles)
     }
@@ -53,14 +55,18 @@ class ViewComponent {
                 self._needsLayout = true
             }
             
-            if let click = newValue.toString(key: "click"){
-                self._clickHandler = click
-            }
+            
         }
         get{
             return [:]
         }
 
+    }
+    
+    func updateProps(_ props:Dictionary<String,Any>){
+        if let click = props.toString(key: "click"){
+            self._clickable = true
+        }
     }
 
     
@@ -89,7 +95,7 @@ class ViewComponent {
             self._view?.backgroundColor = Utils.hexString2UIColor(_backgroundColor)
         }
    
-        if _clickHandler != nil{
+        if _clickable{
             self.addTapGesture()
         }
         
