@@ -1,3 +1,4 @@
+
 import { BaseComponent, launchWithComponent} from 'griffin-render'
 
 let pugJson = require(__dirname + '/template/main.pug')

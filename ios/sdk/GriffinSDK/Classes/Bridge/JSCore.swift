@@ -27,6 +27,12 @@ extension JSCoreBridge {
     func executeJavascript(script:String) {
         if Thread.current === self._thread {
             self._jsContext.evaluateScript(script)
+            self.loaded = true
+            
+            for o in self._methodQueue{
+                let obj = o as! Dictionary<String,Any>
+                self.callJs(method: obj["method"] as! String, args: obj["args"] as! Array<Any>)
+            }
         } else {
             self._jsContext.perform(#selector(self._jsContext.evaluateScript(_:)), on: self._thread!, with: script, waitUntilDone: false)
         }
@@ -34,7 +40,11 @@ extension JSCoreBridge {
     
     func callJs(method:String,args:Array<Any>){
         if Thread.current == self._thread {
-            self._callJsMethod(dict: ["method" :method, "args": args])
+            if self.loaded{
+                self._callJsMethod(dict: ["method" :method, "args": args])
+            }else{
+                self._methodQueue.append(["method":method,"args":args])
+            }
         } else {
             perform(#selector(self._callJsMethod), on: self._thread!, with: ["method" :method, "args": args], waitUntilDone: false)
         }
@@ -42,6 +52,15 @@ extension JSCoreBridge {
     
     @objc private func _callJsMethod(dict:[String: Any]){
         self._jsContext.globalObject.invokeMethod(Utils.any2String(dict["method"]), withArguments: dict["args"] as! [Any])
+    }
+    
+    @objc func performOnJSThread(block: @convention(block)() -> Void ) {
+        
+        if Thread.current === self._thread {
+            block()
+        } else {
+            self.perform(#selector(self.performOnJSThread(block:)), on: self._thread!, with: block, waitUntilDone: false)
+        }
     }
     
     
@@ -63,6 +82,10 @@ extension JSCoreBridge {
     func callWith(obj: JSValue, agruments: Any?) {
         obj.perform(#selector(obj.call), on: self._thread!, with: [agruments], waitUntilDone: false)
     }
+    
+    func registerClass<T>(cls:T,name:String){
+        self.callJs(method: "registerModule", args: [cls,name])
+    }
 }
 
 class JSCoreBridge: NSObject {
@@ -73,8 +96,12 @@ class JSCoreBridge: NSObject {
     
     private let _jsContext:JSContext = JSContext(virtualMachine: JSVirtualMachine())
     private var _thread: Thread?
+    
+    private var loaded = false
 
     private let _stopRunning = false
+    
+    private var _methodQueue:[Any] = []
     
     private override init() {
         
@@ -134,6 +161,6 @@ class JSCoreBridge: NSObject {
             
             print("\nJS ERROR: \(value) \(moreInfo)")
         }
-        
+                
     }
 }

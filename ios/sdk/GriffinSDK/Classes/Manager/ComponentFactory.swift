@@ -41,7 +41,7 @@ class ComponentFactory {
             Log.LogWarning("\(tag) has already been registered with class \(className)")
         }
         
-        Log.LogInfo("\(tag) has been registered with class \(className) successfully")
+//        Log.LogInfo("\(tag) has been registered with class \(className) successfully")
         
         _componentConfigs[tag] = className
         

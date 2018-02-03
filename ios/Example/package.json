@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/node": "^9.4.0",
     "chokidar": "^2.0.0",
     "express": "^4.16.2",
     "griffin-loader": "0.0.3",

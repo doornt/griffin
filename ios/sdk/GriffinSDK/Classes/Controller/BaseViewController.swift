@@ -31,9 +31,9 @@ class BaseViewController : UIViewController {
     }
     
     private func renderWithUrl(){
-        let instance = DebugManager.instance
+//        let instance = DebugManager.instance
         
-        instance.logToServer()
+//        instance.logToServer()
 //        if sourceUrl == nil{
 //            return
 //        }
@@ -55,13 +55,6 @@ class BaseViewController : UIViewController {
         self.sourceUrl = url
     }
 
-    @objc func handleFileChanged(_ notification: Notification) {
-        DispatchQueue.main.async {
-            self.rootView?.removeFromSuperview()
-            self.rootView = nil
-            let _ = JSCoreBridge.instance.executeJavascript(script: notification.userInfo!["script"] as! String)
-        }
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,8 +68,6 @@ class BaseViewController : UIViewController {
         
         self.navigationController?.setNavigationBarHidden(true, animated: true)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(handleFileChanged(_:)), name: NSNotification.Name(rawValue: "FileChanged"), object: nil)
-
         dispatchVCLifeCycle2Js(period: ViewControllerLifeCycle.ViewWillAppear.rawValue)
     }
     
@@ -89,9 +80,7 @@ class BaseViewController : UIViewController {
         super.viewWillDisappear(animated)
         
         self.navigationController?.setNavigationBarHidden(false, animated: true)
-        
-        NotificationCenter.default.removeObserver(self)
-        
+            
         dispatchVCLifeCycle2Js(period: ViewControllerLifeCycle.ViewWillDisappear.rawValue)
     }
     

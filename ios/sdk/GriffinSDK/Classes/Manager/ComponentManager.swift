@@ -211,7 +211,7 @@ extension ComponentManager {
         
         assert(Thread.current == self._componentThread, "createElement should be called in _componentThread")
         
-        Log.LogInfo("instanceID:\(instanceId) data: \(componentData)")
+//        Log.LogInfo("instanceID:\(instanceId) data: \(componentData)")
         let _ = _buildComponent(instanceId, withData:componentData)
     }
     

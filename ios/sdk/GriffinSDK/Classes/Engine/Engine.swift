@@ -14,8 +14,30 @@ public class Engine {
         return Engine()
     }()
     
+    private var script:String = ""
+    
+    private var _jsCore:JSCoreBridge?
+    
     public func initSDK(){
+        let instance = DebugManager.instance
+        instance.logToServer()
+        
+        self._jsCore = JSCoreBridge.instance
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(handleFileChanged(_:)), name: NSNotification.Name(rawValue: "FileChanged"), object: nil)
+        
+    }
+    
+    @objc func handleFileChanged(_ notification: Notification) {
+        self.script = notification.userInfo!["script"] as! String
+        self.initSDKEnviroment()
+    }
+    
+    private func initSDKEnviroment(){
         registerDefault()
+        JSCoreBridge.instance.performOnJSThread {
+            JSCoreBridge.instance.executeJavascript(script: self.script)
+        }
     }
     
     // MARK: - Component
@@ -94,6 +116,7 @@ private extension Engine {
     func registerDefault() {
         registerComponents()
         registerNativeMethods()
+        registerModules()
     }
     
     // MARK: - Register Component
@@ -105,6 +128,12 @@ private extension Engine {
     
     func registerComponent(_ tag: String, withClass className: AnyClass) {
         ComponentFactory.instance.registerComponent(tag, withClass: className)
+    }
+    
+    func registerModules(){
+        JSCoreBridge.instance.performOnJSThread {
+            JSCoreBridge.instance.registerClass(cls: WebSocket.self, name: "Websocket")
+        }
     }
     
     // MARK: - Register Methods
