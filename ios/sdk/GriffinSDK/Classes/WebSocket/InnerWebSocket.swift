@@ -11,7 +11,7 @@ import Foundation
 
 private class Delegate : NSObject, StreamDelegate {
     @objc func stream(_ aStream: Stream, handle eventCode: Stream.Event){
-//        manager.signal()
+        WebSocketManager.instance.signal()
     }
 }
 
@@ -129,6 +129,11 @@ class InnerWebSocket : Hashable{
         self.inputBytesSize = windowBufferSize
         
         self.delegate = Delegate()
+        self.hashValue = manager.nextId()
+        
+        manager.queue.asyncAfter(deadline: DispatchTime.now() + Double(0) / Double(NSEC_PER_SEC)){
+            self.manager.add(self)
+        }
 
     }
     
@@ -229,8 +234,8 @@ class InnerWebSocket : Hashable{
         (rd, wr) = (rdo!, wro!)
         
         //it doesn't support wss now
-        rd.setProperty(nil, forKey: Stream.PropertyKey.socketSecurityLevelKey)
-        wr.setProperty(nil, forKey: Stream.PropertyKey.socketSecurityLevelKey)
+//        rd.setProperty(nil, forKey: Stream.PropertyKey.socketSecurityLevelKey)
+//        wr.setProperty(nil, forKey: Stream.PropertyKey.socketSecurityLevelKey)
         
         rd.schedule(in: RunLoop.current, forMode: RunLoopMode.defaultRunLoopMode)
         wr.schedule(in: RunLoop.current, forMode: RunLoopMode.defaultRunLoopMode)

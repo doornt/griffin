@@ -2,6 +2,9 @@ let express = require('express');
 let app = express();
 let fs = require('fs');
 let watchFile = require('./watch-file.js')
+const http = require('http');
+
+const WebSocket = require('ws');
 
 let eventEmitter = watchFile.eventEmitter
 
@@ -25,9 +28,27 @@ app.get('/', function (req, res, next) {
     res.json({ data: bundleContent })
 })
 
+const server = http.createServer(app);
+
+const wsServer = new WebSocket.Server({
+    server
+});
+
+wsServer.on('connection', (socket) => {
+
+    socket.send('hello websocket')
+    socket.onmessage = (msg) => {
+        console.log(msg.data)
+    };
+
+    socket.onclose = () => {
+        console.log("onclose")
+
+    };
+});
 
 
-let server = app.listen(8081, function () {
+server.listen(8081, function () {
 
     let host = server.address().address
     let port = server.address().port

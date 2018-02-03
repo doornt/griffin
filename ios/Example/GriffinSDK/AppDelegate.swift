@@ -22,9 +22,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window = UIWindow.init(frame: UIScreen.main.bounds)
         self.window?.backgroundColor = UIColor.white
         let url = Bundle.main.url(forResource: "bundle", withExtension: "js")
-        
+
         self.window?.rootViewController = RootViewController(url:url)
         self.window?.makeKeyAndVisible()
+        
+        let ws = WebSocket.init("ws://127.0.0.1:8081")
+        ws.send("hello from native")
         return true
     }
 
