@@ -22,7 +22,7 @@ function fileWatch(filePath) {
     });
 }
 
-let defualtDir = "dist/bundle.js"
+let defualtDir = "./bundle.js"
 fs.exists(defualtDir, function (exists) {
     if (exists) {
         fileWatch(defualtDir);

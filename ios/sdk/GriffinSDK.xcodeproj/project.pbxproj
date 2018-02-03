@@ -48,6 +48,11 @@
 		DB2FFE712007159C001C4908 /* UIView+Yoga.m in Sources */ = {isa = PBXBuildFile; fileRef = DB2FFE5E2007159C001C4908 /* UIView+Yoga.m */; };
 		DB2FFE722007159C001C4908 /* YGLayoutExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2FFE5F2007159C001C4908 /* YGLayoutExtensions.swift */; };
 		DB6CC19F2014CF1000F783FF /* DictionaryExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6CC19E2014CF1000F783FF /* DictionaryExtension.swift */; };
+		DB71DF82202585D100A49408 /* InnerWebSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB71DF81202585D100A49408 /* InnerWebSocket.swift */; };
+		DB71DF8420258C4200A49408 /* WebSocketError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB71DF8320258C4200A49408 /* WebSocketError.swift */; };
+		DB71DF862025917600A49408 /* WebSocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB71DF852025917600A49408 /* WebSocketManager.swift */; };
+		DB71DF88202592BD00A49408 /* Defines.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB71DF87202592BD00A49408 /* Defines.swift */; };
+		DB8DB74D2025828300A38314 /* WebSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8DB74C2025828300A38314 /* WebSocket.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -94,6 +99,11 @@
 		DB2FFE5F2007159C001C4908 /* YGLayoutExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YGLayoutExtensions.swift; sourceTree = "<group>"; };
 		DB2FFE79200B9F37001C4908 /* GriffinSDK-Swift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GriffinSDK-Swift.h"; sourceTree = "<group>"; };
 		DB6CC19E2014CF1000F783FF /* DictionaryExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryExtension.swift; sourceTree = "<group>"; };
+		DB71DF81202585D100A49408 /* InnerWebSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InnerWebSocket.swift; sourceTree = "<group>"; };
+		DB71DF8320258C4200A49408 /* WebSocketError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketError.swift; sourceTree = "<group>"; };
+		DB71DF852025917600A49408 /* WebSocketManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketManager.swift; sourceTree = "<group>"; };
+		DB71DF87202592BD00A49408 /* Defines.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Defines.swift; sourceTree = "<group>"; };
+		DB8DB74C2025828300A38314 /* WebSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocket.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,6 +145,7 @@
 		DB2FFDE1200712DC001C4908 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				DB8DB74B2025825900A38314 /* WebSocket */,
 				DB2FFE79200B9F37001C4908 /* GriffinSDK-Swift.h */,
 				A36387B8200790C0009FA82F /* GriffinSDK-Bridging-Header.h */,
 				DB2FFE4B2007159C001C4908 /* Yoga */,
@@ -268,6 +279,18 @@
 			path = YogaKit;
 			sourceTree = "<group>";
 		};
+		DB8DB74B2025825900A38314 /* WebSocket */ = {
+			isa = PBXGroup;
+			children = (
+				DB8DB74C2025828300A38314 /* WebSocket.swift */,
+				DB71DF81202585D100A49408 /* InnerWebSocket.swift */,
+				DB71DF8320258C4200A49408 /* WebSocketError.swift */,
+				DB71DF852025917600A49408 /* WebSocketManager.swift */,
+				DB71DF87202592BD00A49408 /* Defines.swift */,
+			);
+			path = WebSocket;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -357,6 +380,7 @@
 			files = (
 				DB2FFE3C200712DD001C4908 /* NetworkManager.swift in Sources */,
 				DB2FFE41200712DD001C4908 /* ComponentManager.swift in Sources */,
+				DB71DF82202585D100A49408 /* InnerWebSocket.swift in Sources */,
 				DB2FFE662007159C001C4908 /* YGEnums.c in Sources */,
 				DB2FFE6F2007159C001C4908 /* YGLayout.m in Sources */,
 				DB0427912014D80400285A06 /* Slider.swift in Sources */,
@@ -374,8 +398,11 @@
 				DB2FFE45200712DD001C4908 /* Component.swift in Sources */,
 				DB2FFE722007159C001C4908 /* YGLayoutExtensions.swift in Sources */,
 				DB2FFE46200712DD001C4908 /* ImageView.swift in Sources */,
+				DB8DB74D2025828300A38314 /* WebSocket.swift in Sources */,
+				DB71DF88202592BD00A49408 /* Defines.swift in Sources */,
 				DB2FFE31200712DC001C4908 /* LayoutStyle.swift in Sources */,
 				DB2FFE36200712DD001C4908 /* GriffinMemoryCache.swift in Sources */,
+				DB71DF862025917600A49408 /* WebSocketManager.swift in Sources */,
 				DB2FFE35200712DC001C4908 /* GriffinImage.swift in Sources */,
 				DB2FFE3B200712DD001C4908 /* Log.swift in Sources */,
 				DB2FFE39200712DD001C4908 /* GriffinCache.swift in Sources */,
@@ -383,6 +410,7 @@
 				DB2FFE37200712DD001C4908 /* GriffinLinkedMap.swift in Sources */,
 				DB2FFE40200712DD001C4908 /* RootViewController.swift in Sources */,
 				DB2FFE38200712DD001C4908 /* GriffinDiskCache.swift in Sources */,
+				DB71DF8420258C4200A49408 /* WebSocketError.swift in Sources */,
 				DB2FFE692007159C001C4908 /* YGNodeList.c in Sources */,
 				DB6CC19F2014CF1000F783FF /* DictionaryExtension.swift in Sources */,
 				DB2FFE3D200712DD001C4908 /* Utils.swift in Sources */,
