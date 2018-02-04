@@ -86,9 +86,6 @@ extension JSCoreBridge {
         obj.perform(#selector(obj.call), on: self._thread!, with: [agruments], waitUntilDone: false)
     }
     
-    func registerClass<T>(cls:T,name:String){
-        self.callJs(method: "registerModule", args: [cls,name])
-    }
 }
 
 class JSCoreBridge: NSObject {
@@ -168,6 +165,7 @@ class JSCoreBridge: NSObject {
         _jsContext.setObject(unsafeBitCast({
             self.onRuntimeLoadFinish()
         } as @convention(block)()-> Void , to: AnyObject.self), forKeyedSubscript: "onRuntimeLoadFinish" as NSCopying & NSObjectProtocol)
+
                 
     }
 }

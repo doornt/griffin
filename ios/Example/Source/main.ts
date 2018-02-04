@@ -21,4 +21,9 @@ class TestAComponent extends BaseComponent {
     }
 }
 
+let ws = new WebSocket('ws://127.0.0.1:8081')
+ws.send('from native')
+console.log(ws.onmessage)
+// ws.onmessage = str => console.log(str)
+
 launchWithComponent(new TestAComponent())

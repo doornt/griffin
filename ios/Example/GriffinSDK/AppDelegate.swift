@@ -25,8 +25,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window?.rootViewController = RootViewController()
         self.window?.makeKeyAndVisible()
         
-        let ws = WebSocket.init("ws://127.0.0.1:8081")
-        ws.send("hello from native")
         return true
     }
 

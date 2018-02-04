@@ -8,23 +8,30 @@
 
 import Foundation
 
+import JavaScriptCore
 
-open class WebSocket :NSObject{
+@objc protocol WebSocketProtocol : JSExport {
+    func send(_ message : Any)
+    var onmessage : (_ data : Any)->(){get set}
+}
+
+@objc open class WebSocket :NSObject,WebSocketProtocol{
     
     fileprivate var ws: InnerWebSocket
-    fileprivate var opened: Bool
+    fileprivate var opened: Bool = true
 
     
-    public convenience init(_ url:String) {
-        self.init(request:URLRequest(url: URL(string: url)!))
+    public required init(_ url:String) {
+        ws = InnerWebSocket(request: URLRequest(url: URL(string: url)!))
+        super.init()
+
+        self.onmessage = {
+            data in
+            print(data)
+        }
+        
     }
-    
-    init(request:URLRequest) {
-        let hasURL = request.url != nil
-        opened = hasURL
-        ws = InnerWebSocket(request: request)
-        ws.event.message = self.onmessage
-    }
+  
     
     open func send(_ message : Any){
         if !opened{
@@ -33,8 +40,13 @@ open class WebSocket :NSObject{
         ws.send(message)
     }
     
-    var onmessage : (_ data : Any)->() = {(data) in
-        print(data)
+    var onmessage : (_ data : Any)->(){
+        get{
+            return ws.event.message
+        }
+        set{
+            ws.event.message = newValue
+        }
     }
 
 }

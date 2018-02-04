@@ -132,7 +132,10 @@ private extension Engine {
     
     func registerModules(){
         JSCoreBridge.instance.performOnJSThread {
-            JSCoreBridge.instance.registerClass(cls: WebSocket.self, name: "Websocket")
+            JSCoreBridge.instance.register(method: {
+                url in
+                return WebSocket.init(url)
+            } as @convention(block) (String) -> WebSocket, script: "WebSocket")
         }
     }
     
