@@ -1,32 +1,29 @@
 let express = require('express');
 let app = express();
 let fs = require('fs');
-let watchFile = require('./watch-file.js')
+// let watchFile = require('./watch-file.js')
 const http = require('http');
+
+const webpack = require('webpack')
 
 const WebSocket = require('ws');
 
-let eventEmitter = watchFile.eventEmitter
+var compiler = webpack(require('./webpack.config')(null))
 
-function getFileContent(string) {
-    return fs.readFileSync(string, 'utf-8');
-}
+var currentSocket = null
 
-app.use(function (req, res, next) {
-    if (req.query.isFirst === "1") {
-        let bundleContent = getFileContent("./bundle.js");
-        res.json({ data: bundleContent })
-    } else {
-        eventEmitter.on('fileChanged', function () {
-            next()
-        });
+compiler.watch({},(err,status)=>{
+    if(err){
+        console.error(err)
+    }else{
+        console.log("build success")
+        if(currentSocket){
+            currentSocket.send('onchange')
+        }
     }
-});
-
-app.get('/', function (req, res, next) {
-    let bundleContent = getFileContent("./bundle.js");
-    res.json({ data: bundleContent })
 })
+
+app.use(express.static('.'))
 
 const server = http.createServer(app);
 
@@ -43,9 +40,13 @@ wsServer.on('connection', (socket) => {
 
     socket.onclose = () => {
         console.log("onclose")
-
+        currentSocket = null
     };
+
+    currentSocket = socket
+    
 });
+
 
 
 server.listen(8081, function () {

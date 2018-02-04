@@ -22,8 +22,12 @@ class TestAComponent extends BaseComponent {
 }
 
 let ws = new WebSocket('ws://127.0.0.1:8081')
-ws.send('from native')
-console.log(ws.onmessage)
-;(<any>ws).onmessage = str => console.log(str)
+ws.onmessage = str =>{
+    if(<any>str == "onchange"){
+        (<any>global).reloadView()
+    }
+}
+
+
 
 launchWithComponent(new TestAComponent())

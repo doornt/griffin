@@ -14,6 +14,34 @@ class NetworkManager {
         return NetworkManager()
     }()
     
+    func downloadFile(url:String ,completionHandler:@escaping (Data?)->Void){
+        guard let url = URL(string: url) else {
+            return
+        }
+        
+        let mutableReq = NSMutableURLRequest.init(url: url)
+        mutableReq.httpMethod = "GET"
+        
+        
+        let task = URLSession.shared.dataTask(with: mutableReq as URLRequest) { (data, response, error) in
+            
+            if let error = error {
+                completionHandler(nil)
+                return
+            }
+            
+            guard let data = data else {
+                return
+            }
+            
+            
+            completionHandler(data)
+        }
+        
+        task.resume()
+        
+    }
+    
     func get(url: String, params: [String: String]?, completionHandler: ((Any?, Error?) -> Void)? ) -> Void {
 
         guard let url = URL(string: url) else {

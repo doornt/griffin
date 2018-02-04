@@ -21,7 +21,8 @@ module.exports = env =>{
             alias:{
                 "griffin-render":testRenderPath
             }
-        }
+        },
+        watch:true
     };
     
 }

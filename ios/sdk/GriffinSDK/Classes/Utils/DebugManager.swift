@@ -22,30 +22,33 @@ class DebugManager {
     }
     
     private func startFetchJSFile(isFirst: String) {
-        let urlString = "http://127.0.0.1:8081/"
-        NetworkManager.instance.get(url: urlString, params: ["isFirst": isFirst], completionHandler: {
-            [weak self] (data, error) in
-            guard let data = data as? [String: String] else {
-                DebugManager.errorCount += 1
-                if (DebugManager.errorCount > 3) {
-                    return
-                }
-                self?.startFetchJSFile(isFirst: "0")
+        let urlString = "http://127.0.0.1:8081/bundle.js"
+        
+        if isFirst == "0"{
+            print("reload view")
+        }
+        
+        NetworkManager.instance.downloadFile(url: urlString, completionHandler: {
+            [weak self] (data) in
+          
+            guard let data = data else{
                 return
             }
             
-        
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "FileChanged"), object: nil, userInfo: ["script": data["data"]!])
+            let str = String.init(data: data, encoding: String.Encoding.utf8)
             
-            DebugManager.errorCount = 0
-            self?.startFetchJSFile(isFirst: "0")
+        
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "FileChanged"), object: nil, userInfo: ["script": str])
+            
         })
     }
     
     public func logToServer() {
-        let urlString = "http://127.0.0.1:8081/log"
-        NetworkManager.instance.post(url: urlString, params: ["isFirst": "isfor"], completionHandler: {
-            (data, error) in
-        })
+        JSCoreBridge.instance.performOnJSThread {
+            JSCoreBridge.instance.register(method: {
+                [weak self] in
+                self?.startFetchJSFile(isFirst: "0")
+            } as @convention(block)()-> Void , script: "reloadView")
+        }
     }
 }
