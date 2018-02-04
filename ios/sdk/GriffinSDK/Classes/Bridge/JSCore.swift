@@ -27,14 +27,17 @@ extension JSCoreBridge {
     func executeJavascript(script:String) {
         if Thread.current === self._thread {
             self._jsContext.evaluateScript(script)
-            self.loaded = true
-            
-            for o in self._methodQueue{
-                let obj = o as! Dictionary<String,Any>
-                self.callJs(method: obj["method"] as! String, args: obj["args"] as! Array<Any>)
-            }
+           
         } else {
             self._jsContext.perform(#selector(self._jsContext.evaluateScript(_:)), on: self._thread!, with: script, waitUntilDone: false)
+        }
+    }
+    
+    fileprivate func onRuntimeLoadFinish(){
+        self.loaded = true
+        for o in self._methodQueue{
+            let obj = o as! Dictionary<String,Any>
+            self.callJs(method: obj["method"] as! String, args: obj["args"] as! Array<Any>)
         }
     }
     
@@ -161,6 +164,10 @@ class JSCoreBridge: NSObject {
             
             print("\nJS ERROR: \(value) \(moreInfo)")
         }
+        
+        _jsContext.setObject(unsafeBitCast({
+            self.onRuntimeLoadFinish()
+        } as @convention(block)()-> Void , to: AnyObject.self), forKeyedSubscript: "onRuntimeLoadFinish" as NSCopying & NSObjectProtocol)
                 
     }
 }
