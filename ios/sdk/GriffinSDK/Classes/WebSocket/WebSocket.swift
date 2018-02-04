@@ -12,20 +12,24 @@ import JavaScriptCore
 
 @objc protocol WebSocketProtocol : JSExport {
     func send(_ message : Any)
-    var onmessage : (_ data : Any)->(){get set}
+    var onmessage : JSValue? {get set}
+    
 }
 
 @objc open class WebSocket :NSObject,WebSocketProtocol{
     
+    
+    
     fileprivate var ws: InnerWebSocket
     fileprivate var opened: Bool = true
+    fileprivate var _onmessage:JSValue?
 
     
     public required init(_ url:String) {
         ws = InnerWebSocket(request: URLRequest(url: URL(string: url)!))
         super.init()
 
-        self.onmessage = {
+        ws.event.message = {
             data in
             print(data)
         }
@@ -40,12 +44,18 @@ import JavaScriptCore
         ws.send(message)
     }
     
-    var onmessage : (_ data : Any)->(){
+    var onmessage : JSValue?{
         get{
-            return ws.event.message
+            return self._onmessage
         }
         set{
-            ws.event.message = newValue
+            if newValue != nil{
+                ws.event.message = {
+                    data in
+                    newValue!.call(withArguments: [data])
+                }
+            }
+            self._onmessage = newValue
         }
     }
 
