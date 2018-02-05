@@ -1,5 +1,5 @@
 //
-//  Constent.swift
+//  Constant.swift
 //  GriffinSDK
 //
 //  Created by 裴韬 on 2018/1/6.

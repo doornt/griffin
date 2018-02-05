@@ -19,7 +19,7 @@ import JavaScriptCore
 
 }
 
-@objc open class WebSocket :NSObject,WebSocketProtocol{
+@objc class WebSocket :NSObject,WebSocketProtocol{
     
     fileprivate var ws: InnerWebSocket
     fileprivate var opened: Bool = true
@@ -28,6 +28,7 @@ import JavaScriptCore
     fileprivate var _onclose:JSValue?
     fileprivate var _onerror:JSValue?
 
+    var _onNativeMessage: ((Any) -> ())?
     
     public required init(_ url:String) {
         ws = InnerWebSocket(request: URLRequest(url: URL(string: url)!))
@@ -41,7 +42,7 @@ import JavaScriptCore
     }
   
     
-    open func send(_ message : Any){
+    func send(_ message : Any){
         if !opened{
             return
         }
@@ -60,6 +61,18 @@ import JavaScriptCore
                 }
             }
             self._onmessage = newValue
+        }
+    }
+    
+    var onNativeMessage : ((Any) -> ())?{
+        get{
+            return self._onNativeMessage
+        }
+        set{
+            if newValue != nil{
+                ws.event.message = newValue!
+            }
+            self._onNativeMessage = newValue
         }
     }
     

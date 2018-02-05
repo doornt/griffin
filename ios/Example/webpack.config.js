@@ -1,9 +1,9 @@
 const path = require('path');
 let output = path.resolve(__dirname, '.')
 
-let testRenderPath = path.resolve(path.join(__dirname,'../../..','GriffinWeb/packages/griffin-render/'))
+let testRenderPath = path.resolve(path.join(__dirname, '../../..', 'GriffinWeb/packages/griffin-render/'))
 
-module.exports = env =>{
+module.exports = env => {
     return {
         entry: './Source/main.ts',
         output: {
@@ -14,15 +14,15 @@ module.exports = env =>{
             rules: [
                 { test: /\.pug$/, use: 'griffin-loader' },
                 { test: /\.ts$/, use: 'ts-loader' }
-                
+
             ]
         },
-        resolve:{
-            alias:{
-                "griffin-render":testRenderPath
+        resolve: {
+            alias: {
+                "griffin-render": testRenderPath
             }
         },
-        watch:true
+        watch: true
     };
-    
+
 }

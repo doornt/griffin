@@ -25,6 +25,17 @@ class ComponentManager: NSObject {
     
     private var _rootComponent:ViewComponent?
     
+    func unload() {
+        if let rootComponent = _rootComponent {
+            DispatchQueue.main.sync {
+                rootComponent.view.removeFromSuperview()
+            }
+        }
+        
+        _uiTaskQueue.removeAll()
+        _components.removeAll()
+    }
+    
     func setRootController(root:BaseViewController){
         Log.LogInfo("Init RootController \(root)")
         self._rootController = root

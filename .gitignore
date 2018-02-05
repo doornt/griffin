@@ -64,3 +64,5 @@ fastlane/test_output
 
 # End of https://www.gitignore.io/api/swift
 node_modules
+dist
+package-lock.json

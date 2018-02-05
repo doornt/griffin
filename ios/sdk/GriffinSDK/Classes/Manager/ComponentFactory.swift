@@ -22,12 +22,14 @@ class ComponentFactory {
         
         _lock.lock()
         
+        defer {
+            _lock.unlock()
+        }
+        
         componentType = _componentConfigs[tag] as? ViewComponent.Type
         if componentType == nil {
             Log.LogError("\(tag) does not registered with any class")
         }
-        
-        _lock.unlock()
         
         return componentType
     }
@@ -36,15 +38,15 @@ class ComponentFactory {
         
         _lock.lock()
         
+        defer {
+            _lock.unlock()
+        }
+        
         let component = _componentConfigs[tag] as? ViewComponent.Type
         if component != nil {
             Log.LogWarning("\(tag) has already been registered with class \(className)")
         }
         
-//        Log.LogInfo("\(tag) has been registered with class \(className) successfully")
-        
         _componentConfigs[tag] = className
-        
-        _lock.unlock()
     }
 }

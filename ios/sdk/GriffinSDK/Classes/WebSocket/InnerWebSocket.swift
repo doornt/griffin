@@ -248,8 +248,8 @@ class InnerWebSocket : Hashable{
     }
     
     func closeConn() {
-        rd.remove(from: RunLoop.main, forMode: RunLoopMode.defaultRunLoopMode)
-        wr.remove(from: RunLoop.main, forMode: RunLoopMode.defaultRunLoopMode)
+        rd.remove(from: RunLoop.current, forMode: RunLoopMode.defaultRunLoopMode)
+        wr.remove(from: RunLoop.current, forMode: RunLoopMode.defaultRunLoopMode)
         rd.delegate = nil
         wr.delegate = nil
         rd.close()

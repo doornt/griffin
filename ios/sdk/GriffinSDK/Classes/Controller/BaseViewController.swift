@@ -31,22 +31,6 @@ class BaseViewController : UIViewController {
     }
     
     private func renderWithUrl(){
-//        let instance = DebugManager.instance
-        
-//        instance.logToServer()
-//        if sourceUrl == nil{
-//            return
-//        }
-//        if FileManager.default.fileExists(atPath:sourceUrl!.path){
-//            do{
-//                let jsSourceContents = try String(contentsOfFile:sourceUrl!.path)
-//                let _ = JSCoreBridge.instance.executeJavascript(script: jsSourceContents)
-//            }
-//            catch{
-//                print(error.localizedDescription)
-//            }
-//
-//        }
     }
     
     convenience init(url:URL?){

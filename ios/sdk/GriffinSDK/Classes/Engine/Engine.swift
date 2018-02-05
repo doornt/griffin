@@ -19,25 +19,30 @@ public class Engine {
     private var _jsCore:JSCoreBridge?
     
     public func initSDK(){
-        let instance = DebugManager.instance
-        instance.logToServer()
-        
+        let _ = DebugManager.instance
+
         self._jsCore = JSCoreBridge.instance
         
-        NotificationCenter.default.addObserver(self, selector: #selector(handleFileChanged(_:)), name: NSNotification.Name(rawValue: "FileChanged"), object: nil)
+        initSDKEnviroment()
         
+        NotificationCenter.default.addObserver(self, selector: #selector(handleFileChanged(_:)), name: NSNotification.Name(rawValue: "FileChanged"), object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     @objc func handleFileChanged(_ notification: Notification) {
+        ComponentManager.instance.unload()
+        print("jjj 1")
         self.script = notification.userInfo!["script"] as! String
-        self.initSDKEnviroment()
+        JSCoreBridge.instance.performOnJSThread {
+            JSCoreBridge.instance.executeJavascript(script: self.script)
+        }
     }
     
     private func initSDKEnviroment(){
         registerDefault()
-        JSCoreBridge.instance.performOnJSThread {
-            JSCoreBridge.instance.executeJavascript(script: self.script)
-        }
     }
     
     // MARK: - Component
@@ -123,6 +128,7 @@ private extension Engine {
     func registerComponents() {
         registerComponent("div", withClass: DivView.self)
         registerComponent("label", withClass: Label.self)
+        registerComponent("text", withClass: Label.self)
         registerComponent("img", withClass: ImageView.self)
     }
     

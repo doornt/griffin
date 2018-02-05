@@ -8,8 +8,6 @@
 
 import UIKit
 
-
-
 class Utils {
     
     class func any2Int(_ obj: Any?) -> Int? {

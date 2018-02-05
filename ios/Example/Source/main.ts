@@ -1,9 +1,9 @@
 
-import { BaseComponent, launchWithComponent} from 'griffin-render'
+import { BaseComponent, launchWithComponent } from 'griffin-render'
 
 let pugJson = require(__dirname + '/template/main.pug')
 
-declare var modal:any;
+declare var modal: any;
 
 class TestAComponent extends BaseComponent {
 
@@ -21,12 +21,12 @@ class TestAComponent extends BaseComponent {
     }
 }
 
-let ws = new WebSocket('ws://127.0.0.1:8081')
-ws.onmessage = str =>{
-    if(<any>str == "onchange"){
-        (<any>global).reloadView()
-    }
-}
+// let ws = new WebSocket('ws://127.0.0.1:8081')
+// ws.onmessage = str =>{
+//     if(<any>str == "onchange"){
+//         (<any>global).reloadView()
+//     }
+// }
 
 
 

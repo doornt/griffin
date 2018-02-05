@@ -11,6 +11,8 @@ import Foundation
 
 class DebugManager {
     
+    let ws = WebSocket("ws://127.0.0.1:8081")
+    
     static let instance: DebugManager = {
        return DebugManager()
     }()
@@ -18,18 +20,24 @@ class DebugManager {
     static var errorCount = 0
     
     private init() {
+        ws.onNativeMessage = {
+            [weak self] data in
+            if (Utils.any2String(data) != nil) &&  Utils.any2String(data)! == "onchange" {
+                self?.startFetchJSFile(isFirst: "0")
+            }
+        }
         startFetchJSFile(isFirst: "1")
     }
     
     private func startFetchJSFile(isFirst: String) {
         let urlString = "http://127.0.0.1:8081/bundle.js"
         
-        if isFirst == "0"{
+        if isFirst == "0" {
             print("reload view")
         }
         
         NetworkManager.instance.downloadFile(url: urlString, completionHandler: {
-            [weak self] (data) in
+            (data) in
           
             guard let data = data else{
                 return
@@ -38,17 +46,8 @@ class DebugManager {
             let str = String.init(data: data, encoding: String.Encoding.utf8)
             
         
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "FileChanged"), object: nil, userInfo: ["script": str])
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "FileChanged"), object: nil, userInfo: ["script": str ?? ""])
             
         })
-    }
-    
-    public func logToServer() {
-        JSCoreBridge.instance.performOnJSThread {
-            JSCoreBridge.instance.register(method: {
-                [weak self] in
-                self?.startFetchJSFile(isFirst: "0")
-            } as @convention(block)()-> Void , script: "reloadView")
-        }
     }
 }
