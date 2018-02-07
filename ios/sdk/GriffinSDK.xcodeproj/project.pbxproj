@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3A1F17BA2029750B001E71DD /* ControllerHost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1F17B92029750B001E71DD /* ControllerHost.swift */; };
 		3AA6A23A2019AD5C00AEFC9C /* DebugManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA6A2392019AD5C00AEFC9C /* DebugManager.swift */; };
 		A36387B9200790C0009FA82F /* GriffinSDK-Bridging-Header.h in Headers */ = {isa = PBXBuildFile; fileRef = A36387B8200790C0009FA82F /* GriffinSDK-Bridging-Header.h */; };
 		DB0427912014D80400285A06 /* Slider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0427902014D80400285A06 /* Slider.swift */; };
@@ -55,6 +56,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3A1F17B92029750B001E71DD /* ControllerHost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerHost.swift; sourceTree = "<group>"; };
 		3AA6A2392019AD5C00AEFC9C /* DebugManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugManager.swift; sourceTree = "<group>"; };
 		A36387B8200790C0009FA82F /* GriffinSDK-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GriffinSDK-Bridging-Header.h"; sourceTree = "<group>"; };
 		DB0427902014D80400285A06 /* Slider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Slider.swift; sourceTree = "<group>"; };
@@ -208,6 +210,7 @@
 			children = (
 				DB2FFE0F200712DC001C4908 /* BaseViewController.swift */,
 				DB2FFE10200712DC001C4908 /* RootViewController.swift */,
+				3A1F17B92029750B001E71DD /* ControllerHost.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -391,6 +394,7 @@
 				DB2FFE32200712DC001C4908 /* Component+Layout.swift in Sources */,
 				DB2FFE3F200712DD001C4908 /* BaseViewController.swift in Sources */,
 				DB2FFE712007159C001C4908 /* UIView+Yoga.m in Sources */,
+				3A1F17BA2029750B001E71DD /* ControllerHost.swift in Sources */,
 				DB2FFE43200712DD001C4908 /* Label.swift in Sources */,
 				DB2FFE45200712DD001C4908 /* Component.swift in Sources */,
 				DB2FFE722007159C001C4908 /* YGLayoutExtensions.swift in Sources */,

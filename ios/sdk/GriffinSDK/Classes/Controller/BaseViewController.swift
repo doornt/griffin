@@ -22,29 +22,44 @@ enum ViewControllerLifeCycle: String {
 class BaseViewController : UIViewController {
     
     private var rootView: UIView?
-    private var sourceUrl:URL?
+    
+    var sourceUrl: String?
+    private var gnView: UIView = UIView()
+    
+    private var _controllerHost: ControllerHost?
     
     func setRootView(_ view: UIView) {
         Log.LogInfo("Init rootview \(view)")
         self.rootView = view
         self.view.addSubview(self.rootView!)
     }
-    
-    private func renderWithUrl(){
-    }
-    
-    convenience init(url:URL?){
-        self.init(nibName:nil,bundle:nil)
-        
-        self.sourceUrl = url
-    }
 
+    init() {
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    init(sourceUrl: String) {
+        super.init(nibName: nil, bundle: nil)
+        self.sourceUrl = sourceUrl
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func _renderWithURL(_ url: String) {
+        _controllerHost?.destroy()
+        
+        //
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.renderWithUrl()
-        dispatchVCLifeCycle2Js(period: ViewControllerLifeCycle.ViewDidLoad.rawValue)
+        _controllerHost = ControllerHost()
+        _controllerHost?.vc = self
+        
+        _controllerHost?.dispatchVCLifeCycle2Js(ViewControllerLifeCycle.ViewDidLoad.rawValue)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -52,12 +67,12 @@ class BaseViewController : UIViewController {
         
         self.navigationController?.setNavigationBarHidden(true, animated: true)
         
-        dispatchVCLifeCycle2Js(period: ViewControllerLifeCycle.ViewWillAppear.rawValue)
+        _controllerHost?.dispatchVCLifeCycle2Js(ViewControllerLifeCycle.ViewWillAppear.rawValue)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        dispatchVCLifeCycle2Js(period: ViewControllerLifeCycle.viewDidAppear.rawValue)
+         _controllerHost?.dispatchVCLifeCycle2Js(ViewControllerLifeCycle.viewDidAppear.rawValue)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -65,30 +80,26 @@ class BaseViewController : UIViewController {
         
         self.navigationController?.setNavigationBarHidden(false, animated: true)
             
-        dispatchVCLifeCycle2Js(period: ViewControllerLifeCycle.ViewWillDisappear.rawValue)
+         _controllerHost?.dispatchVCLifeCycle2Js(ViewControllerLifeCycle.ViewWillDisappear.rawValue)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        dispatchVCLifeCycle2Js(period: ViewControllerLifeCycle.ViewDidDisappear.rawValue)
+         _controllerHost?.dispatchVCLifeCycle2Js(ViewControllerLifeCycle.ViewDidDisappear.rawValue)
     }
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        dispatchVCLifeCycle2Js(period: ViewControllerLifeCycle.ViewWillLayoutSubviews.rawValue)
+        _controllerHost?.dispatchVCLifeCycle2Js(ViewControllerLifeCycle.ViewWillLayoutSubviews.rawValue)
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        dispatchVCLifeCycle2Js(period: ViewControllerLifeCycle.ViewDidLayoutSubviews.rawValue)
+        _controllerHost?.dispatchVCLifeCycle2Js(ViewControllerLifeCycle.ViewDidLayoutSubviews.rawValue)
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        dispatchVCLifeCycle2Js(period: ViewControllerLifeCycle.DidReceiveMemoryWarning.rawValue)
-    }
-    
-    private func dispatchVCLifeCycle2Js(period: String) {
-//        JSCoreBridge.instance.dispatchEventToJs(rootviewId: rootView?.instanceId ?? "", data: ["type": period])
+        _controllerHost?.dispatchVCLifeCycle2Js(ViewControllerLifeCycle.DidReceiveMemoryWarning.rawValue)
     }
 }

@@ -24,6 +24,7 @@ class ImageView : ViewComponent {
     }
     
     override func updateProps(_ props: Dictionary<String, Any>) {
+        super.updateProps(props)
         if let url = props.toString(key: "url"){
             _imageUrl = url
         }

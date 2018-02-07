@@ -34,7 +34,6 @@ public class Engine {
     
     @objc func handleFileChanged(_ notification: Notification) {
         ComponentManager.instance.unload()
-        print("jjj 1")
         self.script = notification.userInfo!["script"] as! String
         JSCoreBridge.instance.performOnJSThread {
             JSCoreBridge.instance.executeJavascript(script: self.script)

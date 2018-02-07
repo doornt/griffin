@@ -113,9 +113,7 @@ class ComponentManager: NSObject {
             return
         }
         
-//        _addUITask {
         root.applyLayout()
-//        }
         
         
         for (_,o) in _components {
@@ -123,24 +121,6 @@ class ComponentManager: NSObject {
                 o.layoutFinish()
             }
         }
-        
-//        layoutNode(_rootCSSNode, _rootCSSNode->style.dimensions[CSS_WIDTH], _rootCSSNode->style.dimensions[CSS_HEIGHT], CSS_DIRECTION_INHERIT);
-//
-//        if ([_rootComponent needsLayout]) {
-//            if ([WXLog logLevel] >= WXLogLevelDebug) {
-//                print_css_node(_rootCSSNode, CSS_PRINT_LAYOUT | CSS_PRINT_STYLE | CSS_PRINT_CHILDREN);
-//            }
-//        }
-        
-//        NSMutableSet<WXComponent *> *dirtyComponents = [NSMutableSet set];
-//        [_rootComponent _calculateFrameWithSuperAbsolutePosition:CGPointZero gatherDirtyComponents:dirtyComponents];
-//        [self _calculateRootFrame];
-//
-//        for (WXComponent *dirtyComponent in dirtyComponents) {
-//            [self _addUITask:^{
-//                [dirtyComponent _layoutDidFinish];
-//                }];
-//        }
     }
     
     private func _syncUITasks() {

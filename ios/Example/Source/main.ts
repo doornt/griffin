@@ -12,22 +12,16 @@ class TestAComponent extends BaseComponent {
     }
 
     clickclick() {
+
         (<any>global).navigator.push({
             url: 'http://dotwe.org/raw/dist/519962541fcf6acd911986357ad9c2ed.js',
             animated: true
         }, event => {
             modal.toast({ message: 'callback: ' + event })
         })
+
+        console.log("vcl")
     }
 }
-
-// let ws = new WebSocket('ws://127.0.0.1:8081')
-// ws.onmessage = str =>{
-//     if(<any>str == "onchange"){
-//         (<any>global).reloadView()
-//     }
-// }
-
-
 
 launchWithComponent(new TestAComponent())

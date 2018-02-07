@@ -338,23 +338,6 @@ class LayoutStyle{
         return false
     }
     
-//    static let YGMeasureView: @convention(c) (Optional<OpaquePointer>, Float, YGMeasureMode,Float, YGMeasureMode ) -> YGSize = {
-//
-//        (node, width, widthMode, height, heightMode) in
-//        let constrainedWidth = (widthMode == YGMeasureModeUndefined) ?
-//            Float.greatestFiniteMagnitude : width
-//        let constrainedHeight = (heightMode == YGMeasureModeUndefined) ? Float.greatestFiniteMagnitude: height
-//
-//        //        UIView *view = (__bridge UIView*) YGNodeGetContext(node);
-//        //        const CGSize sizeThatFits = [view sizeThatFits:(CGSize) {
-//        //        .width = constrainedWidth,
-//        //        .height = constrainedHeight,
-//        //        }];
-//        //
-//
-//        return YGSize(width: Float(LayoutStyle.YGSanitizeMeasurement(CGFloat(constrainedWidth), CGFloat(constrainedWidth),widthMode)), height: Float(LayoutStyle.YGSanitizeMeasurement(CGFloat(constrainedHeight), CGFloat(constrainedHeight), heightMode)))
-//    }
-    
     
     func calculateLayoutWithSize(_ width:Float,_ height:Float)->CGSize{
     

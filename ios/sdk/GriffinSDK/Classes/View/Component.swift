@@ -64,7 +64,7 @@ class ViewComponent {
     }
     
     func updateProps(_ props:Dictionary<String,Any>){
-        if let click = props.toString(key: "click"){
+        if let click = props.toBool(key: "clickable"){
             self._clickable = true
         }
     }
@@ -95,7 +95,7 @@ class ViewComponent {
             self._view?.backgroundColor = Utils.hexString2UIColor(_backgroundColor)
         }
    
-        if _clickable{
+        if _clickable {
             self.addTapGesture()
         }
         
