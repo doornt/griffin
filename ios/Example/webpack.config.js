@@ -6,8 +6,7 @@ let testRenderPath = path.resolve(path.join(__dirname, '../../..', 'GriffinWeb/p
 module.exports = env => {
     return {
         entry: {
-            index: './Source/index.ts',
-            detail: './Source/detail.ts'
+            bundle: './Source/app.ts'
         },
         output: {
             path: output,

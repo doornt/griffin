@@ -5,7 +5,7 @@ let pugJson = require(__dirname + '/template/index.pug')
 
 declare var modal: any;
 
-class TestAComponent extends BaseComponent {
+export class TestAComponent extends BaseComponent {
 
     constructor() {
         super(pugJson)
@@ -24,4 +24,4 @@ class TestAComponent extends BaseComponent {
     }
 }
 
-launchWithComponent(new TestAComponent())
+// launchWithComponent(new TestAComponent())
