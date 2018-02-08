@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3A1F17BA2029750B001E71DD /* ControllerHost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1F17B92029750B001E71DD /* ControllerHost.swift */; };
+		3A263B7B202BF11700ECCF3C /* GnManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A263B7A202BF11700ECCF3C /* GnManager.swift */; };
 		3AA6A23A2019AD5C00AEFC9C /* DebugManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA6A2392019AD5C00AEFC9C /* DebugManager.swift */; };
 		A36387B9200790C0009FA82F /* GriffinSDK-Bridging-Header.h in Headers */ = {isa = PBXBuildFile; fileRef = A36387B8200790C0009FA82F /* GriffinSDK-Bridging-Header.h */; };
 		DB0427912014D80400285A06 /* Slider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0427902014D80400285A06 /* Slider.swift */; };
@@ -57,6 +58,7 @@
 
 /* Begin PBXFileReference section */
 		3A1F17B92029750B001E71DD /* ControllerHost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerHost.swift; sourceTree = "<group>"; };
+		3A263B7A202BF11700ECCF3C /* GnManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GnManager.swift; sourceTree = "<group>"; };
 		3AA6A2392019AD5C00AEFC9C /* DebugManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugManager.swift; sourceTree = "<group>"; };
 		A36387B8200790C0009FA82F /* GriffinSDK-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GriffinSDK-Bridging-Header.h"; sourceTree = "<group>"; };
 		DB0427902014D80400285A06 /* Slider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Slider.swift; sourceTree = "<group>"; };
@@ -220,6 +222,7 @@
 			children = (
 				DB2FFE12200712DC001C4908 /* ComponentManager.swift */,
 				DB2FFE13200712DC001C4908 /* ComponentFactory.swift */,
+				3A263B7A202BF11700ECCF3C /* GnManager.swift */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -404,6 +407,7 @@
 				DB2FFE31200712DC001C4908 /* LayoutStyle.swift in Sources */,
 				DB2FFE36200712DD001C4908 /* GriffinMemoryCache.swift in Sources */,
 				DB71DF862025917600A49408 /* WebSocketManager.swift in Sources */,
+				3A263B7B202BF11700ECCF3C /* GnManager.swift in Sources */,
 				DB2FFE35200712DC001C4908 /* GriffinImage.swift in Sources */,
 				DB2FFE3B200712DD001C4908 /* Log.swift in Sources */,
 				DB2FFE39200712DD001C4908 /* GriffinCache.swift in Sources */,

@@ -10,11 +10,8 @@ import UIKit
 
 public class RootViewController : UINavigationController{
     
-    public convenience init(){
-        let root = BaseViewController.init()
+    public convenience init(withSourceURL url: String) {
+        let root = BaseViewController.init(sourceUrl: url)
         self.init(rootViewController: root)
-        ComponentManager.instance.setRootController(root: root)
     }
-    
-    
 }

@@ -12,12 +12,12 @@ var compiler = webpack(require('./webpack.config')(null))
 
 var currentSocket = null
 
-compiler.watch({},(err,status)=>{
-    if(err){
+compiler.watch({}, (err, status) => {
+    if (err) {
         console.error(err)
-    }else{
+    } else {
         console.log("build success")
-        if(currentSocket){
+        if (currentSocket) {
             currentSocket.send('onchange')
         }
     }
@@ -44,7 +44,7 @@ wsServer.on('connection', (socket) => {
     };
 
     currentSocket = socket
-    
+
 });
 
 

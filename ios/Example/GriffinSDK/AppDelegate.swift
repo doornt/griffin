@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window = UIWindow.init(frame: UIScreen.main.bounds)
         self.window?.backgroundColor = UIColor.white
 
-        self.window?.rootViewController = RootViewController()
+        self.window?.rootViewController = RootViewController.init(withSourceURL: "http://127.0.0.1:8081/dist/index.js")
         self.window?.makeKeyAndVisible()
         
         return true

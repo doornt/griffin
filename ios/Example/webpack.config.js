@@ -1,14 +1,17 @@
 const path = require('path');
-let output = path.resolve(__dirname, '.')
+let output = path.resolve(__dirname, '.') + '/dist'
 
 let testRenderPath = path.resolve(path.join(__dirname, '../../..', 'GriffinWeb/packages/griffin-render/'))
 
 module.exports = env => {
     return {
-        entry: './Source/main.ts',
+        entry: {
+            index: './Source/index.ts',
+            detail: './Source/detail.ts'
+        },
         output: {
             path: output,
-            filename: 'bundle.js'
+            filename: '[name].js'
         },
         module: {
             rules: [

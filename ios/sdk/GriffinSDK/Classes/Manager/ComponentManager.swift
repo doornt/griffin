@@ -13,6 +13,20 @@ class ComponentManager: NSObject {
     
     static let instance = ComponentManager()
     
+    private weak var _controllerHost: ControllerHost?
+    
+    var controllerHost: ControllerHost? {
+        get {
+            return _controllerHost
+        }
+        set {
+            _controllerHost = newValue
+            _components = [String: ViewComponent]()
+            _uiTaskQueue = [()->Void]()
+            _rootComponent = nil
+        }
+    }
+    
     private var _components = [String: ViewComponent]()
     private let _stopRunning = false
     
@@ -21,11 +35,10 @@ class ComponentManager: NSObject {
     private var _displayLink: CADisplayLink?
     private var _noTaskTickCount = 0
     
-    private var _rootController:BaseViewController?
-    
     private var _rootComponent:ViewComponent?
     
     func unload() {
+        assert(Thread.current == self._componentThread, "unload should be called in _componentThread")
         if let rootComponent = _rootComponent {
             DispatchQueue.main.sync {
                 rootComponent.view.removeFromSuperview()
@@ -34,11 +47,6 @@ class ComponentManager: NSObject {
         
         _uiTaskQueue.removeAll()
         _components.removeAll()
-    }
-    
-    func setRootController(root:BaseViewController){
-        Log.LogInfo("Init RootController \(root)")
-        self._rootController = root
     }
     
     private override init() {
@@ -114,7 +122,6 @@ class ComponentManager: NSObject {
         }
         
         root.applyLayout()
-        
         
         for (_,o) in _components {
             _addUITask {
@@ -194,7 +201,7 @@ extension ComponentManager {
         _components[instanceId] = component
         self._rootComponent = component
         _addUITask {
-            self._rootController?.setRootView(component.view)
+            self.controllerHost?.rootView?.addSubview(component.view)
         }
     }
     

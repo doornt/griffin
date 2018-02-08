@@ -21,18 +21,10 @@ enum ViewControllerLifeCycle: String {
 
 class BaseViewController : UIViewController {
     
-    private var rootView: UIView?
-    
     var sourceUrl: String?
     private var gnView: UIView = UIView()
     
     private var _controllerHost: ControllerHost?
-    
-    func setRootView(_ view: UIView) {
-        Log.LogInfo("Init rootview \(view)")
-        self.rootView = view
-        self.view.addSubview(self.rootView!)
-    }
 
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -50,14 +42,36 @@ class BaseViewController : UIViewController {
     private func _renderWithURL(_ url: String) {
         _controllerHost?.destroy()
         
-        //
+        _controllerHost = ControllerHost.init()
+        _controllerHost?.vc = self
+        _controllerHost?.pageName = url
+        
+        _controllerHost?.renderWithURL(urlString: url)
+        
+        _controllerHost?.onCreate = {
+            [weak self](view) in
+            self?.gnView.removeFromSuperview()
+            self?.gnView = view
+            self?.view.addSubview((self?.gnView)!)
+        }
+        
+        _controllerHost?.onFailed = {
+            (error) in
+        }
+        
+        _controllerHost?.onRenderFinish = {
+            (view) in
+        }
+        
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        _controllerHost = ControllerHost()
-        _controllerHost?.vc = self
+
+        guard let url = self.sourceUrl else {
+            return
+        }
+        _renderWithURL(url)
         
         _controllerHost?.dispatchVCLifeCycle2Js(ViewControllerLifeCycle.ViewDidLoad.rawValue)
     }

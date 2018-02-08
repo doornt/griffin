@@ -19,7 +19,7 @@ public class Engine {
     private var _jsCore:JSCoreBridge?
     
     public func initSDK(){
-        let _ = DebugManager.instance
+//        let _ = DebugManager.instance
 
         self._jsCore = JSCoreBridge.instance
         
@@ -102,7 +102,8 @@ public class Engine {
     private let navigatorPush:@convention(block)(String, Bool, JSValue)-> Void = {
         url, animated, callback in
         DispatchQueue.main.async {
-            print("\(animated) \(url)")
+            let vc = BaseViewController.init(sourceUrl: url)
+            ComponentManager.instance.controllerHost?.vc?.navigationController?.pushViewController(vc, animated: animated)
         }
     }
     
@@ -110,6 +111,7 @@ public class Engine {
         animated, callback in
         DispatchQueue.main.async {
             print(animated)
+            ComponentManager.instance.controllerHost?.vc?.navigationController?.popViewController(animated: animated)
         }
     }
 }
