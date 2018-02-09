@@ -139,6 +139,7 @@ private extension Engine {
         ComponentFactory.instance.registerComponent(tag, withClass: className)
     }
     
+    
     func registerModules(){
         JSCoreBridge.instance.performOnJSThread {
             JSCoreBridge.instance.register(method: {
