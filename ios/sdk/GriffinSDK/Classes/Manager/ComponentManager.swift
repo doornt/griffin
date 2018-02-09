@@ -13,21 +13,6 @@ class ComponentManager: NSObject {
     
     static let instance = ComponentManager()
     
-    private weak var _controllerHost: ControllerHost?
-    
-    var controllerHost: ControllerHost? {
-        get {
-            return _controllerHost
-        }
-        set {
-            _controllerHost = newValue
-            _components = [String: ViewComponent]()
-            _uiTaskQueue = [()->Void]()
-            _rootComponent = nil
-        }
-    }
-    
-    private var _components = [String: ViewComponent]()
     private let _stopRunning = false
     
     private var _componentThread: Thread?
@@ -35,20 +20,24 @@ class ComponentManager: NSObject {
     private var _displayLink: CADisplayLink?
     private var _noTaskTickCount = 0
     
-    private var _rootComponent:ViewComponent?
+    private var _rootController:BaseViewController?
     
     func unload() {
-        assert(Thread.current == self._componentThread, "unload should be called in _componentThread")
-        if let rootComponent = _rootComponent {
-            DispatchQueue.main.sync {
+//        assert(Thread.current == self._componentThread, "unload should be called in _componentThread")
+        DispatchQueue.main.sync {
+            for rootComponent in RootComponentManager.instance.allRootComponents {
                 rootComponent.view.removeFromSuperview()
+                rootComponent.removeChildren()
             }
         }
-        
         _uiTaskQueue.removeAll()
-        _components.removeAll()
     }
     
+    func setRootController(root:BaseViewController){
+        Log.LogInfo("Init RootController \(root)")
+        self._rootController = root
+    }
+
     private override init() {
         super.init()
         
@@ -106,7 +95,10 @@ class ComponentManager: NSObject {
         assert(Thread.current == self._componentThread, "_layout should be called in _componentThread")
         
         var needsLayout = false
-        for (_, o) in _components {
+        guard let topChildrenComponent = RootComponentManager.instance.topChildrenComponent else {
+            return
+        }
+        for o in topChildrenComponent {
             if o.needsLayout {
                 needsLayout = true
                 break
@@ -117,13 +109,13 @@ class ComponentManager: NSObject {
             return
         }
         
-        guard let root = self._rootComponent else {
+        guard let root = RootComponentManager.instance.topComponent else {
             return
         }
         
         root.applyLayout()
         
-        for (_,o) in _components {
+        for o in topChildrenComponent {
             _addUITask {
                 o.layoutFinish()
             }
@@ -141,10 +133,6 @@ class ComponentManager: NSObject {
                 item()
             }
         }
-    }
-    
-    public var rootComponent: ViewComponent {
-        return self._rootComponent!
     }
 }
 
@@ -190,6 +178,7 @@ extension ComponentManager {
 //MARK: - Elements Operations
 extension ComponentManager {
     
+    
     func createRootView(_ instanceId:String) -> Void {
         assert(Thread.current == self._componentThread, "createRootView should be called in _componentThread")
         
@@ -198,26 +187,31 @@ extension ComponentManager {
                                                                "width":Environment.instance.screenWidth,
                                                                "top":0,
                                                                "left":0],props: [:])
-        _components[instanceId] = component
-        self._rootComponent = component
-        _addUITask {
-            self.controllerHost?.rootView?.addSubview(component.view)
+
+        RootComponentManager.instance.pushRootComponent(component)
+        
+        if RootComponentManager.instance.allRootComponents.count == 1 {
+            _addUITask {
+                self._rootController?.rootView = component.view
+                RootComponentManager.instance.topViewController = self._rootController
+            }
         }
     }
     
-    func createElement(_ instanceId: String, withData componentData:[String: Any]) {
+    func createElement(rootViewId: String, instanceId: String, withData componentData:[String: Any]) {
         
         assert(Thread.current == self._componentThread, "createElement should be called in _componentThread")
         
-//        Log.LogInfo("instanceID:\(instanceId) data: \(componentData)")
-        let _ = _buildComponent(instanceId, withData:componentData)
+        if let component = _buildComponent(instanceId, withData:componentData) {
+            RootComponentManager.instance.addComponent(rootComponentRef: rootViewId, component: component)
+        }
     }
     
-    func updateElement(_ instanceId:String, data: Dictionary<String,Any>) {
+    func updateElement(rootViewId: String, instanceId:String, data: Dictionary<String,Any>) {
         
         assert(Thread.current == self._componentThread, "updateElement should be called in _componentThread")
         
-        guard let component = _components[instanceId] else {
+        guard let component = RootComponentManager.instance.getComponent(rootComponentRef: rootViewId, componentRef: instanceId) else {
             return
         }
         component.updateWithStyle(data["styles"] as![String:Any])
@@ -226,12 +220,12 @@ extension ComponentManager {
         }
     }
     
-    func addElement(_ parentId:String, childId: String){
+    func addElement(rootViewId: String, parentId:String, childId: String){
         
         assert(Thread.current == self._componentThread, "addElement should be called in _componentThread")
         
-        guard let superComponent = _components[parentId],
-            let childComponent = _components[childId] else {
+        guard let superComponent = RootComponentManager.instance.getComponent(rootComponentRef: rootViewId, componentRef: parentId),
+            let childComponent = RootComponentManager.instance.getComponent(rootComponentRef: rootViewId, componentRef: childId) else {
                 return
         }
         _addUITask {
@@ -255,20 +249,19 @@ extension ComponentManager {
         }
         
         let viewComponent: ViewComponent =  typeClass.init(ref: instanceId, styles: data["styles"] as![String:Any],props:data["props"] as! [String:Any])
-        _components[instanceId] = viewComponent
         return viewComponent
     }
 }
 
 extension ComponentManager {
     
-    func register(event:String, instanceId:String,  callBack: JSValue){
+    func register(event:String, rootViewId:String, instanceId:String,  callBack: JSValue){
         
         assert(Thread.current == self._componentThread, "register should be called in _componentThread")
         
         Log.LogInfo("register \(instanceId) for \(event), withCallBack: \(callBack)")
         
-        guard let component = _components[instanceId] else {
+        guard let component = RootComponentManager.instance.getComponent(rootComponentRef: rootViewId, componentRef: instanceId) else {
             Log.LogError("register failed! Cannot find instance \(instanceId)")
             return
         }
@@ -276,13 +269,13 @@ extension ComponentManager {
         component.register(event: event, callBack: callBack)
     }
     
-    func unRegister(event: String, instanceId:String, callBack: JSValue){
+    func unRegister(event: String, rootViewId:String, instanceId:String, callBack: JSValue){
         
         assert(Thread.current == self._componentThread, "unRegister should be called in _componentThread")
         
         Log.LogInfo("unRegister \(instanceId) for \(event), withCallBack: \(callBack)")
         
-        guard let component = _components[instanceId] else {
+        guard let component = RootComponentManager.instance.getComponent(rootComponentRef: rootViewId, componentRef: instanceId)  else {
             Log.LogError("unRegister failed! Cannot find instance \(instanceId)")
             return
         }

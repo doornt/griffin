@@ -8,10 +8,31 @@
 
 import UIKit
 
-public class RootViewController : UINavigationController{
+public class RootViewController : UINavigationController, UIGestureRecognizerDelegate{
+    
+    convenience init() {
+        let root = BaseViewController.init()
+        self.init(rootViewController: root)
+        ComponentManager.instance.setRootController(root: root)
+    }
     
     public convenience init(withSourceURL url: String) {
         let root = BaseViewController.init(sourceUrl: url)
         self.init(rootViewController: root)
+    }
+    
+    public override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        self.setNavigationBarHidden(true, animated: true)
+        
+        self.interactivePopGestureRecognizer?.delegate = self
+    }
+    
+    public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        if viewControllers.count == 1 {
+            return false
+        }
+        return true
     }
 }

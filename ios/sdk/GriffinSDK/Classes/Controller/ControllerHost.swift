@@ -106,7 +106,7 @@ extension ControllerHost {
                 return
             }
             
-            ComponentManager.instance.controllerHost = self;
+//            ComponentManager.instance.controllerHost = self;
             
             JSCoreBridge.instance.performOnJSThread {
                 JSCoreBridge.instance.executeJavascript(script:String.init(data: data, encoding: String.Encoding.utf8)!)

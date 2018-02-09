@@ -22,7 +22,12 @@ class ViewComponent {
     
     var _layout:LayoutStyle?
     
-    private var ref:String
+    private var _ref:String
+    var ref: String {
+        get {
+            return _ref
+        }
+    }
     private var _events:Dictionary<String, Array<JSValue>> = Dictionary<String, Array<JSValue>>()
     
     private var _backgroundColor:String?
@@ -35,7 +40,7 @@ class ViewComponent {
     var _needsLayout:Bool = true
     
     required init(ref:String,styles:Dictionary<String,Any>,props:Dictionary<String,Any>) {
-        self.ref = ref
+        self._ref = ref
         
         self.styles = styles
         
@@ -64,7 +69,7 @@ class ViewComponent {
     }
     
     func updateProps(_ props:Dictionary<String,Any>){
-        if let click = props.toBool(key: "clickable"){
+        if props.toBool(key: "clickable") != nil{
             self._clickable = true
         }
     }
@@ -139,7 +144,7 @@ extension ViewComponent {
     }
     
     func removeChildren(){
-        
+        _children.removeAll()
     }
 }
 
@@ -149,6 +154,7 @@ extension ViewComponent {
     var children:[ViewComponent]{
         return self._children
     }
+    
     
     var view: UIView {
         assert(Thread.current == Thread.main, "get view must be called in main thread")
@@ -221,6 +227,6 @@ extension ViewComponent {
     }
     
     @objc func handleTap(_ sender: UITapGestureRecognizer) {
-        JSCoreBridge.instance.dispatchEventToJs(rootviewId: ComponentManager.instance.rootComponent.ref, data: ["nodeId":self.ref, "event": "click"])
+        JSCoreBridge.instance.dispatchEventToJs(rootviewId: (RootComponentManager.instance.topComponent?.ref)!, data: ["nodeId":self.ref, "event": "click"])
     }
 }

@@ -19,7 +19,7 @@ public class Engine {
     private var _jsCore:JSCoreBridge?
     
     public func initSDK(){
-//        let _ = DebugManager.instance
+        let _ = DebugManager.instance
 
         self._jsCore = JSCoreBridge.instance
         
@@ -52,39 +52,39 @@ public class Engine {
         }
     }
     
-    private let createElementBlock:@convention(block)(String, Dictionary<String,Any>) -> Void = {
-        instanceId, obj in
+    private let createElementBlock:@convention(block)(String, String, Dictionary<String,Any>) -> Void = {
+        rootViewId, instanceId, obj in
         ComponentManager.instance.performOnComponentThread {
-            ComponentManager.instance.createElement(instanceId, withData: obj)
+            ComponentManager.instance.createElement(rootViewId: rootViewId, instanceId: instanceId, withData: obj)
         }
     }
     
-    private let addSubview:@convention(block)(String, String)-> Void = {
-        parentId, childId in
+    private let addSubview:@convention(block)(String, String, String)-> Void = {
+        rootViewId, parentId, childId in
         ComponentManager.instance.performOnComponentThread {
-            ComponentManager.instance.addElement(parentId, childId:childId)
+            ComponentManager.instance.addElement(rootViewId: rootViewId, parentId: parentId, childId: childId)
         }
     }
     
-    private let updateElement:@convention(block)(String, Dictionary<String,Any>)-> Void = {
-        instanceId, data in
+    private let updateElement:@convention(block)(String, String, Dictionary<String,Any>)-> Void = {
+        rootViewId, instanceId, data in
         ComponentManager.instance.performOnComponentThread {
-            ComponentManager.instance.updateElement(instanceId, data: data)
+            ComponentManager.instance.updateElement(rootViewId: rootViewId, instanceId: instanceId, data: data)
         }
     }
     
     // MARK: - Event
-    private let registerEvent:@convention(block)(String, String, JSValue)-> Void = {
-        instanceId, event, callBack in
+    private let registerEvent:@convention(block)(String, String, String, JSValue)-> Void = {
+        rootViewId, instanceId, event, callBack in
         ComponentManager.instance.performOnComponentThread {
-            ComponentManager.instance.register(event: event, instanceId: instanceId, callBack: callBack)
+            ComponentManager.instance.register(event: event, rootViewId: rootViewId, instanceId: instanceId, callBack: callBack)
         }
     }
     
-    private let unRegisterEvent:@convention(block)(String, String, JSValue)-> Void = {
-        instanceId, event, callBack in
+    private let unRegisterEvent:@convention(block)(String, String, String, JSValue)-> Void = {
+        rootViewId, instanceId, event, callBack in
         ComponentManager.instance.performOnComponentThread {
-            ComponentManager.instance.unRegister(event: event, instanceId: instanceId, callBack: callBack)
+            ComponentManager.instance.unRegister(event: event, rootViewId: rootViewId, instanceId: instanceId, callBack: callBack)
         }
     }
     
@@ -100,10 +100,10 @@ public class Engine {
     }
     
     private let navigatorPush:@convention(block)(String, Bool, JSValue)-> Void = {
-        url, animated, callback in
+        id, animated, callback in
         DispatchQueue.main.async {
-            let vc = BaseViewController.init(sourceUrl: url)
-            ComponentManager.instance.controllerHost?.vc?.navigationController?.pushViewController(vc, animated: animated)
+//            let vc = BaseViewController.init(sourceUrl: url)
+//            ComponentManager.instance.controllerHost?.vc?.navigationController?.pushViewController(vc, animated: animated)
         }
     }
     
@@ -111,7 +111,7 @@ public class Engine {
         animated, callback in
         DispatchQueue.main.async {
             print(animated)
-            ComponentManager.instance.controllerHost?.vc?.navigationController?.popViewController(animated: animated)
+//            ComponentManager.instance.controllerHost?.vc?.navigationController?.popViewController(animated: animated)
         }
     }
 }
