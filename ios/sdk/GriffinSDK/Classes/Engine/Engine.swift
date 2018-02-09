@@ -102,6 +102,7 @@ public class Engine {
     private let navigatorPush:@convention(block)(String, Bool, JSValue)-> Void = {
         id, animated, callback in
         DispatchQueue.main.async {
+            RootComponentManager.instance.pushViewController(withId: id, animated: animated)
 //            let vc = BaseViewController.init(sourceUrl: url)
 //            ComponentManager.instance.controllerHost?.vc?.navigationController?.pushViewController(vc, animated: animated)
         }
@@ -111,6 +112,7 @@ public class Engine {
         animated, callback in
         DispatchQueue.main.async {
             print(animated)
+            RootComponentManager.instance.popViewController(animated: animated)
 //            ComponentManager.instance.controllerHost?.vc?.navigationController?.popViewController(animated: animated)
         }
     }
