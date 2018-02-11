@@ -16,12 +16,12 @@ public class Engine {
     
     private var script:String = ""
     
-    private var _jsCore:JSCoreBridge?
+    private var _jsCore:JSBridgeContext?
     
     public func initSDK(){
         let _ = DebugManager.instance
 
-        self._jsCore = JSCoreBridge.instance
+        self._jsCore = JSBridgeContext.instance
         
         initSDKEnviroment()
         
@@ -35,8 +35,8 @@ public class Engine {
     @objc func handleFileChanged(_ notification: Notification) {
         ComponentManager.instance.unload()
         self.script = notification.userInfo!["script"] as! String
-        JSCoreBridge.instance.performOnJSThread {
-            JSCoreBridge.instance.executeJavascript(script: self.script)
+        JSBridgeContext.instance.performOnJSThread {
+            JSBridgeContext.instance.executeJavascript(script: self.script)
         }
     }
     
@@ -141,8 +141,8 @@ private extension Engine {
     
     
     func registerModules(){
-        JSCoreBridge.instance.performOnJSThread {
-            JSCoreBridge.instance.register(method: {
+        JSBridgeContext.instance.performOnJSThread {
+            JSBridgeContext.instance.register(method: {
                 url in
                 return WebSocket.init(url)
             } as @convention(block) (String) -> WebSocket, script: "WebSocket")
@@ -153,21 +153,21 @@ private extension Engine {
     func registerNativeMethods() {
         
         // MARK: Create View
-        JSCoreBridge.instance.register(method: createRootView, script: "createRootView")
-        JSCoreBridge.instance.register(method: createElementBlock, script: "createElement")
+        JSBridgeContext.instance.register(method: createRootView, script: "createRootView")
+        JSBridgeContext.instance.register(method: createElementBlock, script: "createElement")
         
         // MARK: Operate View
-        JSCoreBridge.instance.register(method: addSubview, script: "addSubview")
-        JSCoreBridge.instance.register(method: updateElement, script: "updateView")
+        JSBridgeContext.instance.register(method: addSubview, script: "addSubview")
+        JSBridgeContext.instance.register(method: updateElement, script: "updateView")
         
         // MARK: Event
-        JSCoreBridge.instance.register(method: registerEvent, script: "registerEvent")
-        JSCoreBridge.instance.register(method: unRegisterEvent, script: "unRegisterEvent")
+        JSBridgeContext.instance.register(method: registerEvent, script: "registerEvent")
+        JSBridgeContext.instance.register(method: unRegisterEvent, script: "unRegisterEvent")
         
         // MARK: Network
-        JSCoreBridge.instance.register(method: fetch, script: "fetch")
+        JSBridgeContext.instance.register(method: fetch, script: "fetch")
         
-        JSCoreBridge.instance.register(method: navigatorPush, script: "NavigatorPush")
-        JSCoreBridge.instance.register(method: navigatorPop, script: "NavigatorPop")
+        JSBridgeContext.instance.register(method: navigatorPush, script: "NavigatorPush")
+        JSBridgeContext.instance.register(method: navigatorPop, script: "NavigatorPop")
     }
 }

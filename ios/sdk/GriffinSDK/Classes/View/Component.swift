@@ -227,6 +227,6 @@ extension ViewComponent {
     }
     
     @objc func handleTap(_ sender: UITapGestureRecognizer) {
-        JSCoreBridge.instance.dispatchEventToJs(rootviewId: (RootComponentManager.instance.topComponent?.ref)!, data: ["nodeId":self.ref, "event": "click"])
+        JSBridgeContext.instance.dispatchEventToJs(rootviewId: (RootComponentManager.instance.topComponent?.ref)!, data: ["nodeId":self.ref, "event": "click"])
     }
 }
