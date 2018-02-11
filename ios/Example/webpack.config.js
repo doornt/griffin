@@ -9,7 +9,6 @@ module.exports = env => {
             bundle: './Source/app.ts'
         },
         output: {
-            path: output,
             filename: '[name].js'
         },
         module: {
@@ -22,7 +21,9 @@ module.exports = env => {
         resolve: {
             alias: {
                 "griffin-render": testRenderPath
-            }
+            },
+            extensions: [".ts",".js", ".json"]
+
         },
         watch: true
     };
