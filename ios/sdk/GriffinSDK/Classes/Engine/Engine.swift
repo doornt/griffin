@@ -43,79 +43,6 @@ public class Engine {
     private func initSDKEnviroment(){
         registerDefault()
     }
-    
-    // MARK: - Component
-    private let createRootView:@convention(block)(String)-> Void = {
-        obj in
-        ComponentManager.instance.performOnComponentThread {
-            ComponentManager.instance.createRootView(obj)
-        }
-    }
-    
-    private let createElementBlock:@convention(block)(String, String, Dictionary<String,Any>) -> Void = {
-        rootViewId, instanceId, obj in
-        ComponentManager.instance.performOnComponentThread {
-            ComponentManager.instance.createElement(rootViewId: rootViewId, instanceId: instanceId, withData: obj)
-        }
-    }
-    
-    private let addSubview:@convention(block)(String, String, String)-> Void = {
-        rootViewId, parentId, childId in
-        ComponentManager.instance.performOnComponentThread {
-            ComponentManager.instance.addElement(rootViewId: rootViewId, parentId: parentId, childId: childId)
-        }
-    }
-    
-    private let updateElement:@convention(block)(String, String, Dictionary<String,Any>)-> Void = {
-        rootViewId, instanceId, data in
-        ComponentManager.instance.performOnComponentThread {
-            ComponentManager.instance.updateElement(rootViewId: rootViewId, instanceId: instanceId, data: data)
-        }
-    }
-    
-    // MARK: - Event
-    private let registerEvent:@convention(block)(String, String, String, JSValue)-> Void = {
-        rootViewId, instanceId, event, callBack in
-        ComponentManager.instance.performOnComponentThread {
-            ComponentManager.instance.register(event: event, rootViewId: rootViewId, instanceId: instanceId, callBack: callBack)
-        }
-    }
-    
-    private let unRegisterEvent:@convention(block)(String, String, String, JSValue)-> Void = {
-        rootViewId, instanceId, event, callBack in
-        ComponentManager.instance.performOnComponentThread {
-            ComponentManager.instance.unRegister(event: event, rootViewId: rootViewId, instanceId: instanceId, callBack: callBack)
-        }
-    }
-    
-    // MARK: - Network
-    private let fetch:@convention(block)(String, [String: String], JSValue)-> Void = {
-        url, params, callback in
-        DispatchQueue.main.async {
-            NetworkManager.instance.get(url: url, params: params) {
-                (data, error) in
-                callback.callWithArguments(data)
-            }
-        }
-    }
-    
-    private let navigatorPush:@convention(block)(String, Bool, JSValue)-> Void = {
-        id, animated, callback in
-        DispatchQueue.main.async {
-            RootComponentManager.instance.pushViewController(withId: id, animated: animated)
-//            let vc = BaseViewController.init(sourceUrl: url)
-//            ComponentManager.instance.controllerHost?.vc?.navigationController?.pushViewController(vc, animated: animated)
-        }
-    }
-    
-    private let navigatorPop:@convention(block)(Bool, JSValue)-> Void = {
-        animated, callback in
-        DispatchQueue.main.async {
-            print(animated)
-            RootComponentManager.instance.popViewController(animated: animated)
-//            ComponentManager.instance.controllerHost?.vc?.navigationController?.popViewController(animated: animated)
-        }
-    }
 }
 
 // MARK: - Register
@@ -123,7 +50,6 @@ private extension Engine {
     
     func registerDefault() {
         registerComponents()
-        registerNativeMethods()
         registerModules()
     }
     
@@ -147,27 +73,5 @@ private extension Engine {
                 return WebSocket.init(url)
             } as @convention(block) (String) -> WebSocket, script: "WebSocket")
         }
-    }
-    
-    // MARK: - Register Methods
-    func registerNativeMethods() {
-        
-        // MARK: Create View
-        JSBridgeContext.instance.register(method: createRootView, script: "createRootView")
-        JSBridgeContext.instance.register(method: createElementBlock, script: "createElement")
-        
-        // MARK: Operate View
-        JSBridgeContext.instance.register(method: addSubview, script: "addSubview")
-        JSBridgeContext.instance.register(method: updateElement, script: "updateView")
-        
-        // MARK: Event
-        JSBridgeContext.instance.register(method: registerEvent, script: "registerEvent")
-        JSBridgeContext.instance.register(method: unRegisterEvent, script: "unRegisterEvent")
-        
-        // MARK: Network
-        JSBridgeContext.instance.register(method: fetch, script: "fetch")
-        
-        JSBridgeContext.instance.register(method: navigatorPush, script: "NavigatorPush")
-        JSBridgeContext.instance.register(method: navigatorPop, script: "NavigatorPop")
     }
 }

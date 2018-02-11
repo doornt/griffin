@@ -11,6 +11,7 @@
 		3A263B7B202BF11700ECCF3C /* GnManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A263B7A202BF11700ECCF3C /* GnManager.swift */; };
 		3A263B7D202C461800ECCF3C /* RootComponentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A263B7C202C461800ECCF3C /* RootComponentManager.swift */; };
 		3A47036020302BEA0038A9A0 /* JSCoreBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A47035F20302BEA0038A9A0 /* JSCoreBridge.swift */; };
+		3A470363203043740038A9A0 /* Navigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A470362203043740038A9A0 /* Navigator.swift */; };
 		3AA6A23A2019AD5C00AEFC9C /* DebugManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA6A2392019AD5C00AEFC9C /* DebugManager.swift */; };
 		A36387B9200790C0009FA82F /* GriffinSDK-Bridging-Header.h in Headers */ = {isa = PBXBuildFile; fileRef = A36387B8200790C0009FA82F /* GriffinSDK-Bridging-Header.h */; };
 		DB0427912014D80400285A06 /* Slider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0427902014D80400285A06 /* Slider.swift */; };
@@ -63,6 +64,7 @@
 		3A263B7A202BF11700ECCF3C /* GnManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GnManager.swift; sourceTree = "<group>"; };
 		3A263B7C202C461800ECCF3C /* RootComponentManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootComponentManager.swift; sourceTree = "<group>"; };
 		3A47035F20302BEA0038A9A0 /* JSCoreBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSCoreBridge.swift; sourceTree = "<group>"; };
+		3A470362203043740038A9A0 /* Navigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigator.swift; sourceTree = "<group>"; };
 		3AA6A2392019AD5C00AEFC9C /* DebugManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugManager.swift; sourceTree = "<group>"; };
 		A36387B8200790C0009FA82F /* GriffinSDK-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GriffinSDK-Bridging-Header.h"; sourceTree = "<group>"; };
 		DB0427902014D80400285A06 /* Slider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Slider.swift; sourceTree = "<group>"; };
@@ -123,6 +125,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3A470361203043550038A9A0 /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				3A470362203043740038A9A0 /* Navigator.swift */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
 		DB2FFDC72007126E001C4908 = {
 			isa = PBXGroup;
 			children = (
@@ -151,6 +161,7 @@
 		DB2FFDE1200712DC001C4908 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				3A470361203043550038A9A0 /* Modules */,
 				DB2FFE79200B9F37001C4908 /* GriffinSDK-Swift.h */,
 				A36387B8200790C0009FA82F /* GriffinSDK-Bridging-Header.h */,
 				DB8DB74B2025825900A38314 /* WebSocket */,
@@ -392,6 +403,7 @@
 				DB71DF82202585D100A49408 /* InnerWebSocket.swift in Sources */,
 				DB2FFE662007159C001C4908 /* YGEnums.c in Sources */,
 				DB2FFE6F2007159C001C4908 /* YGLayout.m in Sources */,
+				3A470363203043740038A9A0 /* Navigator.swift in Sources */,
 				DB0427912014D80400285A06 /* Slider.swift in Sources */,
 				DB2FFE47200712DD001C4908 /* Engine.swift in Sources */,
 				DB2FFE30200712DC001C4908 /* JSBridgeContext.swift in Sources */,
