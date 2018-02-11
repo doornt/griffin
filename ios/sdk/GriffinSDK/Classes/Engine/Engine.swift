@@ -72,6 +72,8 @@ private extension Engine {
                 url in
                 return WebSocket.init(url)
             } as @convention(block) (String) -> WebSocket, script: "WebSocket")
+            
+            JSBridgeContext.instance.register(method: { Navigator.init() } as @convention(block) () -> Navigator, script: "Navigator")
         }
     }
 }

@@ -160,24 +160,6 @@ class JSBridgeContext: NSObject {
             }
         }
     }
-    
-    private let _navigatorPush:@convention(block)(String, Bool, JSValue)-> Void = {
-        id, animated, callback in
-        DispatchQueue.main.async {
-            RootComponentManager.instance.pushViewController(withId: id, animated: animated)
-            //            let vc = BaseViewController.init(sourceUrl: url)
-            //            ComponentManager.instance.controllerHost?.vc?.navigationController?.pushViewController(vc, animated: animated)
-        }
-    }
-    
-    private let _navigatorPop:@convention(block)(Bool, JSValue)-> Void = {
-        animated, callback in
-        DispatchQueue.main.async {
-            print(animated)
-            RootComponentManager.instance.popViewController(animated: animated)
-            //            ComponentManager.instance.controllerHost?.vc?.navigationController?.popViewController(animated: animated)
-        }
-    }
 }
 
 
@@ -207,8 +189,5 @@ extension JSBridgeContext {
         
         // MARK: Network
         _jsBridge.register(method: _fetch, script: "fetch")
-        
-        _jsBridge.register(method: _navigatorPush, script: "NavigatorPush")
-        _jsBridge.register(method: _navigatorPop, script: "NavigatorPop")
     }
 }
