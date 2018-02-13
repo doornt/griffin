@@ -13,6 +13,8 @@ class RootComponentManager {
     private var rootComponentsId:[String] = [String]()
     private var rootComponents: [String:ViewComponent] = [String:ViewComponent]()
     
+    private var components: [String:[String: ViewComponent]] = [String: [String:ViewComponent]]()
+    
     var allRootComponents:[ViewComponent] {
         return Array(rootComponents.values)
     }
@@ -22,23 +24,26 @@ class RootComponentManager {
         rootComponents[root.ref] = root
     }
     
-    func addComponent(rootComponentRef: String, component: ViewComponent) {
-        rootComponents[rootComponentRef]?.addChild(component)
+    func addComponent(rootComponentRef: String,componentRef: String, component: ViewComponent) {
+        if components[rootComponentRef] == nil {
+            var componentDic = [String:ViewComponent]()
+            componentDic[componentRef] = component
+            components[rootComponentRef] = componentDic
+        } else {
+            components[rootComponentRef]![componentRef] = component
+        }
     }
     
     func getComponent(rootComponentRef: String, componentRef: String) -> ViewComponent? {
-        guard let component = rootComponents[rootComponentRef] else {
+        guard let component = components[rootComponentRef] else {
             return nil
         }
-        for childComponent in component.children {
-            if childComponent.ref == componentRef {
-                return childComponent
-            }
-        }
-        return nil
+        
+        return component[componentRef]
     }
     
     func pop() -> ViewComponent {
+        components.removeValue(forKey: rootComponentsId.last!)
         return rootComponents.removeValue(forKey: rootComponentsId.removeLast())!
     }
     
@@ -50,10 +55,10 @@ class RootComponentManager {
     }
     
     var topChildrenComponent: [ViewComponent]? {
-        guard let id = rootComponentsId.last else {
+        guard let id = rootComponentsId.last, let componentDic = components[id] else {
             return nil
         }
-        return rootComponents[id]?.children
+        return Array(componentDic.values)
     }
     
     private var _topViewController: UIViewController?
