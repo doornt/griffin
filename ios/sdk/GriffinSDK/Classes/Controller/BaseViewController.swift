@@ -77,9 +77,34 @@ class BaseViewController : UIViewController {
         
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesCancelled(touches, with: event)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        if #available(iOS 11.0, *) {} else { self.automaticallyAdjustsScrollViewInsets = false }
+        
+        let silder = Slider.init(frame: CGRect.init(x: 0, y: 0, width: Environment.instance.screenWidth, height: 200))
+        let view1 = UIView()
+        view1.backgroundColor = .red
+        
+        let view2 = UIView()
+        view2.backgroundColor = .yellow
+        let view3 = UIView()
+        view3.backgroundColor = .blue
+        let view4 = UIView()
+        view4.backgroundColor = .green
+        let view5 = UIView()
+        view5.backgroundColor = .gray
+        let view6 = UIView()
+        view6.backgroundColor = .purple
+        
+        silder.itemViews = [view1, view2, view3, view4, view5, view6]
+        
+        view.addSubview(silder)
+        
 //        guard let url = self.sourceUrl else {
 //            return
 //        }

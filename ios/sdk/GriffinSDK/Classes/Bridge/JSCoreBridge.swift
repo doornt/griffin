@@ -28,7 +28,7 @@ extension JSCoreBridge {
     }
 }
 
-class JSCoreBridge {
+class JSCoreBridge: NSObject {
     
     private let _jsContext:JSContext = {
         let context:JSContext = JSContext(virtualMachine: JSVirtualMachine())
@@ -36,7 +36,8 @@ class JSCoreBridge {
         return context
     }()
     
-    init() {
+    override init() {
+        super.init()
         self.initEnvironment()
         self.initJsFunctions()
     }
@@ -47,11 +48,8 @@ class JSCoreBridge {
     
     private func initJsFunctions(){
         let timeoutFunc:@convention(block)(JSValue,Int) ->Void = {
-            (cb,wait) in
-            // 主队列做dispatchAfter?
-            DispatchQueue.main.asyncAfter(deadline:DispatchTime(uptimeNanoseconds:UInt64(wait) * NSEC_PER_MSEC)){
-                (cb as JSValue).call(withArguments: [])
-            }
+            [unowned self](cb,wait) in
+            self.perform(#selector(self.timerHandler(_:)), with: cb, afterDelay: TimeInterval(wait))
         }
         _jsContext.setObject(unsafeBitCast(timeoutFunc, to: AnyObject.self), forKeyedSubscript: "setTimeout" as NSCopying & NSObjectProtocol)
         
@@ -80,5 +78,12 @@ class JSCoreBridge {
             
             print("\nJS ERROR: \(value) \(moreInfo)")
         }
+    }
+    
+    @objc private func timerHandler(_ cb: JSValue?) {
+        guard let callback = cb else {
+            return
+        }
+        callback.call(withArguments: [])
     }
 }
