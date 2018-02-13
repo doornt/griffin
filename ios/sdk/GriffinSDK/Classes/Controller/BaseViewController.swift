@@ -103,7 +103,7 @@ class BaseViewController : UIViewController {
         
         silder.itemViews = [view1, view2, view3, view4, view5, view6]
         
-        view.addSubview(silder)
+//        view.addSubview(silder)
         
 //        guard let url = self.sourceUrl else {
 //            return

@@ -203,7 +203,9 @@ extension ComponentManager {
         assert(Thread.current == self._componentThread, "createElement should be called in _componentThread")
         
         if let component = _buildComponent(instanceId, withData:componentData) {
-            RootComponentManager.instance.addComponent(rootComponentRef: rootViewId, component: component)
+            _addUITask {
+                RootComponentManager.instance.addComponent(rootComponentRef: rootViewId, component: component)
+            }
         }
     }
     
