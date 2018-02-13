@@ -189,6 +189,7 @@ extension ComponentManager {
                                                                "left":0],props: [:])
 
         RootComponentManager.instance.pushRootComponent(component)
+        RootComponentManager.instance.addComponent(rootComponentRef: instanceId, componentRef: instanceId, component: component)
         
         if RootComponentManager.instance.allRootComponents.count == 1 {
             _addUITask {
