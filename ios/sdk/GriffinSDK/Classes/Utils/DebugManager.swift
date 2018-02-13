@@ -30,7 +30,7 @@ class DebugManager {
     }
     
     private func startFetchJSFile(isFirst: String) {
-        let urlString = "http://127.0.0.1:8081/dist/bundle.js"
+        let urlString = "http://127.0.0.1:8081/bundle.js"
         
         if isFirst == "0" {
             print("reload view")
