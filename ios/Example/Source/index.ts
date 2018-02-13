@@ -8,7 +8,8 @@ declare var modal: any;
 export class TestAComponent extends BaseComponent {
 
     constructor() {
-        super(pugJson)
+        super();
+        (<any>this).template = pugJson
     }
 
     clickclick() {
