@@ -61,8 +61,8 @@ class RootComponentManager {
         return Array(componentDic.values)
     }
     
-    private var _topViewController: UIViewController?
-    var topViewController: UIViewController? {
+    private var _topViewController: BaseViewController?
+    var topViewController: BaseViewController? {
         get {
             return _topViewController
         }
@@ -72,10 +72,15 @@ class RootComponentManager {
     }
     
     func pushViewController(withId: String, animated: Bool) {
+        if _topViewController != nil && _topViewController?.navigationController?.topViewController == _topViewController {
+         
+            _topViewController?.rootView = rootComponents[withId]?.view
+            return
+        }
         let vc = BaseViewController()
         vc.rootView = rootComponents[withId]?.view
-        _topViewController = vc
         _topViewController?.navigationController?.pushViewController(vc, animated: animated)
+        _topViewController = vc
     }
     
     func popViewController(animated: Bool) {

@@ -28,10 +28,12 @@ class BaseViewController : UIViewController {
         }
         set {
             _rootView = newValue
+//            _rootView?.addSubview(_silder!)
             self.view.addSubview(newValue!)
         }
     }
 
+    private var _silder: Slider?
     
     var sourceUrl: String?
 //    private var gnView: UIView = UIView()
@@ -86,7 +88,7 @@ class BaseViewController : UIViewController {
 
         if #available(iOS 11.0, *) {} else { self.automaticallyAdjustsScrollViewInsets = false }
         
-        let silder = Slider.init(frame: CGRect.init(x: 0, y: 0, width: Environment.instance.screenWidth, height: 200))
+        _silder = Slider.init(frame: CGRect.init(x: 0, y: 64, width: Environment.instance.screenWidth, height: 200))
         let view1 = UIView()
         view1.backgroundColor = .red
         
@@ -101,9 +103,7 @@ class BaseViewController : UIViewController {
         let view6 = UIView()
         view6.backgroundColor = .purple
         
-        silder.itemViews = [view1, view2, view3, view4, view5, view6]
-        
-//        view.addSubview(silder)
+        _silder?.itemViews = [view1, view2, view3, view4, view5, view6]
         
 //        guard let url = self.sourceUrl else {
 //            return

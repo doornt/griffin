@@ -70,7 +70,7 @@ class Slider: UIView, UIScrollViewDelegate {
             
             _scrollView.contentSize = CGSize.init(width: 3 * frame.size.width, height: frame.size.height)
             _totalPage = _itemViews.count
-            _scrollView.frame = frame
+            _scrollView.frame = bounds
             self.addSubview(_scrollView)
             
             for item in _itemViews {

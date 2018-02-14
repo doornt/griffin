@@ -193,7 +193,7 @@ extension ComponentManager {
         
         if RootComponentManager.instance.allRootComponents.count == 1 {
             _addUITask {
-                self._rootController?.rootView = component.view
+//                self._rootController?.rootView = component.view
                 RootComponentManager.instance.topViewController = self._rootController
             }
         }
