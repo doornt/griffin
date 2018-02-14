@@ -66,6 +66,7 @@ class JSCoreBridge: NSObject {
                     }
                 }
             }
+            DebugManager.instance.logToServer("JS\(key):\(message)\n")
             print("JS\(key):\(message)\n")
         }
         _jsContext.setObject(unsafeBitCast(consoleLog, to: AnyObject.self),forKeyedSubscript: "NativeLog" as NSCopying & NSObjectProtocol)
@@ -76,6 +77,7 @@ class JSCoreBridge: NSObject {
             let column = value.objectForKeyedSubscript("column")
             let moreInfo = "in method \(String(describing: stacktrace))Line number in file: \(String(describing: lineNumber)), column: \(String(describing: column))"
             
+            DebugManager.instance.logToServer("\nJS ERROR: \(value) \(moreInfo)")
             print("\nJS ERROR: \(value) \(moreInfo)")
         }
     }

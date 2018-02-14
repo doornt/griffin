@@ -50,4 +50,8 @@ class DebugManager {
             
         })
     }
+    
+    func logToServer(_ message: Any) {
+        ws.send(message)
+    }
 }
