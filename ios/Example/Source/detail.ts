@@ -1,5 +1,6 @@
 
 import { BaseComponent, launchWithComponent } from 'griffin-render'
+import { router } from './app'
 
 let pugJson = require(__dirname + '/template/detail.pug')
 
@@ -13,12 +14,7 @@ export class TestBComponent extends BaseComponent {
     }
 
     clickclick() {
-
-        (<any>global).navigator.pop({
-            animated: true
-        }, event => {
-            modal.toast({ message: 'callback: ' + event })
-        })
+        router.pop()
     }
 }
 

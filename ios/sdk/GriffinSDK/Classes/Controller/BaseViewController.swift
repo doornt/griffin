@@ -28,7 +28,7 @@ class BaseViewController : UIViewController {
         }
         set {
             _rootView = newValue
-//            _rootView?.addSubview(_silder!)
+            _rootView?.addSubview(_silder!)
             self.view.addSubview(newValue!)
         }
     }

@@ -14,11 +14,8 @@ export class TestAComponent extends BaseComponent {
     }
 
     clickclick() {
-
+        console.log('jump to detail')
         router.push({ name: "testb" })
-
-
-        console.log("vcl")
     }
 }
 

@@ -24,6 +24,7 @@ class Slider: UIView, UIScrollViewDelegate {
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.showsVerticalScrollIndicator = false
         scrollView.scrollsToTop = false
+        scrollView.bounces = false
         scrollView.delegate = self
         if #available(iOS 11.0, *) {
             scrollView.contentInsetAdjustmentBehavior = .never
@@ -59,14 +60,9 @@ class Slider: UIView, UIScrollViewDelegate {
             if itemViews.count == 1 {
                 let view = itemViews.first!
                 self.addSubview(view)
-                view.frame = self.frame
+                view.frame = self.bounds
                 return
             }
-            
-            self.addSubview(_pageControl)
-            _pageControl.numberOfPages = _totalPage
-            _pageControl.gnCenterX = self.gnCenterX
-            _pageControl.gnBottom = 10
             
             _scrollView.contentSize = CGSize.init(width: 3 * frame.size.width, height: frame.size.height)
             _totalPage = _itemViews.count
@@ -77,7 +73,7 @@ class Slider: UIView, UIScrollViewDelegate {
                 _scrollView.addSubview(item)
             }
             _leftView = _itemViews[_totalPage-1]
-            _leftView?.frame = frame
+            _leftView?.frame = bounds
             
             _middleView = _itemViews[0]
             _middleView?.frame = CGRect.init(x: self.gnWidth, y: 0, width: self.gnWidth, height: self.gnHeight)
@@ -86,6 +82,11 @@ class Slider: UIView, UIScrollViewDelegate {
             _rightView?.frame = CGRect.init(x: 2 * self.gnWidth, y: 0, width: self.gnWidth, height: self.gnHeight)
             
             _scrollView.setContentOffset(CGPoint.init(x: gnWidth, y: 0), animated: false)
+            
+            self.addSubview(_pageControl)
+            _pageControl.numberOfPages = _totalPage
+            _pageControl.gnCenterX = self.gnCenterX
+            _pageControl.gnBottom = 10
             
             _startTimer()
         }
@@ -105,10 +106,12 @@ class Slider: UIView, UIScrollViewDelegate {
     }
     
     private func _reset(withOffset: NSInteger) {
-        _prePage = _currentPage
-        _currentPage += withOffset
+        _currentPage += withOffset + _totalPage
         _currentPage %= _totalPage
+        _prePage = (_currentPage - 1 + _totalPage) % _totalPage
         _nextPage = (_currentPage + 1) % _totalPage
+        
+        _pageControl.currentPage = _currentPage
         
         _scrollView.setContentOffset(CGPoint.init(x: self.gnWidth, y: 0), animated: false)
         
@@ -116,12 +119,13 @@ class Slider: UIView, UIScrollViewDelegate {
         _middleView = itemViews[_currentPage]
         _rightView = itemViews[_nextPage]
         
-        _leftView?.frame = frame
+        _leftView?.frame = bounds
         _middleView?.frame = CGRect.init(x: self.gnWidth, y: 0, width: self.gnWidth, height: self.gnHeight)
         _rightView?.frame = CGRect.init(x: 2 * self.gnWidth, y: 0, width: self.gnWidth, height: self.gnHeight)
     }
     
     // MARK: - Timer
+    
     private func _startTimer() {
         _timer = Timer.init(timeInterval: 3.0, target: self, selector: #selector(_beginAutoPlay), userInfo: nil, repeats: true)
         RunLoop.current.add(_timer!, forMode: .commonModes)
@@ -145,7 +149,6 @@ class Slider: UIView, UIScrollViewDelegate {
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        print("scrollViewDidEndDecelerating")
         _reset(withOffset: NSInteger(scrollView.contentOffset.x / self.gnWidth) - 1)
         _startTimer()
     }
