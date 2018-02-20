@@ -24,6 +24,8 @@ compiler.watch({}, (err, status) => {
 })
 
 app.use(express.static('.'))
+app.use(express.static('./Source/assets/'))
+
 
 const server = http.createServer(app);
 
