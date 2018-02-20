@@ -36,6 +36,8 @@ class ViewComponent {
     private var _clickable: Bool = false
     
     private var _styles:Dictionary<String,Any> = [:]
+
+    var ignoreLayout: Bool = false
     
     var _needsLayout:Bool = true
     
@@ -184,8 +186,13 @@ extension ViewComponent {
 // MARK: - Caluate Property
 
 extension ViewComponent {
-    var children:[ViewComponent] { 
-        return self._children
+    var children:[ViewComponent] {
+        get {
+            return self._children
+        }
+        set {
+            self._children = newValue
+        }
     }
     
     

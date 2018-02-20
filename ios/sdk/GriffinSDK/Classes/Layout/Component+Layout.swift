@@ -15,7 +15,13 @@ extension ViewComponent{
     }
     
     var layout: LayoutStyle{
-        return self._layout!
+        get {
+            
+            return self._layout!
+        }
+        set {
+            self._layout = newValue
+        }
     }
     
     var childrenLayouts:[LayoutStyle]{
@@ -33,7 +39,9 @@ extension ViewComponent{
     func layoutFinish(){
         assert(Thread.current == Thread.main, "layoutFinish must be called in main thread")
         let view:UIView = self.loadView()
-        view.frame = self.layout.requestFrame
+        if !self.ignoreLayout {
+            view.frame = self.layout.requestFrame
+        }
 //        self._needsLayout = false
     }
     

@@ -26,6 +26,14 @@ class Environment {
         return Environment()
     }()
     
+    var assetsUrl: String {
+        #if DEBUG
+            return "http://127.0.0.1:8081/"
+        #else
+            return ""
+        #endif
+        
+    }
     func get() -> [String:Any]{
         var env = [String:Any]()
         env["platform"] = "iOS"
@@ -33,6 +41,8 @@ class Environment {
         env["screenHeight"] = screenHeight
         env["homePath"] = homePath
         env["cachePath"] = cachePath
+        
+        env["assetsUrl"] = self.assetsUrl
         return env
     }
 }

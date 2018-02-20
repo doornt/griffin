@@ -70,7 +70,6 @@ class Label: ViewComponent {
         
         self.layout.width = YGValue(size.width)
         self.layout.height = YGValue(size.height)
-        
         self._needsLayout = true
         
     }

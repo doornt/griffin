@@ -39,6 +39,16 @@ style.
         height: 200;
     }
 
+    .test-div {
+        display: flex;
+    }
+    .test-img{
+        width: 100;
+        height: 100;
+    }
+    .test-title {
+        color: #000000;
+    }
 
 .content
     //- .header
@@ -51,9 +61,15 @@ style.
 
 
     slider.slider(interval="3000" auto-play=true)
-        img(src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1516534694894&di=c6f029523e5d7bb35264a27034e39aa2&imgtype=0&src=http%3A%2F%2Fwww.hdwallpaperspulse.com%2Fwp-content%2Fuploads%2F2012%2F10%2Fkulawend_sanctuary-wallpaper-1080p-hd.jpg")
-        img(src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1516534694894&di=c6f029523e5d7bb35264a27034e39aa2&imgtype=0&src=http%3A%2F%2Fwww.hdwallpaperspulse.com%2Fwp-content%2Fuploads%2F2012%2F10%2Fkulawend_sanctuary-wallpaper-1080p-hd.jpg")
-        img(src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1516534694894&di=c6f029523e5d7bb35264a27034e39aa2&imgtype=0&src=http%3A%2F%2Fwww.hdwallpaperspulse.com%2Fwp-content%2Fuploads%2F2012%2F10%2Fkulawend_sanctuary-wallpaper-1080p-hd.jpg")
+        div.test-div
+            img.test-img(src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1516534694894&di=c6f029523e5d7bb35264a27034e39aa2&imgtype=0&src=http%3A%2F%2Fwww.hdwallpaperspulse.com%2Fwp-content%2Fuploads%2F2012%2F10%2Fkulawend_sanctuary-wallpaper-1080p-hd.jpg")
+            .test-title page1
+        div.test-div
+            img.test-img(src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1516534694894&di=c6f029523e5d7bb35264a27034e39aa2&imgtype=0&src=http%3A%2F%2Fwww.hdwallpaperspulse.com%2Fwp-content%2Fuploads%2F2012%2F10%2Fkulawend_sanctuary-wallpaper-1080p-hd.jpg")
+            .test-title page2
+        div.test-div
+            img.test-img(src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1516534694894&di=c6f029523e5d7bb35264a27034e39aa2&imgtype=0&src=http%3A%2F%2Fwww.hdwallpaperspulse.com%2Fwp-content%2Fuploads%2F2012%2F10%2Fkulawend_sanctuary-wallpaper-1080p-hd.jpg")
+            .test-title page3
 
     //- list
     //-     row

@@ -76,6 +76,10 @@ class Slider: UIView, UIScrollViewDelegate {
         _leftView?.frame = CGRect.init(x: 0, y: 0, width: self.gnWidth, height: self.gnHeight)
         _middleView?.frame = CGRect.init(x: self.gnWidth, y: 0, width: self.gnWidth, height: self.gnHeight)
         _rightView?.frame = CGRect.init(x: 2 * self.gnWidth, y: 0, width: self.gnWidth, height: self.gnHeight)
+        
+        _scrollView.setContentOffset(CGPoint.init(x: gnWidth, y: 0), animated: false)
+        
+//        print("ii s",_leftView, _leftView?.frame)
     }
     
     private var _itemViews: [UIView] = [UIView]()
@@ -122,6 +126,7 @@ class Slider: UIView, UIScrollViewDelegate {
             _pageControl.numberOfPages = _totalPage
             _pageControl.gnCenterX = self.gnCenterX
             _pageControl.gnBottom = 10
+            _pageControl.currentPage = 0
             
             autoPlay ? _startTimer() : _stopTimer()
         }
@@ -247,6 +252,8 @@ class SliderView : DivView {
             if let component = c {
                 childViews.append(component.view)
                 component.parent = self
+                self.children.append(component)
+                component.ignoreLayout = true
             }
         }
         _slider?.itemViews = childViews
