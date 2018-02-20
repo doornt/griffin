@@ -12,8 +12,8 @@ class RootComponentManager {
     
     private var rootComponentsId:[String] = [String]()
     private var rootComponents: [String:ViewComponent] = [String:ViewComponent]()
-    
     private var components: [String:[String: ViewComponent]] = [String: [String:ViewComponent]]()
+    private var _viewControllers: [UIViewController] = [UIViewController]()
     
     var allRootComponents:[ViewComponent] {
         return Array(rootComponents.values)
@@ -43,6 +43,8 @@ class RootComponentManager {
     }
     
     func pop() -> ViewComponent {
+        _viewControllers.removeLast()
+        _topViewController = _viewControllers.last as? BaseViewController
         components.removeValue(forKey: rootComponentsId.last!)
         return rootComponents.removeValue(forKey: rootComponentsId.removeLast())!
     }
@@ -72,12 +74,13 @@ class RootComponentManager {
     }
     
     func pushViewController(withId: String, animated: Bool) {
-        if _topViewController != nil && _topViewController?.navigationController?.topViewController == _topViewController {
-         
+        if _viewControllers.count == 0 {
             _topViewController?.rootView = rootComponents[withId]?.view
+            _viewControllers.append(_topViewController!)
             return
         }
         let vc = BaseViewController()
+        _viewControllers.append(vc)
         vc.rootView = rootComponents[withId]?.view
         _topViewController?.navigationController?.pushViewController(vc, animated: animated)
         _topViewController = vc

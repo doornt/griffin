@@ -23,7 +23,7 @@ class Label: ViewComponent {
         super.init(ref: ref, styles: styles,props: props)
         
         _config(styles: styles)
-        _config(props: props)
+//        _config(props: props)
     }
     
     private func _config(styles:Dictionary<String,Any>) {
@@ -31,9 +31,14 @@ class Label: ViewComponent {
         _fontSize = Utils.any2CGFloat(styles["font-size"])
     }
     
-    private func _config(props:Dictionary<String,Any>) {
+    override func updateProps(_ props: Dictionary<String, Any>) {
+        super.updateProps(props)
         _text = Utils.any2String(props["text"]) ?? ""
     }
+//
+//    private func _config(props:Dictionary<String,Any>) {
+//        _text = Utils.any2String(props["text"]) ?? ""
+//    }
 
     override func loadView() -> UIView {
         return self._label

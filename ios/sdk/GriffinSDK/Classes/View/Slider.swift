@@ -24,7 +24,7 @@ class Slider: UIView, UIScrollViewDelegate {
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.showsVerticalScrollIndicator = false
         scrollView.scrollsToTop = false
-        scrollView.bounces = false
+        scrollView.bounces = false // must set or will have white space when dragging
         scrollView.delegate = self
         if #available(iOS 11.0, *) {
             scrollView.contentInsetAdjustmentBehavior = .never
@@ -160,6 +160,13 @@ class Slider: UIView, UIScrollViewDelegate {
 
 class SliderView : DivView {
     
+    private lazy var _slider: Slider? = {
+        
+        let slider = Slider.init(frame: CGRect.zero)
+        
+        return slider
+    }()
+    
     private var _interval:CGFloat?
     
     private var _autoPlay:Bool = false
@@ -186,5 +193,8 @@ class SliderView : DivView {
         }
     }
     
+    override func loadView() -> UIView {
+        return _slider!
+    }
     
 }
