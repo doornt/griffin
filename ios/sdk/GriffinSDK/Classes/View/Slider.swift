@@ -226,16 +226,20 @@ class SliderView : DivView {
         }
         set{
             super.styles = newValue
-            
-            if let interval = newValue.toCGFloat(key: "interval"){
-                self._interval = interval
-                _slider?.interval = interval
-            }
-            
-            if let autoplay = newValue.toBool(key: "auto-play"){
-                self._autoPlay = autoplay
-                _slider?.autoPlay = autoplay
-            }
+        }
+    }
+    
+    override func updateProps(_ props: Dictionary<String, Any>) {
+        super.updateProps(props)
+        
+        if let interval = props.toCGFloat(key: "interval"){
+            self._interval = interval
+            _slider?.interval = interval
+        }
+        
+        if let autoplay = props.toBool(key: "auto-play"){
+            self._autoPlay = autoplay
+            _slider?.autoPlay = autoplay
         }
     }
     
