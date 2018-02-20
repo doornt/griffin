@@ -1,5 +1,5 @@
 
-import { BaseComponent, launchWithComponent } from 'griffin-render'
+import { BaseComponent } from 'griffin-render'
 import { router } from './app'
 
 let pugJson = require(__dirname + '/template/detail.pug')
