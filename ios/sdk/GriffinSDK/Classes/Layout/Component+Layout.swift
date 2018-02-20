@@ -36,14 +36,7 @@ extension ViewComponent{
         self.layout.applyLayoutPreservingOrigin(preserveOrigin: true)
     }
 
-    func layoutFinish(){
-        assert(Thread.current == Thread.main, "layoutFinish must be called in main thread")
-        let view:UIView = self.loadView()
-        if !self.ignoreLayout {
-            view.frame = self.layout.requestFrame
-        }
-//        self._needsLayout = false
-    }
+    
     
     var needsLayout : Bool{
         return self._needsLayout

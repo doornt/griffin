@@ -50,6 +50,21 @@ style.
         color: #000000;
     }
 
+    .item-1 {
+        height: 300;
+        background-color: #ff0000;
+    }
+    .item-2 {
+        height: 300;
+        background-color: #00ff00;
+    }
+    .item-3 {
+        height: 300;
+        background-color: #0000ff;
+    }
+    .scroll-view {
+        height: 500;
+    }
 .content
     //- .header
     //-     .nav
@@ -60,17 +75,18 @@ style.
     //-         img.right-item(src="https://www.dpfile.com/ugc/shortvideo/floor2/shareIcon.png")
 
 
-    slider.slider(interval="3000" auto-play=true)
-        div.test-div
-            img.test-img(src="assets://a.jpg")
-            .test-title page1
-        div.test-div
-            img.test-img(src="assets://a.jpg")
-            .test-title page2
-        div.test-div
-            img.test-img(src="assets://b.jpg")
-            .test-title page3
+    //- slider.slider(interval="3000" auto-play=true)
+    //-     div.test-div
+    //-         img.test-img(src="assets://a.jpg")
+    //-         .test-title page1
+    //-     div.test-div
+    //-         img.test-img(src="assets://a.jpg")
+    //-         .test-title page2
+    //-     div.test-div
+    //-         img.test-img(src="assets://b.jpg")
+    //-         .test-title page3
 
-    //- list
-    //-     row
-    //-     row
+    scrollView.scroll-view
+        .item-1
+        .item-2
+        .item-3

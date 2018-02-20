@@ -152,6 +152,15 @@ class ViewComponent {
         
         self._needsLayout = true
     }
+    
+    func layoutFinish(){
+        assert(Thread.current == Thread.main, "layoutFinish must be called in main thread")
+        let view:UIView = self.loadView()
+        if !self.ignoreLayout {
+            view.frame = self.layout.requestFrame
+        }
+        //        self._needsLayout = false
+    }
 }
 
 // MARK: - Component Operation

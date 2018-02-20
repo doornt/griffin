@@ -60,11 +60,16 @@ private extension Engine {
         registerComponent("label", withClass: Label.self)
         registerComponent("text", withClass: Label.self)
         registerComponent("img", withClass: ImageView.self)
+        registerComponent("$wrapper", withClass: ComponentWrap.self)
         
         registerComponent("slider", withClass: SliderView.self)
+        registerComponent("scrollView", withClass: ScrollComponent.self)
     }
     
     func registerComponents2JS() {
+        JSBridgeContext.instance.performOnJSThread {
+            JSBridgeContext.instance.registerComponent2JS("scrollView")
+        }
     }
     
     func registerComponent(_ tag: String, withClass className: AnyClass) {
