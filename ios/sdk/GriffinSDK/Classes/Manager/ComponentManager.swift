@@ -111,12 +111,12 @@ class ComponentManager: NSObject {
         guard let root = RootComponentManager.instance.topComponent else {
             return
         }
-        _addUITask {
-        print("jj applyLayout")
+//        _addUITask {
+        print("jjjj applyLayout", topChildrenComponent.count)
             root.applyLayout()
-        }
+//        }
         
-        
+        print("jjjj layoutfinish", topChildrenComponent.count)
         for o in topChildrenComponent {
             _addUITask {
                 
@@ -131,9 +131,12 @@ class ComponentManager: NSObject {
         let blocks = _uiTaskQueue
         _uiTaskQueue = [()->Void]()
         
+        print("jjjj blocks before", blocks.count)
+        
         DispatchQueue.main.async {
+            print("jjjj blocks after", blocks.count)
             for item in blocks {
-                print("jj", item)
+                
                 item()
             }
 //            guard let topChildrenComponent = RootComponentManager.instance.topChildrenComponent else {
@@ -205,6 +208,7 @@ extension ComponentManager {
         if RootComponentManager.instance.allRootComponents.count == 1 {
             _addUITask {
 //                self._rootController?.rootView = component.view
+                print("jjjj topVC")
                 RootComponentManager.instance.topViewController = self._rootController
             }
         }
@@ -242,6 +246,7 @@ extension ComponentManager {
         }
         component.updateWithStyle(data["styles"] as![String:Any])
         _addUITask {
+            print("jjjj refresh")
             component.refresh()
         }
         _awakeDisplayLink()
@@ -256,6 +261,7 @@ extension ComponentManager {
                 return
         }
         _addUITask {
+            print("jjjj addchild")
             superComponent.addChild(childComponent)
         }
         _awakeDisplayLink()
@@ -274,6 +280,7 @@ extension ComponentManager {
 
 
         _addUITask {
+            print("jjjj addchildrene", childrenComponents.count)
             superComponent.addChildren(childrenComponents)
         }
         _awakeDisplayLink()

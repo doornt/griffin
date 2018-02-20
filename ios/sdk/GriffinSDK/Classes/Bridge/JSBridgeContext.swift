@@ -173,11 +173,9 @@ class JSBridgeContext: NSObject {
     // MARK: - Network
     private let _fetch:@convention(block)(String, [String: String], JSValue)-> Void = {
         url, params, callback in
-        DispatchQueue.main.async {
-            NetworkManager.instance.get(url: url, params: params) {
-                (data, error) in
-                callback.callWithArguments(data)
-            }
+        NetworkManager.instance.get(url: url, params: params) {
+            (data, error) in
+            callback.callWithArguments(data)
         }
     }
 }
