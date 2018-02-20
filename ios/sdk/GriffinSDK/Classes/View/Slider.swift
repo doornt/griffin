@@ -33,7 +33,7 @@ class Slider: UIView, UIScrollViewDelegate {
         return scrollView
     }()
     
-    private var _interval:CGFloat = 3.0
+    private var _interval:CGFloat = 3000
     var interval:CGFloat {
         get {
             return _interval
@@ -71,9 +71,9 @@ class Slider: UIView, UIScrollViewDelegate {
         _pageControl.gnBottom = 10
         
         _scrollView.contentSize = CGSize.init(width: 3 * frame.size.width, height: frame.size.height)
-        _scrollView.frame = bounds
+        _scrollView.frame = CGRect.init(x: 0, y: 0, width: self.gnWidth, height: self.gnHeight)
         
-        _leftView?.frame = bounds
+        _leftView?.frame = CGRect.init(x: 0, y: 0, width: self.gnWidth, height: self.gnHeight)
         _middleView?.frame = CGRect.init(x: self.gnWidth, y: 0, width: self.gnWidth, height: self.gnHeight)
         _rightView?.frame = CGRect.init(x: 2 * self.gnWidth, y: 0, width: self.gnWidth, height: self.gnHeight)
     }
@@ -108,7 +108,7 @@ class Slider: UIView, UIScrollViewDelegate {
                 _scrollView.addSubview(item)
             }
             _leftView = _itemViews[_totalPage-1]
-            _leftView?.frame = bounds
+            _leftView?.frame = CGRect.init(x: 0, y: 0, width: self.gnWidth, height: self.gnHeight)
             
             _middleView = _itemViews[0]
             _middleView?.frame = CGRect.init(x: self.gnWidth, y: 0, width: self.gnWidth, height: self.gnHeight)
@@ -154,7 +154,7 @@ class Slider: UIView, UIScrollViewDelegate {
         _middleView = itemViews[_currentPage]
         _rightView = itemViews[_nextPage]
         
-        _leftView?.frame = bounds
+        _leftView?.frame = CGRect.init(x: 0, y: 0, width: self.gnWidth, height: self.gnHeight)
         _middleView?.frame = CGRect.init(x: self.gnWidth, y: 0, width: self.gnWidth, height: self.gnHeight)
         _rightView?.frame = CGRect.init(x: 2 * self.gnWidth, y: 0, width: self.gnWidth, height: self.gnHeight)
     }

@@ -46,22 +46,22 @@ class BaseViewController : UIViewController {
     init() {
         super.init(nibName: nil, bundle: nil)
         
-        _silder = Slider.init(frame: CGRect.init(x: 0, y: 64, width: Environment.instance.screenWidth, height: 200))
-        let view1 = UIView()
-        view1.backgroundColor = .red
-        
-        let view2 = UIView()
-        view2.backgroundColor = .yellow
-        let view3 = UIView()
-        view3.backgroundColor = .blue
-        let view4 = UIView()
-        view4.backgroundColor = .green
-        let view5 = UIView()
-        view5.backgroundColor = .gray
-        let view6 = UIView()
-        view6.backgroundColor = .purple
-        
-        _silder?.itemViews = [view1, view2, view3, view4, view5, view6]
+//        _silder = Slider.init(frame: CGRect.init(x: 0, y: 64, width: Environment.instance.screenWidth, height: 200))
+//        let view1 = UIView()
+//        view1.backgroundColor = .red
+//
+//        let view2 = UIView()
+//        view2.backgroundColor = .yellow
+//        let view3 = UIView()
+//        view3.backgroundColor = .blue
+//        let view4 = UIView()
+//        view4.backgroundColor = .green
+//        let view5 = UIView()
+//        view5.backgroundColor = .gray
+//        let view6 = UIView()
+//        view6.backgroundColor = .purple
+//
+//        _silder?.itemViews = [view1, view2, view3, view4, view5, view6]
         
         _tableView = ListView.init(frame: CGRect.init(x: 0, y: 264, width: Environment.instance.screenWidth, height: 300))
     }

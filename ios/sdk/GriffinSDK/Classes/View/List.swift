@@ -59,3 +59,42 @@ class ListView: UIView, UITableViewDelegate, UITableViewDataSource {
     }
     
 }
+
+class List: DivView {
+    
+    private lazy var _listView: ListView? = {
+        
+        let listView = ListView.init(frame: CGRect.zero)
+        
+        return listView
+    }()
+    
+    required init(ref: String, styles: Dictionary<String, Any>,props:Dictionary<String, Any>) {
+        super.init(ref: ref, styles: styles, props: props)
+        
+    }
+    
+    
+//    override var styles: Dictionary<String, Any>{
+//        get{
+//            return super.styles
+//        }
+//        set{
+//            super.styles = newValue
+//            
+//            if let interval = newValue.toCGFloat(key: "interval"){
+//                self._interval = interval
+//                _slider?.interval = interval
+//            }
+//            
+//            if let autoplay = newValue.toBool(key: "auto-play"){
+//                self._autoPlay = autoplay
+//                _slider?.autoPlay = autoplay
+//            }
+//        }
+//    }
+    
+    override func loadView() -> UIView {
+        return _listView!
+    }
+}

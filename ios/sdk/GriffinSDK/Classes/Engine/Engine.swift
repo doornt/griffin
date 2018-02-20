@@ -65,9 +65,6 @@ private extension Engine {
     }
     
     func registerComponents2JS() {
-        JSBridgeContext.instance.performOnJSThread {
-            JSBridgeContext.instance.registerComponent2JS("slider")
-        }
     }
     
     func registerComponent(_ tag: String, withClass className: AnyClass) {
