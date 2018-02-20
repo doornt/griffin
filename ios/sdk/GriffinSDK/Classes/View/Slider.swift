@@ -210,7 +210,7 @@ class SliderView : DivView {
         return slider
     }()
     
-    private var _interval:CGFloat?
+    private var _interval:CGFloat = 3000
     
     private var _autoPlay:Bool = false
     
@@ -234,17 +234,22 @@ class SliderView : DivView {
         
         if let interval = props.toCGFloat(key: "interval"){
             self._interval = interval
-            _slider?.interval = interval
+            
         }
         
         if let autoplay = props.toBool(key: "auto-play"){
             self._autoPlay = autoplay
-            _slider?.autoPlay = autoplay
         }
     }
     
     override func loadView() -> UIView {
         return _slider!
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        _slider?.interval = _interval
+        _slider?.autoPlay = _autoPlay
     }
     
     override func addChildren(_ children: [ViewComponent?]) {
