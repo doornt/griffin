@@ -14,6 +14,8 @@ class ViewComponent {
     
     private lazy var _children: [ViewComponent] = []
     
+    var rootViewId: String?
+    
     var _parent:ViewComponent?
     
     private lazy var _viewLoaded = false

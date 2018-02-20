@@ -190,6 +190,7 @@ extension ComponentManager {
                                                                "width":Environment.instance.screenWidth,
                                                                "top":0,
                                                                "left":0],props: [:])
+        component.rootViewId = instanceId
 
         RootComponentManager.instance.pushRootComponent(component)
         RootComponentManager.instance.addComponent(rootComponentRef: instanceId, componentRef: instanceId, component: component)
@@ -207,8 +208,19 @@ extension ComponentManager {
         assert(Thread.current == self._componentThread, "createElement should be called in _componentThread")
         
         if let component = _buildComponent(instanceId, withData:componentData) {
+            component.rootViewId = rootViewId
             RootComponentManager.instance.addComponent(rootComponentRef: rootViewId, componentRef: instanceId, component: component)
         }
+    }
+    
+    func removeChildren(rootViewId: String,instanceId: String) {
+        
+        assert(Thread.current == self._componentThread, "removeChildren should be called in _componentThread")
+        
+        guard let component = RootComponentManager.instance.getComponent(rootComponentRef: rootViewId, componentRef: instanceId) else {
+            return
+        }
+        component.removeChildren()
     }
     
     func updateElement(rootViewId: String, instanceId:String, data: Dictionary<String,Any>) {

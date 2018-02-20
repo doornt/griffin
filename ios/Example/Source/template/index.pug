@@ -66,25 +66,19 @@ style.
         height: 500;
     }
 .content
-    //- .header
-    //-     .nav
-    //-         img.left-item(src="https://www.dpfile.com/ugc/shortvideo/floor2/shareIcon.png" @click="clickclick")
-    //-         .title 首页
-    //-         .space
-    //-         img.right-item(src="https://www.dpfile.com/ugc/shortvideo/floor2/shareIcon.png")
-    //-         img.right-item(src="https://www.dpfile.com/ugc/shortvideo/floor2/shareIcon.png")
+    .header
+        .nav
+            img.left-item(src="https://www.dpfile.com/ugc/shortvideo/floor2/shareIcon.png" @click="clickclick")
+            .title 首页
+            .space
+            img.right-item(src="https://www.dpfile.com/ugc/shortvideo/floor2/shareIcon.png")
+            img.right-item(src="https://www.dpfile.com/ugc/shortvideo/floor2/shareIcon.png")
 
 
-    //- slider.slider(interval="3000" auto-play=true)
-    //-     div.test-div
-    //-         img.test-img(src="assets://a.jpg")
-    //-         .test-title page1
-    //-     div.test-div
-    //-         img.test-img(src="assets://a.jpg")
-    //-         .test-title page2
-    //-     div.test-div
-    //-         img.test-img(src="assets://b.jpg")
-    //-         .test-title page3
+    slider.slider(interval="3000" auto-play=true)
+        img(src="assets://a.jpg")
+        img(src="assets://a.jpg")
+        img(src="assets://b.jpg")
 
     scrollView.scroll-view
         .item-1

@@ -127,6 +127,13 @@ class JSBridgeContext: NSObject {
         }
     }
     
+    private let _removeChildrenBlock:@convention(block)(String,String) -> Void = {
+        rootViewId,instanceId in
+        ComponentManager.instance.performOnComponentThread {
+            ComponentManager.instance.removeChildren(rootViewId: rootViewId,instanceId: instanceId)
+        }
+    }
+    
     private let _addSubview:@convention(block)(String, String, String)-> Void = {
         rootViewId, parentId, childId in
         ComponentManager.instance.performOnComponentThread {
@@ -191,6 +198,7 @@ extension JSBridgeContext {
         // MARK: Create View
         _jsBridge.register(method: _createRootView, script: "createRootView")
         _jsBridge.register(method: _createElementBlock, script: "createElement")
+        _jsBridge.register(method: _removeChildrenBlock, script: "removeChildren")
         
         // MARK: Operate View
         _jsBridge.register(method: _addSubview, script: "addSubview")

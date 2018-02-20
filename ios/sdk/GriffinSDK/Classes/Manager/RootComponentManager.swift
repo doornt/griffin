@@ -34,6 +34,10 @@ class RootComponentManager {
         }
     }
     
+    func removeChildren(componentRef: String) {
+    
+    }
+    
     func getComponent(rootComponentRef: String, componentRef: String) -> ViewComponent? {
         guard let component = components[rootComponentRef] else {
             return nil
