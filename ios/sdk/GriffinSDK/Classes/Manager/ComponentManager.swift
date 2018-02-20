@@ -77,7 +77,6 @@ class ComponentManager: NSObject {
 
     private func _layoutAndSyncUI() {
         assert(Thread.current == self._componentThread, "_layoutAndSyncUI should be called in _componentThread")
-//        print("ii _layoutAndSyncUI")
         _layout()
         if(_uiTaskQueue.count > 0){
             _syncUITasks()
@@ -85,9 +84,7 @@ class ComponentManager: NSObject {
         } else {
             // suspend display link when there's no task for 1 second, in order to save CPU time.
             _noTaskTickCount += 1
-//            print("ii", _noTaskTickCount)
             if (_noTaskTickCount > 60) {
-//                print("ii jjjj")
                 _suspendDisplayLink()
             }
         }
@@ -114,12 +111,14 @@ class ComponentManager: NSObject {
         guard let root = RootComponentManager.instance.topComponent else {
             return
         }
+        _addUITask {
+            root.applyLayout()
+        }
         
-//        print("ii _layout")
-        root.applyLayout()
         
         for o in topChildrenComponent {
             _addUITask {
+                
                 o.layoutFinish()
             }
         }
@@ -135,6 +134,12 @@ class ComponentManager: NSObject {
             for item in blocks {
                 item()
             }
+//            guard let topChildrenComponent = RootComponentManager.instance.topChildrenComponent else {
+//                return
+//            }
+//            for o in topChildrenComponent {
+//                o.layoutFinish()
+//            }
         }
     }
 }
@@ -201,6 +206,7 @@ extension ComponentManager {
                 RootComponentManager.instance.topViewController = self._rootController
             }
         }
+        _awakeDisplayLink()
     }
     
     func createElement(rootViewId: String, instanceId: String, withData componentData:[String: Any]) {
@@ -211,6 +217,7 @@ extension ComponentManager {
             component.rootViewId = rootViewId
             RootComponentManager.instance.addComponent(rootComponentRef: rootViewId, componentRef: instanceId, component: component)
         }
+        _awakeDisplayLink()
     }
     
     func removeChildren(rootViewId: String,instanceId: String) {
@@ -221,6 +228,7 @@ extension ComponentManager {
             return
         }
         component.removeChildren()
+        _awakeDisplayLink()
     }
     
     func updateElement(rootViewId: String, instanceId:String, data: Dictionary<String,Any>) {
@@ -234,6 +242,7 @@ extension ComponentManager {
         _addUITask {
             component.refresh()
         }
+        _awakeDisplayLink()
     }
     
     func addElement(rootViewId: String, parentId:String, childId: String){
@@ -247,7 +256,7 @@ extension ComponentManager {
         _addUITask {
             superComponent.addChild(childComponent)
         }
-        
+        _awakeDisplayLink()
     }
     
     func addElements(rootViewId: String, parentId:String, childIds: [String]){
@@ -265,7 +274,7 @@ extension ComponentManager {
         _addUITask {
             superComponent.addChildren(childrenComponents)
         }
-
+        _awakeDisplayLink()
     }
     
     private func _buildComponent(_ instanceId: String, withData data:[String: Any]) -> ViewComponent? {

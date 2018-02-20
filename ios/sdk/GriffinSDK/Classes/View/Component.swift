@@ -134,6 +134,7 @@ class ViewComponent {
         child.parent = self
         self._children.append(child)
         self._needsLayout = true
+        print("add")
     }
     
     func addChildren(_ children: [ViewComponent?]) {
@@ -151,7 +152,7 @@ class ViewComponent {
                 self._children.append(component)
             }
         }
-        
+        print("add")
         self._needsLayout = true
     }
     
@@ -161,7 +162,8 @@ class ViewComponent {
         if !self.ignoreLayout {
             view.frame = self.layout.requestFrame
         }
-        //        self._needsLayout = false
+        print("frame", view.frame)
+        self._needsLayout = false
     }
 }
 
