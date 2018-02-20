@@ -111,10 +111,10 @@ class ComponentManager: NSObject {
         guard let root = RootComponentManager.instance.topComponent else {
             return
         }
-//        _addUITask {
+
         print("jjjj applyLayout", RootComponentManager.instance.addedComponents.count)
             root.applyLayout()
-//        }
+        }
         
         print("jjjj layoutfinish", RootComponentManager.instance.addedComponents.count)
         for o in RootComponentManager.instance.addedComponents {
