@@ -89,12 +89,14 @@ class RootComponentManager {
     func pushViewController(withId: String, animated: Bool) {
         if _viewControllers.count == 0 {
             _topViewController?.rootView = rootComponents[withId]?.view
+            registerAddedComponent(rootComponents[withId]!)
             _viewControllers.append(_topViewController!)
             return
         }
         let vc = BaseViewController()
         _viewControllers.append(vc)
         vc.rootView = rootComponents[withId]?.view
+        registerAddedComponent(rootComponents[withId]!)
         _topViewController?.navigationController?.pushViewController(vc, animated: animated)
         _topViewController = vc
     }
