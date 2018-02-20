@@ -113,8 +113,8 @@ class ComponentManager: NSObject {
         }
 
         print("jjjj applyLayout", RootComponentManager.instance.addedComponents.count)
-            root.applyLayout()
-        }
+        root.applyLayout()
+        
         
         print("jjjj layoutfinish", RootComponentManager.instance.addedComponents.count)
         for o in RootComponentManager.instance.addedComponents {
