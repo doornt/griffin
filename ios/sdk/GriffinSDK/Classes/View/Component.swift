@@ -12,7 +12,7 @@ import UIKit
 
 class ViewComponent {
     
-    lazy private var _children: [ViewComponent] = []
+    private lazy var _children: [ViewComponent] = []
     
     var _parent:ViewComponent?
     
@@ -117,10 +117,7 @@ class ViewComponent {
         
         self.viewDidLoad()
     }
-}
-
-// MARK: - Component Operation
-extension ViewComponent {
+    
     func addChild(_ child:ViewComponent){
         
         assert(Thread.current == Thread.main, "addChild must be called in main thread")
@@ -134,6 +131,42 @@ extension ViewComponent {
         self._children.append(child)
         self._needsLayout = true
     }
+    
+    func addChildren(_ children: [ViewComponent?]) {
+        assert(Thread.current == Thread.main, "addChildren must be called in main thread")
+        
+        let superView = self.view
+        
+        for c in children {
+            if let component = c {
+                let subView = component.view
+                
+                superView.addSubview(subView)
+                
+                component.parent = self
+                self._children.append(component)
+            }
+        }
+        
+        self._needsLayout = true
+    }
+}
+
+// MARK: - Component Operation
+extension ViewComponent {
+//    func addChild(_ child:ViewComponent){
+//        
+//        assert(Thread.current == Thread.main, "addChild must be called in main thread")
+//        
+//        let superView = self.view
+//        let subView = child.view
+//        
+//        superView.addSubview(subView)
+//        
+//        child.parent = self
+//        self._children.append(child)
+//        self._needsLayout = true
+//    }
     
     func addChildAt(_ child:ViewComponent,_ index:Int){
         
@@ -151,7 +184,7 @@ extension ViewComponent {
 // MARK: - Caluate Property
 
 extension ViewComponent {
-    var children:[ViewComponent]{
+    var children:[ViewComponent] { 
         return self._children
     }
     

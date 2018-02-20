@@ -77,7 +77,7 @@ class ComponentManager: NSObject {
 
     private func _layoutAndSyncUI() {
         assert(Thread.current == self._componentThread, "_layoutAndSyncUI should be called in _componentThread")
-        
+//        print("ii _layoutAndSyncUI")
         _layout()
         if(_uiTaskQueue.count > 0){
             _syncUITasks()
@@ -85,7 +85,9 @@ class ComponentManager: NSObject {
         } else {
             // suspend display link when there's no task for 1 second, in order to save CPU time.
             _noTaskTickCount += 1
+//            print("ii", _noTaskTickCount)
             if (_noTaskTickCount > 60) {
+//                print("ii jjjj")
                 _suspendDisplayLink()
             }
         }
@@ -113,6 +115,7 @@ class ComponentManager: NSObject {
             return
         }
         
+//        print("ii _layout")
         root.applyLayout()
         
         for o in topChildrenComponent {
@@ -233,6 +236,24 @@ extension ComponentManager {
             superComponent.addChild(childComponent)
         }
         
+    }
+    
+    func addElements(rootViewId: String, parentId:String, childIds: [String]){
+        
+        assert(Thread.current == self._componentThread, "addElement should be called in _componentThread")
+
+        guard let superComponent = RootComponentManager.instance.getComponent(rootComponentRef: rootViewId, componentRef: parentId) else {
+                return
+        }
+        let childrenComponents = childIds.map { (childId) -> ViewComponent? in
+            return RootComponentManager.instance.getComponent(rootComponentRef: rootViewId, componentRef: childId)
+        }
+
+
+        _addUITask {
+            superComponent.addChildren(childrenComponents)
+        }
+
     }
     
     private func _buildComponent(_ instanceId: String, withData data:[String: Any]) -> ViewComponent? {

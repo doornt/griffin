@@ -33,6 +33,26 @@ class Slider: UIView, UIScrollViewDelegate {
         return scrollView
     }()
     
+    private var _interval:CGFloat = 3.0
+    var interval:CGFloat {
+        get {
+            return _interval
+        }
+        set {
+            _interval = newValue
+        }
+    }
+    
+    private var _autoPlay:Bool = false
+    var autoPlay:Bool {
+        get {
+            return _autoPlay
+        }
+        set {
+            _autoPlay = newValue
+        }
+    }
+    
     private var _totalPage = 0
     private var _currentPage = 0
     private var _prePage = -1
@@ -44,6 +64,20 @@ class Slider: UIView, UIScrollViewDelegate {
     private var _middleView: UIView?
     private var _rightView: UIView?
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        _pageControl.gnCenterX = self.gnCenterX
+        _pageControl.gnBottom = 10
+        
+        _scrollView.contentSize = CGSize.init(width: 3 * frame.size.width, height: frame.size.height)
+        _scrollView.frame = bounds
+        
+        _leftView?.frame = bounds
+        _middleView?.frame = CGRect.init(x: self.gnWidth, y: 0, width: self.gnWidth, height: self.gnHeight)
+        _rightView?.frame = CGRect.init(x: 2 * self.gnWidth, y: 0, width: self.gnWidth, height: self.gnHeight)
+    }
+    
     private var _itemViews: [UIView] = [UIView]()
     var itemViews: [UIView] {
         get {
@@ -52,6 +86,7 @@ class Slider: UIView, UIScrollViewDelegate {
         
         set {
             _itemViews = newValue
+            self.backgroundColor = UIColor.yellow
             
             if itemViews.count <= 0 {
                 return
@@ -88,7 +123,7 @@ class Slider: UIView, UIScrollViewDelegate {
             _pageControl.gnCenterX = self.gnCenterX
             _pageControl.gnBottom = 10
             
-            _startTimer()
+            autoPlay ? _startTimer() : _stopTimer()
         }
         
     }
@@ -127,7 +162,7 @@ class Slider: UIView, UIScrollViewDelegate {
     // MARK: - Timer
     
     private func _startTimer() {
-        _timer = Timer.init(timeInterval: 3.0, target: self, selector: #selector(_beginAutoPlay), userInfo: nil, repeats: true)
+        _timer = Timer.init(timeInterval: TimeInterval(_interval / 1000), target: self, selector: #selector(_beginAutoPlay), userInfo: nil, repeats: true)
         RunLoop.current.add(_timer!, forMode: .commonModes)
     }
     
@@ -150,7 +185,10 @@ class Slider: UIView, UIScrollViewDelegate {
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         _reset(withOffset: NSInteger(scrollView.contentOffset.x / self.gnWidth) - 1)
-        _startTimer()
+        
+        if autoPlay {
+            _startTimer()
+        }
     }
     
     func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
@@ -173,6 +211,7 @@ class SliderView : DivView {
     
     required init(ref: String, styles: Dictionary<String, Any>,props:Dictionary<String, Any>) {
         super.init(ref: ref, styles: styles, props: props)
+        
     }
     
     
@@ -185,10 +224,12 @@ class SliderView : DivView {
             
             if let interval = newValue.toCGFloat(key: "interval"){
                 self._interval = interval
+                _slider?.interval = interval
             }
             
             if let autoplay = newValue.toBool(key: "auto-play"){
                 self._autoPlay = autoplay
+                _slider?.autoPlay = autoplay
             }
         }
     }
@@ -197,4 +238,19 @@ class SliderView : DivView {
         return _slider!
     }
     
+    override func addChildren(_ children: [ViewComponent?]) {
+        assert(Thread.current == Thread.main, "addChildren must be called in main thread")
+        
+        var childViews = [UIView]()
+        
+        for c in children {
+            if let component = c {
+                childViews.append(component.view)
+                component.parent = self
+            }
+        }
+        _slider?.itemViews = childViews
+        
+        self._needsLayout = true
+    }
 }

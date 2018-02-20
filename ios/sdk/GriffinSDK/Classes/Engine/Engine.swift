@@ -50,6 +50,7 @@ private extension Engine {
     
     func registerDefault() {
         registerComponents()
+        registerComponents2JS()
         registerModules()
     }
     
@@ -59,6 +60,14 @@ private extension Engine {
         registerComponent("label", withClass: Label.self)
         registerComponent("text", withClass: Label.self)
         registerComponent("img", withClass: ImageView.self)
+        
+        registerComponent("slider", withClass: SliderView.self)
+    }
+    
+    func registerComponents2JS() {
+        JSBridgeContext.instance.performOnJSThread {
+            JSBridgeContext.instance.registerComponent2JS("slider")
+        }
     }
     
     func registerComponent(_ tag: String, withClass className: AnyClass) {

@@ -44,6 +44,12 @@ extension JSBridgeContext {
         }
     }
     
+    func registerComponent2JS(_ component: String) {
+        performOnJSThread {
+            callJs(method: "registerNativeComponent", args: [component])
+        }
+    }
+    
     func dispatchEventToJs(rootviewId instanceId: String, data: [String: Any?]) {
         performOnJSThread {
             callJs(method: "dispatchEventToJs", args: [instanceId, data])
@@ -128,6 +134,13 @@ class JSBridgeContext: NSObject {
         }
     }
     
+    private let _addViews:@convention(block)(String, String, [String])-> Void = {
+        rootViewId, parentId, childIds in
+        ComponentManager.instance.performOnComponentThread {
+            ComponentManager.instance.addElements(rootViewId: rootViewId, parentId: parentId, childIds: childIds)
+        }
+    }
+    
     private let _updateElement:@convention(block)(String, String, Dictionary<String,Any>)-> Void = {
         rootViewId, instanceId, data in
         ComponentManager.instance.performOnComponentThread {
@@ -181,6 +194,7 @@ extension JSBridgeContext {
         
         // MARK: Operate View
         _jsBridge.register(method: _addSubview, script: "addSubview")
+        _jsBridge.register(method: _addViews, script: "addViews")
         _jsBridge.register(method: _updateElement, script: "updateView")
         
         // MARK: Event
