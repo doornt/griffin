@@ -210,6 +210,6 @@ extension JSBridgeContext {
         _jsBridge.register(method: _unRegisterEvent, script: "unRegisterEvent")
         
         // MARK: Network
-        _jsBridge.register(method: _fetch, script: "fetch")
+        _jsBridge.register(method: _fetch, script: "nativeFetch")
     }
 }

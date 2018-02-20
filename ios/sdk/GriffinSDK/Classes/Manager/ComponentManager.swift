@@ -112,6 +112,7 @@ class ComponentManager: NSObject {
             return
         }
         _addUITask {
+        print("jj applyLayout")
             root.applyLayout()
         }
         
@@ -132,6 +133,7 @@ class ComponentManager: NSObject {
         
         DispatchQueue.main.async {
             for item in blocks {
+                print("jj", item)
                 item()
             }
 //            guard let topChildrenComponent = RootComponentManager.instance.topChildrenComponent else {
