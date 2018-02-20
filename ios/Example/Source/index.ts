@@ -22,7 +22,10 @@ export class TestAComponent extends BaseComponent {
     onAdded(){
         console.log("TestAComponent onAdded")
         super.onAdded()
-        this.setState({})
+        // this.setState({})
+        fetch('http://api.yatessss.com:8888/news-at/api/4/news/latest').then(data=>{
+            console.log(JSON.stringify(data))
+        })
     }
 }
 

@@ -17,10 +17,10 @@ extension JSValue {
     }
     
     func callWithArguments(_ arguments: Any?) {
-        JSBridgeContext.instance.performOnJSThread {
+//        JSBridgeContext.instance.performOnJSThread {
             let arg = arguments != nil ? [arguments!] : []
             call(withArguments: arg)
-        }
+//        }
     }
 }
 
@@ -173,10 +173,13 @@ class JSBridgeContext: NSObject {
     // MARK: - Network
     private let _fetch:@convention(block)(String, [String: String], JSValue)-> Void = {
         url, params, callback in
-        NetworkManager.instance.get(url: url, params: params) {
-            (data, error) in
-            callback.callWithArguments(data)
+        JSBridgeContext.instance.performOnJSThread {
+            NetworkManager.instance.get(url: url, params: params) {
+                (data, error) in
+                callback.callWithArguments(data)
+            }
         }
+       
     }
 }
 
