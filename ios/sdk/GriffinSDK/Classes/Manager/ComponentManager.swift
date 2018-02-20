@@ -94,10 +94,10 @@ class ComponentManager: NSObject {
         assert(Thread.current == self._componentThread, "_layout should be called in _componentThread")
         
         var needsLayout = false
-        guard let topChildrenComponent = RootComponentManager.instance.topChildrenComponent else {
-            return
-        }
-        for o in topChildrenComponent {
+//        guard let topChildrenComponent = RootComponentManager.instance.addedComponents else {
+//            return
+//        }
+        for o in RootComponentManager.instance.addedComponents {
             if o.needsLayout {
                 needsLayout = true
                 break
@@ -112,14 +112,14 @@ class ComponentManager: NSObject {
             return
         }
 //        _addUITask {
-        print("jjjj applyLayout", topChildrenComponent.count)
+        print("jjjj applyLayout", RootComponentManager.instance.addedComponents.count)
             root.applyLayout()
 //        }
         
-        print("jjjj layoutfinish", topChildrenComponent.count)
-        for o in topChildrenComponent {
+        print("jjjj layoutfinish", RootComponentManager.instance.addedComponents.count)
+        for o in RootComponentManager.instance.addedComponents {
             _addUITask {
-                
+
                 o.layoutFinish()
             }
         }
@@ -139,11 +139,18 @@ class ComponentManager: NSObject {
                 
                 item()
             }
+            
 //            guard let topChildrenComponent = RootComponentManager.instance.topChildrenComponent else {
 //                return
 //            }
 //            for o in topChildrenComponent {
 //                o.layoutFinish()
+//            }
+//            for o in RootComponentManager.instance.addedComponents {
+//
+//
+//                    o.layoutFinish()
+//
 //            }
         }
     }

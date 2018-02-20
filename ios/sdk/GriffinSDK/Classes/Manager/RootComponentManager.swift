@@ -15,6 +15,15 @@ class RootComponentManager {
     private var components: [String:[String: ViewComponent]] = [String: [String:ViewComponent]]()
     private var _viewControllers: [UIViewController] = [UIViewController]()
     
+    private var _addedComponents: [ViewComponent] = [ViewComponent]()
+    var addedComponents: [ViewComponent] {
+        return _addedComponents
+    }
+    func registerAddedComponent(_ component: ViewComponent) {
+        _addedComponents.append(component)
+    }
+    
+    
     var allRootComponents:[ViewComponent] {
         return Array(rootComponents.values)
     }

@@ -134,6 +134,7 @@ class ViewComponent {
         child.parent = self
         self._children.append(child)
         self._needsLayout = true
+        RootComponentManager.instance.registerAddedComponent(child)
         print("add")
     }
     
@@ -150,6 +151,7 @@ class ViewComponent {
                 
                 component.parent = self
                 self._children.append(component)
+                RootComponentManager.instance.registerAddedComponent(component)
             }
         }
         print("add")
