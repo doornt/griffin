@@ -198,7 +198,16 @@ class LayoutStyle{
             return YGNodeStyleGetWidth(self.node)
         }
         set{
-            YGNodeStyleSetWidth(self.node, newValue.value)
+            switch newValue.unit {
+            case YGUnitPoint:
+                YGNodeStyleSetWidth(self.node, newValue.value)
+                break
+            case YGUnitPercent:
+                YGNodeStyleSetWidthPercent(self.node, newValue.value)
+                break
+            default:
+                assert(false, "Not implemented")
+            }
         }
     }
     var height:YGValue{
@@ -206,7 +215,16 @@ class LayoutStyle{
             return YGNodeStyleGetHeight(self.node)
         }
         set{
-            YGNodeStyleSetHeight(self.node, newValue.value)
+            switch newValue.unit {
+            case YGUnitPoint:
+                YGNodeStyleSetHeight(self.node, newValue.value)
+                break
+            case YGUnitPercent:
+                YGNodeStyleSetHeightPercent(self.node, newValue.value)
+                break
+            default:
+                assert(false, "Not implemented")
+            }
         }
     }
     
