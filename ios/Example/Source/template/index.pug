@@ -55,7 +55,22 @@ style.
     }
     .li{
         height:50;
-        background-color: #ff0000;
+        display:flex;
+        flex-direction:row;
+        margin-top:10;
+        marigin-left:10;
+        marign-right:10;
+    }
+    .left{
+        width:60%;
+        background-color: #ffff00;
+        
+    }
+    .right{
+        background-color: #ff0ff0;
+        height:100%;
+        flex-grow:1;
+        
     }
 
 .content
@@ -77,4 +92,8 @@ style.
     scrollView.scroll-view
         each item in stories
             .li
-                .test-title #{item.title}
+            
+                .left
+                    .item-title #{item.title}
+                .right right
+                    
