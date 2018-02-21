@@ -45,52 +45,30 @@ style.
     .slider {
         height: 230;
     }
-
-    .test-div {
-        display: flex;
-    }
-    .test-img{
-        width: 100;
-        height: 100;
-    }
     .test-title {
         color: #000000;
-    }
-
-    .item-1 {
-        height: 300;
-        background-color: #ff0000;
-    }
-    .item-2 {
-        height: 300;
-        background-color: #00ff00;
-    }
-    .item-3 {
-        height: 300;
-        background-color: #0000ff;
     }
     .scroll-view {
         height: 500;
     }
     .li{
         height:50;
-        background-color: #ff0000;
         display:flex;
         flex-direction:row;
-    }
-    .red {
-        background-color: #ff0000;
-    }
-    .yellow {
-        background-color: #000ff0;
-    }
-    .item-title{
-        width:40%;
+        margin-top:10;
+        marigin-left:10;
+        marign-right:10;
     }
     .left{
-        width:60;
+        width:60%;
+        background-color: #ffff00;
+        
+    }
+    .right{
         background-color: #ff0ff0;
-
+        height:100%;
+        flex-grow:1;
+        
     }
 
 .content
@@ -104,12 +82,15 @@ style.
 
 
     slider.slider(interval="3000" auto-play=true)
-        img(src="assets://a.jpg")
-        img(src="assets://a.jpg")
-        img(src="assets://a.jpg")
+        each item in topStories
+            img(src=item.image)
+                .test-title #{item.title}
 
     scrollView.scroll-view
         each item in stories
             .li
+            
                 .left
-                .item-title #{item.title}
+                    .item-title #{item.title}
+                .right right
+                    
