@@ -9,6 +9,8 @@ declare var modal: any;
 
 export class TestAComponent extends BaseComponent {
 
+    private stories = []
+
     constructor() {
         super();
         this.template = pugJson
@@ -20,12 +22,24 @@ export class TestAComponent extends BaseComponent {
     }
 
     onAdded(){
-        console.log("TestAComponent onAdded")
+        // console.log("TestAComponent onAdded")
         super.onAdded()
-        // this.setState({})
-        fetch('http://api.yatessss.com:8888/news-at/api/4/news/latest').then(data=>{
-            console.log(JSON.stringify(data))
-        })
+        // // this.setState({})
+        fetch('http://api.yatessss.com:8888/news-at/api/4/news/latest').then(resp=>resp.json()).then(data=>{
+            this.stories = (data.stories || []).map(story=>({
+                image:story.images[0],
+                title:story.title,
+                id:story.id
+            }))
+            this.refresh()
+        }).catch(err=>console.error(err))
+        
+        
+        // console.log("setTimeout")
+
+        // setTimeout(() => {
+        //     console.log("setTimeout")
+        // }, 1000);
     }
 }
 
