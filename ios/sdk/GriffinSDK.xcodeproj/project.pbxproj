@@ -42,7 +42,6 @@
 		DB2FFE45200712DD001C4908 /* Component.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2FFE17200712DC001C4908 /* Component.swift */; };
 		DB2FFE46200712DD001C4908 /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2FFE18200712DC001C4908 /* ImageView.swift */; };
 		DB2FFE47200712DD001C4908 /* Engine.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2FFE1A200712DC001C4908 /* Engine.swift */; };
-		DB2FFE48200712DD001C4908 /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = DB2FFE1C200712DC001C4908 /* .gitkeep */; };
 		DB2FFE602007159C001C4908 /* YGEnums.h in Headers */ = {isa = PBXBuildFile; fileRef = DB2FFE4C2007159C001C4908 /* YGEnums.h */; };
 		DB2FFE622007159C001C4908 /* YGMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = DB2FFE4E2007159C001C4908 /* YGMacros.h */; };
 		DB2FFE632007159C001C4908 /* Yoga.h in Headers */ = {isa = PBXBuildFile; fileRef = DB2FFE4F2007159C001C4908 /* Yoga.h */; };
@@ -101,7 +100,6 @@
 		DB2FFE17200712DC001C4908 /* Component.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Component.swift; sourceTree = "<group>"; };
 		DB2FFE18200712DC001C4908 /* ImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageView.swift; sourceTree = "<group>"; };
 		DB2FFE1A200712DC001C4908 /* Engine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Engine.swift; sourceTree = "<group>"; };
-		DB2FFE1C200712DC001C4908 /* .gitkeep */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		DB2FFE4C2007159C001C4908 /* YGEnums.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGEnums.h; sourceTree = "<group>"; };
 		DB2FFE4E2007159C001C4908 /* YGMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGMacros.h; sourceTree = "<group>"; };
 		DB2FFE4F2007159C001C4908 /* Yoga.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Yoga.h; sourceTree = "<group>"; };
@@ -163,7 +161,6 @@
 			isa = PBXGroup;
 			children = (
 				DB2FFDE1200712DC001C4908 /* Classes */,
-				DB2FFE1B200712DC001C4908 /* Assets */,
 			);
 			path = GriffinSDK;
 			sourceTree = "<group>";
@@ -277,14 +274,6 @@
 				DB2FFE1A200712DC001C4908 /* Engine.swift */,
 			);
 			path = Engine;
-			sourceTree = "<group>";
-		};
-		DB2FFE1B200712DC001C4908 /* Assets */ = {
-			isa = PBXGroup;
-			children = (
-				DB2FFE1C200712DC001C4908 /* .gitkeep */,
-			);
-			path = Assets;
 			sourceTree = "<group>";
 		};
 		DB2FFE4B2007159C001C4908 /* Yoga */ = {
@@ -402,7 +391,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DB2FFE48200712DD001C4908 /* .gitkeep in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
