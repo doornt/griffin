@@ -13,6 +13,8 @@ class ImageView : ViewComponent {
     private lazy var _imageView: UIImageView = {
         let imageview = UIImageView.init()
         imageview.isUserInteractionEnabled = false
+        imageview.contentMode = UIViewContentMode.scaleAspectFill
+        imageview.clipsToBounds = true
         return imageview
     }()
     

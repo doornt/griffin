@@ -33,6 +33,8 @@ class Slider: UIView, UIScrollViewDelegate {
         return scrollView
     }()
     
+    private var _singleView: UIView?
+    
     private var _interval:CGFloat = 3000
     var interval:CGFloat {
         get {
@@ -50,7 +52,7 @@ class Slider: UIView, UIScrollViewDelegate {
         }
         set {
             _autoPlay = newValue
-            _autoPlay ? _startTimer() : _stopTimer()
+            (_autoPlay && _totalPage > 1) ? _startTimer() : _stopTimer()
         }
     }
     
@@ -68,19 +70,21 @@ class Slider: UIView, UIScrollViewDelegate {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        _pageControl.gnCenterX = self.gnCenterX
-        _pageControl.gnBottom = 10
+        _singleView?.frame = CGRect.init(x: 0, y: 0, width: self.gnWidth, height: self.gnHeight)
         
-        _scrollView.contentSize = CGSize.init(width: 3 * frame.size.width, height: frame.size.height)
-        _scrollView.frame = CGRect.init(x: 0, y: 0, width: self.gnWidth, height: self.gnHeight)
-        
-        _leftView?.frame = CGRect.init(x: 0, y: 0, width: self.gnWidth, height: self.gnHeight)
-        _middleView?.frame = CGRect.init(x: self.gnWidth, y: 0, width: self.gnWidth, height: self.gnHeight)
-        _rightView?.frame = CGRect.init(x: 2 * self.gnWidth, y: 0, width: self.gnWidth, height: self.gnHeight)
-        
-        _scrollView.setContentOffset(CGPoint.init(x: gnWidth, y: 0), animated: false)
-        
-//        print("ii s",_leftView, _leftView?.frame)
+        if (_totalPage > 1) {
+            _pageControl.gnCenterX = self.gnCenterX
+            _pageControl.gnBottom = 10
+            
+            _scrollView.contentSize = CGSize.init(width: 3 * frame.size.width, height: frame.size.height)
+            _scrollView.frame = CGRect.init(x: 0, y: 0, width: self.gnWidth, height: self.gnHeight)
+            
+            _leftView?.frame = CGRect.init(x: 0, y: 0, width: self.gnWidth, height: self.gnHeight)
+            _middleView?.frame = CGRect.init(x: self.gnWidth, y: 0, width: self.gnWidth, height: self.gnHeight)
+            _rightView?.frame = CGRect.init(x: 2 * self.gnWidth, y: 0, width: self.gnWidth, height: self.gnHeight)
+            
+            _scrollView.setContentOffset(CGPoint.init(x: gnWidth, y: 0), animated: false)
+        }
     }
     
     private var _itemViews: [UIView] = [UIView]()
@@ -98,9 +102,9 @@ class Slider: UIView, UIScrollViewDelegate {
             }
             
             if itemViews.count == 1 {
-                let view = itemViews.first!
-                self.addSubview(view)
-                view.frame = self.bounds
+                _singleView = itemViews.first!
+                self.addSubview(_singleView!)
+                _singleView!.frame = bounds
                 return
             }
             
