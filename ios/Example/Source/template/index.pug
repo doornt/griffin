@@ -72,15 +72,17 @@ style.
     .scroll-view {
         height: 500;
     }
+    .li{
+        height:50;
+        background-color: #ff0000;
+    }
     .red {
         background-color: #ff0000;
     }
     .yellow {
         background-color: #000ff0;
     }
-    .red {
-        background-color: #ff0000;
-    }
+
 .content
     .header
         .nav
@@ -97,6 +99,6 @@ style.
         img(src="assets://a.jpg")
 
     scrollView.scroll-view
-        .item-1
-        .item-2
-        .item-3
+        each item in stories
+            .li
+                .test-title #{item.title}
