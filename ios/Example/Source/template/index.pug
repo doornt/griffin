@@ -45,29 +45,8 @@ style.
     .slider {
         height: 230;
     }
-
-    .test-div {
-        display: flex;
-    }
-    .test-img{
-        width: 100;
-        height: 100;
-    }
     .test-title {
         color: #000000;
-    }
-
-    .item-1 {
-        height: 300;
-        background-color: #ff0000;
-    }
-    .item-2 {
-        height: 300;
-        background-color: #00ff00;
-    }
-    .item-3 {
-        height: 300;
-        background-color: #0000ff;
     }
     .scroll-view {
         height: 500;
@@ -75,12 +54,6 @@ style.
     .li{
         height:50;
         background-color: #ff0000;
-    }
-    .red {
-        background-color: #ff0000;
-    }
-    .yellow {
-        background-color: #000ff0;
     }
 
 .content
@@ -94,9 +67,9 @@ style.
 
 
     slider.slider(interval="3000" auto-play=true)
-        img(src="assets://a.jpg")
-        img(src="assets://a.jpg")
-        img(src="assets://a.jpg")
+        each item in topStories
+            img(src=item.image)
+                .test-title #{item.title}
 
     scrollView.scroll-view
         each item in stories

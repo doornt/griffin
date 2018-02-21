@@ -307,12 +307,29 @@ class LayoutStyle{
             }
         }
 
-        if let w = Utils.any2CGFloat(styles["width"]){
-            self.width = YGValue(w)
+        if var w = styles["width"] as? String {
+            var unit = YGUnitUndefined
+            if w.last == "%" {
+                unit = YGUnitPercent
+                w.remove(at: w.index(before: w.endIndex))
+            }
+            
+            if let iW = Utils.any2Float(w) {
+                self.width = YGValue(value: iW, unit: unit)
+            }
+            
         }
 
-        if let h =  Utils.any2CGFloat(styles["height"]){
-            self.height = YGValue(h)
+        if var h =  styles["height"] as? String {
+            var unit = YGUnitUndefined
+            if h.last == "%" {
+                unit = YGUnitPercent
+                h.remove(at: h.index(before: h.endIndex))
+            }
+            
+            if let iH = Utils.any2Float(h) {
+                self.height = YGValue(value: iH, unit: unit)
+            }
         }
 
         if let m_left = Utils.any2CGFloat(styles["margin-left"]){
