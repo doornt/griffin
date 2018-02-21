@@ -13,8 +13,8 @@ class Slider: UIView, UIScrollViewDelegate {
     private lazy var _pageControl: UIPageControl = {
         let pageControl = UIPageControl()
         pageControl.hidesForSinglePage = true
-        pageControl.pageIndicatorTintColor = .white
-        pageControl.currentPageIndicatorTintColor = .black
+        pageControl.pageIndicatorTintColor = Utils.hexString2UIColor("#565657")
+        pageControl.currentPageIndicatorTintColor = .white
         return pageControl
     }()
     

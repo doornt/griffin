@@ -16,27 +16,34 @@ style.
         flex-direction: row;
         align-items: center;
     }
-    .left-item {
-        height:20;
-        width:20;
+    .menu-icon {
+        height:24;
+        width:24;
         margin-left:15;
+        margin-top:2;
+        margin-right: 10;
     }
     .title {
         color: #ffffff;
         font-size: 18;
         margin-left: 5;
     }
-    .right-item {
-        height:20;
-        width:20;
-        margin-right: 20;
+    .message-icon {
+        height:26;
+        width:26;
+        margin-right: 10;
+    }
+    .more-icon {
+        height:26;
+        width:26;
+        margin-right: 10;
     }
     .space {
         flex-grow: 1;
     }
 
     .slider {
-        height: 200;
+        height: 230;
     }
 
     .test-div {
@@ -77,11 +84,11 @@ style.
 .content
     .header
         .nav
-            img.left-item(src="https://www.dpfile.com/ugc/shortvideo/floor2/shareIcon.png" @click="clickclick")
+            img.menu-icon(src="assets://ic_menu_white.png" @click="clickclick")
             .title 首页
             .space
-            img.right-item(src="https://www.dpfile.com/ugc/shortvideo/floor2/shareIcon.png")
-            img.right-item(src="https://www.dpfile.com/ugc/shortvideo/floor2/shareIcon.png")
+            img.message-icon(src="assets://ic_message_white.png")
+            img.more-icon(src="assets://ic_more_white.png")
 
 
     slider.slider(interval="3000" auto-play=true)
