@@ -12,6 +12,7 @@ class Label: ViewComponent {
     
     private lazy var _label: UILabel = {
         let label = UILabel.init()
+        label.numberOfLines = 0
         return label
     }()
     
@@ -66,7 +67,7 @@ class Label: ViewComponent {
             label.layer.masksToBounds = true
         }
 
-        let size = label.sizeThatFits(CGSize(width: CGFloat(self.layout.width.value), height: CGFloat(self.layout.height.value)))
+        let size = label.sizeThatFits(CGSize(width: max(Environment.instance.screenWidth,CGFloat(self.layout.width.value)), height: max(CGFloat.greatestFiniteMagnitude,CGFloat(self.layout.height.value))))
         
         self.layout.width = YGValue(size.width)
         self.layout.height = YGValue(size.height)

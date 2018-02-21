@@ -45,8 +45,10 @@ style.
     .slider {
         height: 230;
     }
-    .test-title {
-        color: #000000;
+    .top-title {
+        color: #ffffff;
+        font-size: 20;
+        margin-bottom: 20;
     }
     .scroll-view {
         height: 500;
@@ -69,7 +71,8 @@ style.
     slider.slider(interval="3000" auto-play=true)
         each item in topStories
             img(src=item.image)
-                .test-title #{item.title}
+                .space
+                .top-title #{item.title}
 
     scrollView.scroll-view
         each item in stories
