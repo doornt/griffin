@@ -94,9 +94,6 @@ class ComponentManager: NSObject {
         assert(Thread.current == self._componentThread, "_layout should be called in _componentThread")
         
         var needsLayout = false
-//        guard let topChildrenComponent = RootComponentManager.instance.addedComponents else {
-//            return
-//        }
         for o in RootComponentManager.instance.addedComponents {
             if o.needsLayout {
                 needsLayout = true
@@ -112,14 +109,10 @@ class ComponentManager: NSObject {
             return
         }
 
-        print("jjjj applyLayout", RootComponentManager.instance.addedComponents.count)
         root.applyLayout()
-        
-        
-        print("jjjj layoutfinish", RootComponentManager.instance.addedComponents.count)
+    
         for o in RootComponentManager.instance.addedComponents {
             _addUITask {
-
                 o.layoutFinish()
             }
         }
@@ -131,27 +124,10 @@ class ComponentManager: NSObject {
         let blocks = _uiTaskQueue
         _uiTaskQueue = [()->Void]()
         
-        print("jjjj blocks before", blocks.count)
-        
         DispatchQueue.main.async {
-            print("jjjj blocks after", blocks.count)
             for item in blocks {
-                
                 item()
             }
-            
-//            guard let topChildrenComponent = RootComponentManager.instance.topChildrenComponent else {
-//                return
-//            }
-//            for o in topChildrenComponent {
-//                o.layoutFinish()
-//            }
-//            for o in RootComponentManager.instance.addedComponents {
-//
-//
-//                    o.layoutFinish()
-//
-//            }
         }
     }
 }
@@ -215,7 +191,6 @@ extension ComponentManager {
         if RootComponentManager.instance.allRootComponents.count == 1 {
             _addUITask {
 //                self._rootController?.rootView = component.view
-                print("jjjj topVC")
                 RootComponentManager.instance.topViewController = self._rootController
             }
         }
@@ -253,7 +228,6 @@ extension ComponentManager {
         }
         component.updateWithStyle(data["styles"] as![String:Any])
         _addUITask {
-            print("jjjj refresh")
             component.refresh()
         }
         _awakeDisplayLink()
@@ -268,7 +242,6 @@ extension ComponentManager {
                 return
         }
         _addUITask {
-            print("jjjj addchild")
             superComponent.addChild(childComponent)
         }
         _awakeDisplayLink()
@@ -287,7 +260,6 @@ extension ComponentManager {
 
 
         _addUITask {
-            print("jjjj addchildrene", childrenComponents.count)
             superComponent.addChildren(childrenComponents)
         }
         _awakeDisplayLink()

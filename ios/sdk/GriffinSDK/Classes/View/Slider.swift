@@ -50,6 +50,7 @@ class Slider: UIView, UIScrollViewDelegate {
         }
         set {
             _autoPlay = newValue
+            _autoPlay ? _startTimer() : _stopTimer()
         }
     }
     

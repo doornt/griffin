@@ -135,7 +135,6 @@ class ViewComponent {
         self._children.append(child)
         self._needsLayout = true
         RootComponentManager.instance.registerAddedComponent(child)
-        print("add")
     }
     
     func addChildren(_ children: [ViewComponent?]) {
@@ -154,7 +153,6 @@ class ViewComponent {
                 RootComponentManager.instance.registerAddedComponent(component)
             }
         }
-        print("add")
         self._needsLayout = true
     }
     
@@ -164,27 +162,12 @@ class ViewComponent {
         if !self.ignoreLayout {
             view.frame = self.layout.requestFrame
         }
-        print("frame", view.frame)
         self._needsLayout = false
     }
 }
 
 // MARK: - Component Operation
 extension ViewComponent {
-//    func addChild(_ child:ViewComponent){
-//        
-//        assert(Thread.current == Thread.main, "addChild must be called in main thread")
-//        
-//        let superView = self.view
-//        let subView = child.view
-//        
-//        superView.addSubview(subView)
-//        
-//        child.parent = self
-//        self._children.append(child)
-//        self._needsLayout = true
-//    }
-    
     func addChildAt(_ child:ViewComponent,_ index:Int){
         
     }
@@ -199,7 +182,6 @@ extension ViewComponent {
 }
 
 // MARK: - Caluate Property
-
 extension ViewComponent {
     var children:[ViewComponent] {
         get {
@@ -282,6 +264,6 @@ extension ViewComponent {
     }
     
     @objc func handleTap(_ sender: UITapGestureRecognizer) {
-        JSBridgeContext.instance.dispatchEventToJs(rootviewId: (RootComponentManager.instance.topComponent?.ref)!, data: ["nodeId":self.ref, "event": "click"])
+        JSBridgeContext.instance.dispatchEventToJs(rootviewId: self.rootViewId!, data: ["nodeId":self.ref, "event": "click"])
     }
 }
