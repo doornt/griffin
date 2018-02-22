@@ -83,16 +83,29 @@ class RootComponentManager {
         }
         set {
             _topViewController = newValue
+            if _stashRootViewId != nil {
+                pushViewController(withId: _stashRootViewId!, animated: false)
+                _stashRootViewId = nil
+            }
         }
     }
     
+    private var _stashRootViewId: String?
+    
     func pushViewController(withId: String, animated: Bool) {
-        if _viewControllers.count == 0 {
-            _topViewController?.rootView = rootComponents[withId]?.view
-            registerAddedComponent(rootComponents[withId]!)
-            _viewControllers.append(_topViewController!)
+        
+        if _topViewController != nil {
+            if _viewControllers.count == 0 {
+                _topViewController?.rootView = rootComponents[withId]?.view
+                registerAddedComponent(rootComponents[withId]!)
+                _viewControllers.append(_topViewController!)
+                return
+            }
+        } else {
+            _stashRootViewId = withId
             return
         }
+        
         let vc = BaseViewController()
         _viewControllers.append(vc)
         vc.rootView = rootComponents[withId]?.view

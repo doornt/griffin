@@ -32,6 +32,15 @@ class LayoutStyle{
      */
     var isEnabled:Bool?
     
+    var position: YGPositionType {
+        get {
+            return YGNodeStyleGetPositionType(self.node);
+        }
+        set {
+            YGNodeStyleSetPositionType(self.node, position);
+        }
+    }
+    
     var direction:YGDirection{
         get{
             return YGNodeStyleGetDirection(self.node)
@@ -77,7 +86,6 @@ class LayoutStyle{
     }
     
     var alignSelf:YGAlign?
-    var position:YGPositionType?
     var flexWrap:YGWrap?
     var overflow:YGOverflow?
     
@@ -255,6 +263,21 @@ class LayoutStyle{
         self._node = YGNodeNewWithConfig(LayoutStyle._layoutConifg)
         
         self.display = YGDisplayFlex
+        self.position = YGPositionTypeRelative
+        
+        if let position = Utils.any2String(styles["position"]){
+            switch(position){
+            case "absolute":
+                self.position = YGPositionTypeAbsolute
+                break
+            case "relative":
+                self.position = YGPositionTypeRelative
+                break
+                
+            default:
+                self.position = YGPositionTypeRelative
+            }
+        }
         
         if let left = Utils.any2CGFloat(styles["left"]){
             self.left = YGValue(left)
@@ -262,6 +285,13 @@ class LayoutStyle{
         
         if let top = Utils.any2CGFloat(styles["top"]){
             self.top = YGValue(top)
+        }
+        if let bottom = Utils.any2CGFloat(styles["bottom"]){
+            self.bottom = YGValue(bottom)
+        }
+        
+        if let right = Utils.any2CGFloat(styles["right"]){
+            self.right = YGValue(right)
         }
         
         if let direction = styles["flex-direction"] as? String{
@@ -307,35 +337,13 @@ class LayoutStyle{
             }
         }
 
-        if let w = Utils.any2CGFloat(styles["width"]){
-            self.width = YGValue(w)
+
+        if let w = Utils.any2YGValue(styles["width"]){
+            self.width = w
         }
-//        if var w = styles["width"] as? String {
-//            var unit = YGUnitUndefined
-//            if w.last == "%" {
-//                unit = YGUnitPercent
-//                w.remove(at: w.index(before: w.endIndex))
-//            }
-//
-//            if let iW = Utils.any2Float(w) {
-//                self.width = YGValue(value: iW, unit: unit)
-//            }
-//
-//        }
-        if let h =  Utils.any2CGFloat(styles["height"]){
-            self.height = YGValue(h)
+        if let h =  Utils.any2YGValue(styles["height"]){
+            self.height = h
         }
-//        if var h =  styles["height"] as? String {
-//            var unit = YGUnitUndefined
-//            if h.last == "%" {
-//                unit = YGUnitPercent
-//                h.remove(at: h.index(before: h.endIndex))
-//            }
-//
-//            if let iH = Utils.any2Float(h) {
-//                self.height = YGValue(value: iH, unit: unit)
-//            }
-//        }
 
         if let m_left = Utils.any2CGFloat(styles["margin-left"]){
             self.marginLeft = YGValue(m_left)
@@ -348,9 +356,6 @@ class LayoutStyle{
         if let m_right = Utils.any2CGFloat(styles["margin-right"]){
             self.marginRight = YGValue(m_right)
         }
-
-//        print(styles["margin-bottom"].)
-//        print(styles["margin-bottom"] as CGFloat)
         
         if let m_bottom = Utils.any2CGFloat(styles["margin-bottom"]){
             self.marginBottom = YGValue(m_bottom)

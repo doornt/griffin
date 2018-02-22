@@ -10,6 +10,25 @@ import UIKit
 
 class Utils {
     
+    class func any2YGValue(_ obj: Any?) -> YGValue? {
+        if let fObj = Utils.any2CGFloat(obj){
+            return YGValue(fObj)
+        }
+        if var sObj = obj as? String {
+            var unit = YGUnitUndefined
+            if sObj.last == "%" {
+                unit = YGUnitPercent
+                sObj.remove(at: sObj.index(before: sObj.endIndex))
+            }
+            
+            if let f = Float(sObj) {
+                return YGValue(value: f, unit: unit)
+            }
+            
+        }
+        return nil
+    }
+    
     class func any2Int(_ obj: Any?) -> Int? {
         return obj as? Int
     }

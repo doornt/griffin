@@ -24,7 +24,6 @@ class Label: ViewComponent {
         super.init(ref: ref, styles: styles,props: props)
         
         _config(styles: styles)
-//        _config(props: props)
     }
     
     private func _config(styles:Dictionary<String,Any>) {
@@ -36,11 +35,7 @@ class Label: ViewComponent {
         super.updateProps(props)
         _text = Utils.any2String(props["text"]) ?? ""
     }
-//
-//    private func _config(props:Dictionary<String,Any>) {
-//        _text = Utils.any2String(props["text"]) ?? ""
-//    }
-
+    
     override func loadView() -> UIView {
         return self._label
     }
@@ -67,7 +62,12 @@ class Label: ViewComponent {
             label.layer.masksToBounds = true
         }
 
-        let size = label.sizeThatFits(CGSize(width: max(Environment.instance.screenWidth,CGFloat(self.layout.width.value)), height: max(CGFloat.greatestFiniteMagnitude,CGFloat(self.layout.height.value))))
+//        let size = label.sizeThatFits(CGSize(width: max(Environment.instance.screenWidth,CGFloat(self.layout.width.value)), height: max(CGFloat.greatestFiniteMagnitude,CGFloat(self.layout.height.value))))
+
+        
+        let size = label.sizeThatFits(CGSize(width: CGFloat(self.layout.width.value), height: CGFloat(self.layout.height.value)))
+        
+        print("size", CGFloat(self.layout.width.value),CGFloat(self.layout.height.value))
         
         self.layout.width = YGValue(size.width)
         self.layout.height = YGValue(size.height)
@@ -80,4 +80,13 @@ class Label: ViewComponent {
         _config(styles: styles)
     }
 
+//    override func layoutFinish() {
+//
+//        let size = _label.sizeThatFits(CGSize(width: max(Environment.instance.screenWidth,CGFloat(self.layout.width.value)), height: max(CGFloat.greatestFiniteMagnitude,CGFloat(self.layout.height.value))))
+//
+//        self.layout.width = YGValue(size.width)
+//        self.layout.height = YGValue(size.height)
+//
+//        super.layoutFinish()
+//    }
 }

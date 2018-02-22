@@ -17,7 +17,7 @@ export class TestAComponent extends BaseComponent {
         this.template = pugJson
     }
 
-    clickclick() {
+    jumpToDetail() {
         console.log('jump to detail')
         router.push({ name: "testb" })
     }

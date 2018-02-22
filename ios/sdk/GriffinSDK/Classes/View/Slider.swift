@@ -95,7 +95,6 @@ class Slider: UIView, UIScrollViewDelegate {
         
         set {
             _itemViews = newValue
-            self.backgroundColor = UIColor.yellow
             
             if itemViews.count <= 0 {
                 return
