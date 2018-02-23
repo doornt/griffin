@@ -213,6 +213,9 @@ class LayoutStyle{
             case YGUnitPercent:
                 YGNodeStyleSetWidthPercent(self.node, newValue.value)
                 break
+            case YGUnitAuto:
+                YGNodeStyleSetWidthAuto(self.node)
+                break
             default:
                 assert(false, "Not implemented")
             }
@@ -229,6 +232,9 @@ class LayoutStyle{
                 break
             case YGUnitPercent:
                 YGNodeStyleSetHeightPercent(self.node, newValue.value)
+                break
+            case YGUnitAuto:
+                YGNodeStyleSetHeightAuto(self.node)
                 break
             default:
                 assert(false, "Not implemented")
@@ -364,15 +370,15 @@ class LayoutStyle{
             self.flexGrow = flex_grow
         }
         
-        self.update()
+//        self.update()
     }
     
     
-    func update(){
-        self.applyLayoutPreservingOrigin(preserveOrigin: true)
-        YGNodePrint(node,YGPrintOptions(rawValue: YGPrintOptions.RawValue(UInt8(YGPrintOptionsLayout.rawValue)|UInt8(YGPrintOptionsStyle.rawValue)|UInt8(YGPrintOptionsChildren.rawValue))))
-        print("\n")
-    }
+//    func update(){
+//        self.applyLayoutPreservingOrigin(preserveOrigin: true)
+//        YGNodePrint(node,YGPrintOptions(rawValue: YGPrintOptions.RawValue(UInt8(YGPrintOptionsLayout.rawValue)|UInt8(YGPrintOptionsStyle.rawValue)|UInt8(YGPrintOptionsChildren.rawValue))))
+//        print("\n")
+//    }
     
     var isLeaf:Bool{
         let len = self._owner.childrenLayouts.count
@@ -400,6 +406,10 @@ class LayoutStyle{
     func applyLayoutPreservingOrigin(preserveOrigin:Bool){
         let _ = self.calculateLayoutWithSize(self.width.value,self.height.value)
         LayoutStyle.YGApplyLayoutToViewHierarchy(self, preserveOrigin);
+        
+        print("yoga log begin")
+        YGNodePrint(node,YGPrintOptions(rawValue: YGPrintOptions.RawValue(UInt8(YGPrintOptionsLayout.rawValue)|UInt8(YGPrintOptionsStyle.rawValue)|UInt8(YGPrintOptionsChildren.rawValue))))
+        print("\nyoga log end")
     }
     
     static func YGRemoveAllChildren(_ node:YGNodeRef){

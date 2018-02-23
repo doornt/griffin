@@ -218,11 +218,12 @@ class SliderView : DivView {
     
     private var _autoPlay:Bool = false
     
+    private var _lastSize: CGSize = CGSize.zero
+    
     required init(ref: String, styles: Dictionary<String, Any>,props:Dictionary<String, Any>) {
         super.init(ref: ref, styles: styles, props: props)
         
     }
-    
     
     override var styles: Dictionary<String, Any>{
         get{
@@ -271,6 +272,25 @@ class SliderView : DivView {
         }
         _slider?.itemViews = childViews
         
+        self._needsLayout = true
+    }
+    
+    override func layoutFinish() {
+        super.layoutFinish()
+        
+        let newSize = CGSize.init(width: self.layout.requestFrame.width, height: self.layout.requestFrame.height)
+        if _lastSize.equalTo(newSize) {
+            return
+        }
+        _lastSize = newSize
+        for item in self.childrenLayouts {
+            if let w = Utils.any2YGValue(newSize.width){
+                item.width = w
+            }
+            if let h =  Utils.any2YGValue(newSize.height){
+                item.height = h
+            }
+        }
         self._needsLayout = true
     }
 }
