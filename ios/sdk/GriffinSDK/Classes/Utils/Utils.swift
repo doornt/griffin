@@ -42,7 +42,7 @@ class Utils {
     }
     
     class func any2String(_ obj: Any?) -> String? {
-        return obj as? String ?? ""
+        return obj as? String
     }
     
     class func any2Array(_ obj: Any?) -> Array<Any> {

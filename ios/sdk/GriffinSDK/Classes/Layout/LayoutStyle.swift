@@ -37,7 +37,7 @@ class LayoutStyle{
             return YGNodeStyleGetPositionType(self.node);
         }
         set {
-            YGNodeStyleSetPositionType(self.node, position);
+            YGNodeStyleSetPositionType(self.node, newValue);
         }
     }
     
@@ -263,7 +263,6 @@ class LayoutStyle{
         self._node = YGNodeNewWithConfig(LayoutStyle._layoutConifg)
         
         self.display = YGDisplayFlex
-        self.position = YGPositionTypeRelative
         
         if let position = Utils.any2String(styles["position"]){
             switch(position){
