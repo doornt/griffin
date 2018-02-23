@@ -215,6 +215,7 @@ extension ComponentManager {
             return
         }
         component.removeChildren()
+        
         _awakeDisplayLink()
     }
     

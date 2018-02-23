@@ -178,6 +178,12 @@ extension ViewComponent {
     
     func removeChildren(){
         _children.removeAll()
+        
+        DispatchQueue.main.async {
+            for view in self.view.subviews {
+                view.removeFromSuperview()
+            }
+        }
     }
 }
 
