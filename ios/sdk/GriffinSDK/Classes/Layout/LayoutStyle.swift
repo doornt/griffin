@@ -369,16 +369,7 @@ class LayoutStyle{
         if let flex_grow = Utils.any2Float(styles["flex-grow"]){
             self.flexGrow = flex_grow
         }
-        
-//        self.update()
     }
-    
-    
-//    func update(){
-//        self.applyLayoutPreservingOrigin(preserveOrigin: true)
-//        YGNodePrint(node,YGPrintOptions(rawValue: YGPrintOptions.RawValue(UInt8(YGPrintOptionsLayout.rawValue)|UInt8(YGPrintOptionsStyle.rawValue)|UInt8(YGPrintOptionsChildren.rawValue))))
-//        print("\n")
-//    }
     
     var isLeaf:Bool{
         let len = self._owner.childrenLayouts.count
@@ -467,21 +458,11 @@ class LayoutStyle{
         }
     }
     
-//    static func YGSanitizeMeasurement(_ constrainedSize:CGFloat,_ measuredSize:CGFloat,
-//                               _ measureMode:YGMeasureMode)->CGFloat{
-//        var result:CGFloat
-//        if (measureMode == YGMeasureModeExactly) {
-//            result = constrainedSize
-//        } else if (measureMode == YGMeasureModeAtMost) {
-//            result = min(constrainedSize, measuredSize)
-//        } else {
-//            result = measuredSize;
-//        }
-//        return result
-//    }
-    
     static func YGApplyLayoutToViewHierarchy(_ layout:LayoutStyle,_ preserveOrigin:Bool)
     {
+        if !layout.isIncludedInLayout {
+            return
+        }
         let node:YGNodeRef  = layout.node;
 
         let left = YGNodeLayoutGetLeft(node)
@@ -497,5 +478,4 @@ class LayoutStyle{
             }
         }
     }
-    
 }

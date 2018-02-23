@@ -20,6 +20,8 @@ class Label: ViewComponent {
     private var _textColorString: String = "#333333"
     private var _fontSize: CGFloat?
     
+    private var _lastSize: CGSize = CGSize.zero
+    
     required init(ref:String,styles:Dictionary<String,Any>,props:Dictionary<String,Any>) {
         super.init(ref: ref, styles: styles,props: props)
         
@@ -60,19 +62,7 @@ class Label: ViewComponent {
         
         if label.layer.cornerRadius > 0 {
             label.layer.masksToBounds = true
-        }
-
-//        let size = label.sizeThatFits(CGSize(width: max(Environment.instance.screenWidth,CGFloat(self.layout.width.value)), height: max(CGFloat.greatestFiniteMagnitude,CGFloat(self.layout.height.value))))
-
-        
-        let size = label.sizeThatFits(CGSize(width: CGFloat(self.layout.width.value), height: CGFloat(self.layout.height.value)))
-        
-        print("size", CGFloat(self.layout.width.value),CGFloat(self.layout.height.value))
-        
-        self.layout.width = YGValue(size.width)
-        self.layout.height = YGValue(size.height)
-        self._needsLayout = true
-        
+        } 
     }
 
     override func updateWithStyle(_ styles: Dictionary<String, Any>) {
@@ -80,13 +70,32 @@ class Label: ViewComponent {
         _config(styles: styles)
     }
 
-//    override func layoutFinish() {
-//
-//        let size = _label.sizeThatFits(CGSize(width: max(Environment.instance.screenWidth,CGFloat(self.layout.width.value)), height: max(CGFloat.greatestFiniteMagnitude,CGFloat(self.layout.height.value))))
-//
-//        self.layout.width = YGValue(size.width)
-//        self.layout.height = YGValue(size.height)
-//
-//        super.layoutFinish()
-//    }
+    override func layoutFinish() {
+
+        super.layoutFinish()
+        
+        let newSize = CGSize.init(width: self.layout.requestFrame.width, height: self.layout.requestFrame.height)
+        if _lastSize.equalTo(newSize) {
+            return
+        }
+        _lastSize = newSize
+
+        var (constraintW, constraintH) = (CGFloat(self.layout.width.value), CGFloat(self.layout.height.value))
+        if let parentW = self.parent?.layout.requestFrame.width {
+            if self.layout.width.unit == YGUnitPercent {
+                constraintW = CGFloat(self.layout.width.value / 100.0) * parentW
+            }
+        }
+        if let parentH = self.parent?.layout.requestFrame.height {
+            if self.layout.height.unit == YGUnitPercent {
+                constraintH = CGFloat(self.layout.height.value / 100.0) * parentH
+            }
+        }
+        
+        let size = _label.sizeThatFits(CGSize(width: constraintW, height: constraintH))
+        
+        self.layout.width = YGValue(size.width)
+        self.layout.height = YGValue(size.height)
+        self._needsLayout = true
+    }
 }

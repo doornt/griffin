@@ -42,7 +42,7 @@ class ScrollComponent: DivView {
         
         
         var (totalW, totalH) = (self.layout.requestFrame.width, self.layout.requestFrame.height)
-        
+//        print("iii", self.layout.requestFrame)
         for item in self.children {
             totalW = max(item.layout.requestFrame.width + item.layout.requestFrame.origin.x, totalW)
             totalH = max(item.layout.requestFrame.height + item.layout.requestFrame.origin.y, totalH)
