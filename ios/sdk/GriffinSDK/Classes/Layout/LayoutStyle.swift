@@ -87,7 +87,14 @@ class LayoutStyle{
     
     var alignSelf:YGAlign?
     var flexWrap:YGWrap?
-    var overflow:YGOverflow?
+    var overflow:YGOverflow {
+        get {
+            return YGNodeStyleGetOverflow(self.node)
+        }
+        set {
+            YGNodeStyleSetOverflow(self.node, newValue)
+        }
+    }
     
     var display:YGDisplay{
         get{
@@ -245,8 +252,24 @@ class LayoutStyle{
     var minWidth:YGValue?
     
     var minHeight:YGValue?
+    var maxHeight:YGValue{
+        get{
+            return YGNodeStyleGetMaxHeight(self.node)
+        }
+        set{
+            switch newValue.unit {
+            case YGUnitPoint:
+                YGNodeStyleSetMaxHeight(self.node, newValue.value)
+                break
+            case YGUnitPercent:
+                YGNodeStyleSetMaxHeightPercent(self.node, newValue.value)
+                break
+            default:
+                assert(false, "Not implemented")
+            }
+        }
+    }
     var maxWidth:YGValue?
-    var maxHeight:YGValue?
     
     // Yoga specific properties, not compatible with flexbox specification
     var aspectRatio:CGFloat?
@@ -341,6 +364,16 @@ class LayoutStyle{
                 break
             }
         }
+        
+        if let overflow = styles["overflow"] as? String{
+            switch(overflow){
+            case "scroll":
+                self.overflow = YGOverflowScroll
+                break
+            default:
+                break
+            }
+        }
 
 
         if let w = Utils.any2YGValue(styles["width"]){
@@ -348,6 +381,9 @@ class LayoutStyle{
         }
         if let h =  Utils.any2YGValue(styles["height"]){
             self.height = h
+        }
+        if let max_h =  Utils.any2YGValue(styles["max-height"]){
+            self.maxHeight = max_h
         }
 
         if let m_left = Utils.any2CGFloat(styles["margin-left"]){
@@ -398,9 +434,9 @@ class LayoutStyle{
         let _ = self.calculateLayoutWithSize(self.width.value,self.height.value)
         LayoutStyle.YGApplyLayoutToViewHierarchy(self, preserveOrigin);
         
-//        print("yoga log begin")
-//        YGNodePrint(node,YGPrintOptions(rawValue: YGPrintOptions.RawValue(UInt8(YGPrintOptionsLayout.rawValue)|UInt8(YGPrintOptionsStyle.rawValue)|UInt8(YGPrintOptionsChildren.rawValue))))
-//        print("\nyoga log end")
+        print("yoga log begin")
+        YGNodePrint(node,YGPrintOptions(rawValue: YGPrintOptions.RawValue(UInt8(YGPrintOptionsLayout.rawValue)|UInt8(YGPrintOptionsStyle.rawValue)|UInt8(YGPrintOptionsChildren.rawValue))))
+        print("\nyoga log end")
     }
     
     static func YGRemoveAllChildren(_ node:YGNodeRef){

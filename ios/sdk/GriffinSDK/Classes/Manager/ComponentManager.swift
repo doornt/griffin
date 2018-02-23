@@ -181,6 +181,7 @@ extension ComponentManager {
         let component = DivView.init(ref: instanceId, styles: ["background-color":"#FFFFFF",
                                                                "height":Environment.instance.screenHeight,
                                                                "width":Environment.instance.screenWidth,
+    
                                                                "top":0,
                                                                "left":0],props: [:])
         component.rootViewId = instanceId
@@ -215,7 +216,6 @@ extension ComponentManager {
             return
         }
         component.removeChildren()
-        
         _awakeDisplayLink()
     }
     

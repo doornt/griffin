@@ -32,6 +32,9 @@ export class TestAComponent extends BaseComponent {
                 title: story.title,
                 id: story.id
             }))
+            this.stories = this.stories.concat(this.stories)
+            // this.stories = this.stories.slice(0, 1)
+
             this.topStories = (data.top_stories || []).map(story => ({
                 image: story.image,
                 title: story.title,

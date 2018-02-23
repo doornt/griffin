@@ -57,7 +57,8 @@ style.
         bottom:20;
     }
     .scroll-view {
-        flex:1;
+        flex-grow:1;
+        overflow:scroll;
     }
     .li{
         display:flex;
@@ -72,7 +73,7 @@ style.
         
     }
     .item-title {
-        width: 120%;
+        width: 100%;
     }
     .right{
         background-color: #ff0ff0;
@@ -92,38 +93,33 @@ style.
         background-color: #00ff00;
     }
     .child-2 {
-        width:100;
-        height:100;
+        width: 100%;
         background-color: #0000ff;
-        position: absolute;
-        right:0;
-        bottom:10;
+        top:30;
+        color:#ffffff;
     }
 
     
 //- .parent
-//-     .child-1
-//-     .child-2 hello world
-.content
-    .header
-        .nav
-            img.menu-icon(src="assets://ic_menu_white.png" @click="jumpToDetail")
-            .title 首页
-            .space
-            img.message-icon(src="assets://ic_message_white.png")
-            img.more-icon(src="assets://ic_more_white.png")
+//-     .child-2 helloworldhelloworldhelloworldhelloworldhelloworldhelloworldhelloworldhelloworld
+
+.header
+    .nav
+        img.menu-icon(src="assets://ic_menu_white.png" @click="jumpToDetail")
+        .title 首页
+        .space
+        img.message-icon(src="assets://ic_message_white.png")
+        img.more-icon(src="assets://ic_more_white.png")
 
 
-    slider.slider(interval="3000" auto-play=true)
-        each item in topStories
-            img.slider-img(src=item.image)
-                .top-title #{item.title}
+slider.slider(interval="3000" auto-play=true)
+    each item in topStories
+        img.slider-img(src=item.image)
+            .top-title #{item.title}
 
-    scrollView.scroll-view
-        each item in stories
-            .li
-            
-                .left
-                    .item-title #{item.title}
-                .right
-                    
+scrollView.scroll-view
+    each item in stories
+        .li
+            .left
+                .item-title #{item.title}
+            .right
