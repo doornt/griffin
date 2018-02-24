@@ -21,13 +21,19 @@ extension JSValue {
             call(withArguments: arguments != nil ? [arguments!] : [])
         }
     }
+    
+    func callWithAny(_ arguments: Any?) {
+        let arg = arguments != nil ? [arguments!] : []
+        JSBridgeContext.instance.performOnJSThread {
+            call(withArguments: arg)
+        }
+    }
 }
 
 extension JSBridgeContext {
     
     func executeJavascript(script:String) {
         performOnJSThread {
-            print("sleep run script")
             let _ = _jsBridge.executeJavascript(script: script)
         }
     }
@@ -176,7 +182,8 @@ class JSBridgeContext: NSObject {
         JSBridgeContext.instance.performOnJSThread {
             NetworkManager.instance.get(url: url, params: params) {
                 (data, error) in
-                callback.callWithDictionary(data as? Dictionary<String, Any>)
+//                callback.callWithDictionary(data as? Dictionary<String, Any>)
+                callback.callWithAny(data)
             }
         }
     }
