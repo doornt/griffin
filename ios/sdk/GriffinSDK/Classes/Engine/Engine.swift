@@ -14,22 +14,12 @@ public class Engine {
         return Engine()
     }()
     
-    private var script:String = ""
-    
-    private lazy var _jsCore:JSBridgeContext? = {
-        let jsCore = JSBridgeContext.instance
-        return jsCore
-    }()
-    
     public func initSDK(){
         
         initSDKEnviroment()
         
         NotificationCenter.default.addObserver(self, selector: #selector(handleFileChanged(_:)), name: NSNotification.Name(rawValue: "FileChanged"), object: nil)
         DebugManager.start()
-        
-//        sleep(30)
-//        print("sleep end")
     }
     
     deinit {
@@ -37,11 +27,18 @@ public class Engine {
     }
     
     @objc func handleFileChanged(_ notification: Notification) {
-//        print("sleep file changed")
-        ComponentManager.instance.unload()
-        self.script = notification.userInfo!["script"] as! String
-        JSBridgeContext.instance.performOnJSThread {
-            JSBridgeContext.instance.executeJavascript(script: self.script)
+        
+        guard let userInfo = notification.userInfo,let script = userInfo["script"] as? String else {
+            return
+        }
+        
+        ComponentManager.instance.performOnComponentThread {
+            
+            ComponentManager.instance.unload()
+
+            JSBridgeContext.instance.performOnJSThread {
+                JSBridgeContext.instance.executeJavascript(script: script)
+            }
         }
     }
     

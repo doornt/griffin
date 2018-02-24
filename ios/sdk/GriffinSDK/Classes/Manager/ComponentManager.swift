@@ -24,11 +24,9 @@ class ComponentManager: NSObject {
     
     func unload() {
 //        assert(Thread.current == self._componentThread, "unload should be called in _componentThread")
-        DispatchQueue.main.sync {
-            for rootComponent in RootComponentManager.instance.allRootComponents {
-                rootComponent.view.removeFromSuperview()
-                rootComponent.removeChildren()
-            }
+        for rootComponent in RootComponentManager.instance.allRootComponents {
+            rootComponent.view.removeFromSuperview()
+            rootComponent.removeChildren()
         }
         _uiTaskQueue.removeAll()
     }
