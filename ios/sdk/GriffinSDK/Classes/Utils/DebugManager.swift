@@ -19,27 +19,32 @@ class DebugManager {
     
     static var errorCount = 0
     
-    private init() {
-        ws.onNativeMessage = {
-            [weak self] data in
-            if (Utils.any2String(data) != nil) &&  Utils.any2String(data)! == "onchange" {
-                self?.startFetchJSFile(isFirst: "0")
+    public class func start() {
+        let ins = DebugManager.instance
+        
+        ins.ws.onNativeMessage = {
+            [weak ins] data in
+            guard let message = Utils.any2String(data) else {
+                return
+            }
+            if message == "onchange" {
+                ins?.startFetchJSFile(isFirst: "0")
             }
         }
-        startFetchJSFile(isFirst: "1")
+        ins.startFetchJSFile(isFirst: "1")
     }
     
     private func startFetchJSFile(isFirst: String) {
         let urlString = "http://127.0.0.1:8081/bundle.js"
         
         if isFirst == "0" {
-            print("reload view")
+            print("live reload view")
         }
         
         NetworkManager.instance.downloadFile(url: urlString, completionHandler: {
             (data) in
           
-            guard let data = data else{
+            guard let data = data else {
                 return
             }
             

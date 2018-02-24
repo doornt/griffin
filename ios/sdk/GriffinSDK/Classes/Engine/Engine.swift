@@ -16,16 +16,20 @@ public class Engine {
     
     private var script:String = ""
     
-    private var _jsCore:JSBridgeContext?
+    private lazy var _jsCore:JSBridgeContext? = {
+        let jsCore = JSBridgeContext.instance
+        return jsCore
+    }()
     
     public func initSDK(){
-        let _ = DebugManager.instance
-
-        self._jsCore = JSBridgeContext.instance
         
         initSDKEnviroment()
         
         NotificationCenter.default.addObserver(self, selector: #selector(handleFileChanged(_:)), name: NSNotification.Name(rawValue: "FileChanged"), object: nil)
+        DebugManager.start()
+        
+//        sleep(30)
+//        print("sleep end")
     }
     
     deinit {
@@ -33,6 +37,7 @@ public class Engine {
     }
     
     @objc func handleFileChanged(_ notification: Notification) {
+//        print("sleep file changed")
         ComponentManager.instance.unload()
         self.script = notification.userInfo!["script"] as! String
         JSBridgeContext.instance.performOnJSThread {
@@ -54,7 +59,7 @@ private extension Engine {
         registerModules()
     }
     
-    // MARK: - Register Component
+    // MARK: - Register Components
     func registerComponents() {
         registerComponent("div", withClass: DivView.self)
         registerComponent("label", withClass: Label.self)
@@ -66,19 +71,20 @@ private extension Engine {
         registerComponent("scrollView", withClass: ScrollComponent.self)
     }
     
+    func registerComponent(_ tag: String, withClass className: AnyClass) {
+        ComponentFactory.instance.registerComponent(tag, withClass: className)
+    }
+    
+    // MARK: - Register Components to JS
     func registerComponents2JS() {
         JSBridgeContext.instance.performOnJSThread {
             JSBridgeContext.instance.registerComponent2JS("scrollView")
         }
     }
-    
-    func registerComponent(_ tag: String, withClass className: AnyClass) {
-        ComponentFactory.instance.registerComponent(tag, withClass: className)
-    }
-    
-    
+    // MARK: - Regsiter Modules
     func registerModules(){
         JSBridgeContext.instance.performOnJSThread {
+            
             JSBridgeContext.instance.register(method: {
                 url in
                 return WebSocket.init(url)

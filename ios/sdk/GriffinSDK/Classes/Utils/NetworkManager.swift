@@ -42,7 +42,7 @@ class NetworkManager {
         
     }
     
-    func get(url: String, params: [String: String]?, completionHandler: ((Any?, Error?) -> Void)? ) -> Void {
+    func get(url: String, params: [String: String]?, completionHandler: ((Any?, Error?) -> ())? ) -> Void {
 
         guard let url = URL(string: url) else {
             return
