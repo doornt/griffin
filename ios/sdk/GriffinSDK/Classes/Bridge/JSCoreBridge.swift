@@ -47,9 +47,9 @@ class JSCoreBridge: NSObject {
     }
     
     private func initJsFunctions(){
-        let timeoutFunc:@convention(block)(JSValue,Int) ->Void = {
+        let timeoutFunc:@convention(block)(JSValue,Double) ->Void = {
             [unowned self](cb,wait) in
-            self.perform(#selector(self.timerHandler(_:)), with: cb, afterDelay: TimeInterval(wait))
+            self.perform(#selector(self.timerHandler(_:)), with: cb, afterDelay: TimeInterval(wait / 1000))
         }
         _jsContext.setObject(unsafeBitCast(timeoutFunc, to: AnyObject.self), forKeyedSubscript: "setTimeout" as NSCopying & NSObjectProtocol)
         

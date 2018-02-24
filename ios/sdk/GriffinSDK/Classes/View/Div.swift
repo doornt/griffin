@@ -17,6 +17,7 @@ class DivView : ViewComponent {
     
     required init(ref:String,styles:Dictionary<String,Any>,props:Dictionary<String,Any>) {
         super.init(ref: ref, styles: styles, props:props)
+        
     }
     
     override func loadView() -> UIView {

@@ -45,7 +45,7 @@ class ScrollComponent: DivView {
         
         for item in self.children {
             totalW = max(item.layout.requestFrame.width + item.layout.requestFrame.origin.x, totalW)
-            totalH = max(item.layout.requestFrame.height + item.layout.requestFrame.origin.y, totalH)
+            totalH = max(self.layout.requestFrame.origin.y + item.layout.requestFrame.height + item.layout.requestFrame.origin.y, totalH)
         }
         
         _scrollView?.contentSize = CGSize.init(width: totalW, height: totalH)
