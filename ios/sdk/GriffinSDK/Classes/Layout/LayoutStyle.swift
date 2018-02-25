@@ -434,9 +434,9 @@ class LayoutStyle{
         let _ = self.calculateLayoutWithSize(self.width.value,self.height.value)
         LayoutStyle.YGApplyLayoutToViewHierarchy(self, preserveOrigin);
         
-        print("yoga log begin")
-        YGNodePrint(node,YGPrintOptions(rawValue: YGPrintOptions.RawValue(UInt8(YGPrintOptionsLayout.rawValue)|UInt8(YGPrintOptionsStyle.rawValue)|UInt8(YGPrintOptionsChildren.rawValue))))
-        print("\nyoga log end")
+//        print("yoga log begin")
+//        YGNodePrint(node,YGPrintOptions(rawValue: YGPrintOptions.RawValue(UInt8(YGPrintOptionsLayout.rawValue)|UInt8(YGPrintOptionsStyle.rawValue)|UInt8(YGPrintOptionsChildren.rawValue))))
+//        print("\nyoga log end")
     }
     
     static func YGRemoveAllChildren(_ node:YGNodeRef){

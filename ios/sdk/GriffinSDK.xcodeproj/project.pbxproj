@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		3A1868402032EBE600F36118 /* GnTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A18683F2032EBE600F36118 /* GnTimer.swift */; };
-		3A1F17BA2029750B001E71DD /* ControllerHost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1F17B92029750B001E71DD /* ControllerHost.swift */; };
-		3A263B7B202BF11700ECCF3C /* GnManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A263B7A202BF11700ECCF3C /* GnManager.swift */; };
 		3A263B7D202C461800ECCF3C /* RootComponentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A263B7C202C461800ECCF3C /* RootComponentManager.swift */; };
 		3A2E972C20314049006761FF /* UIView+layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2E972B20314049006761FF /* UIView+layout.swift */; };
 		3A37126A203859D5004055E7 /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A371269203859D5004055E7 /* List.swift */; };
@@ -65,8 +63,6 @@
 
 /* Begin PBXFileReference section */
 		3A18683F2032EBE600F36118 /* GnTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GnTimer.swift; sourceTree = "<group>"; };
-		3A1F17B92029750B001E71DD /* ControllerHost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerHost.swift; sourceTree = "<group>"; };
-		3A263B7A202BF11700ECCF3C /* GnManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GnManager.swift; sourceTree = "<group>"; };
 		3A263B7C202C461800ECCF3C /* RootComponentManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootComponentManager.swift; sourceTree = "<group>"; };
 		3A2E972B20314049006761FF /* UIView+layout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+layout.swift"; sourceTree = "<group>"; };
 		3A371269203859D5004055E7 /* List.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List.swift; sourceTree = "<group>"; };
@@ -237,7 +233,6 @@
 			children = (
 				DB2FFE0F200712DC001C4908 /* BaseViewController.swift */,
 				DB2FFE10200712DC001C4908 /* RootViewController.swift */,
-				3A1F17B92029750B001E71DD /* ControllerHost.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -248,7 +243,6 @@
 				DB2FFE12200712DC001C4908 /* ComponentManager.swift */,
 				3A263B7C202C461800ECCF3C /* RootComponentManager.swift */,
 				DB2FFE13200712DC001C4908 /* ComponentFactory.swift */,
-				3A263B7A202BF11700ECCF3C /* GnManager.swift */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -421,7 +415,6 @@
 				DB2FFE32200712DC001C4908 /* Component+Layout.swift in Sources */,
 				DB2FFE3F200712DD001C4908 /* BaseViewController.swift in Sources */,
 				DB2FFE712007159C001C4908 /* UIView+Yoga.m in Sources */,
-				3A1F17BA2029750B001E71DD /* ControllerHost.swift in Sources */,
 				DB2FFE43200712DD001C4908 /* Label.swift in Sources */,
 				DB2FFE45200712DD001C4908 /* Component.swift in Sources */,
 				DB2FFE722007159C001C4908 /* YGLayoutExtensions.swift in Sources */,
@@ -435,7 +428,6 @@
 				DB71DF862025917600A49408 /* WebSocketManager.swift in Sources */,
 				3A2E972C20314049006761FF /* UIView+layout.swift in Sources */,
 				3A263B7D202C461800ECCF3C /* RootComponentManager.swift in Sources */,
-				3A263B7B202BF11700ECCF3C /* GnManager.swift in Sources */,
 				DB2FFE35200712DC001C4908 /* GriffinImage.swift in Sources */,
 				DB2FFE3B200712DD001C4908 /* Log.swift in Sources */,
 				DB2FFE39200712DD001C4908 /* GriffinCache.swift in Sources */,

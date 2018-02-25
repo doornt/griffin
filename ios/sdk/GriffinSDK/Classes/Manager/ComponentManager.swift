@@ -23,12 +23,14 @@ class ComponentManager: NSObject {
     private var _rootController:BaseViewController?
     
     func unload() {
-//        assert(Thread.current == self._componentThread, "unload should be called in _componentThread")
-        for rootComponent in RootComponentManager.instance.allRootComponents {
-            rootComponent.view.removeFromSuperview()
-            rootComponent.removeChildren()
+        assert(Thread.current == self._componentThread, "unload should be called in _componentThread")
+        DispatchQueue.main.sync {
+            for rootComponent in RootComponentManager.instance.allRootComponents {
+                rootComponent.view.removeFromSuperview()
+                rootComponent.removeChildren()
+            }
+            _uiTaskQueue.removeAll()
         }
-        _uiTaskQueue.removeAll()
     }
     
     func setRootController(root:BaseViewController){
@@ -73,6 +75,12 @@ class ComponentManager: NSObject {
         _uiTaskQueue.append(block)
     }
 
+    
+    func addUITask(_ block: @escaping () -> Void) {
+        assert(Thread.current == self._componentThread, "_addUITask should be called in _componentThread")
+        _uiTaskQueue.append(block)
+    }
+    
     private func _layoutAndSyncUI() {
         assert(Thread.current == self._componentThread, "_layoutAndSyncUI should be called in _componentThread")
         _layout()

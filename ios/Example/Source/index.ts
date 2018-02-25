@@ -41,12 +41,12 @@ export class TestAComponent extends BaseComponent {
                 id: story.id
             }))
             this.refresh()
-            
+
             // setTimeout(() => {
             // }, 1000);
 
-         
-            
+
+
         }).catch(err => console.error(err))
 
 
