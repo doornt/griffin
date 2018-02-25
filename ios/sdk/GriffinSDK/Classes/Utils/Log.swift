@@ -10,31 +10,55 @@ import Foundation
 
 class Log {
     
-    private static func log(level:String,fileName:String,line:Int,message:String){
-        print("<Griffin>[\(level)]\(fileName):\(line),\(message)")
+    enum LogLevel: UInt {
+        case Info = 0
+        case Warning = 1
+        case Error = 2
     }
     
-    private static func Log<T>(level:String,file:String,line:Int,function:String, message:T) {
-        let fileName = (file as NSString).lastPathComponent
-        print("<Griffin>[\(level)]\(fileName):\(line) \(function) | \(message)")
+    static var logLevel:LogLevel = .Error
+    
+    private static func log(level:String,fileName:String,line:Int,message:String){
+        print("<Griffin>[\(level)]\(fileName):\(line),\(message)")
     }
     
     static func info(fileName:String,line:Int,message:String){
         self.log(level: "info", fileName: fileName, line: line, message: message)
     }
+
+    private static func Log<T>(level:LogLevel,file:String,line:Int,function:String, message:T) {
+        
+        if level.rawValue < logLevel.rawValue {
+            return
+        }
+        let fileName = (file as NSString).lastPathComponent
+        var slevel = "error"
+        switch level {
+        case .Info:
+            slevel = "info"
+            break
+        case .Warning:
+            slevel = "warning"
+            break
+        case .Error:
+            slevel = "error"
+            break
+        }
+        print("<Griffin>[\(slevel)]\(fileName):\(line) \(function) | \(message)")
+    }
     
-    static func LogInfo<T>(_ message:T, file:String = #file, function:String = #function,
+    static func Info<T>(_ message:T, file:String = #file, function:String = #function,
                   line:Int = #line) {
-        Log(level: "info", file: file, line: line, function: function, message: message)
+        Log(level: .Info, file: file, line: line, function: function, message: message)
     }
     
-    static func LogWarning<T>(_ message:T, file:String = #file, function:String = #function,
+    static func Warning<T>(_ message:T, file:String = #file, function:String = #function,
                            line:Int = #line) {
-        Log(level: "warning", file: file, line: line, function: function, message: message)
+        Log(level: .Warning, file: file, line: line, function: function, message: message)
     }
     
-    static func LogError<T>(_ message:T, file:String = #file, function:String = #function,
+    static func Error<T>(_ message:T, file:String = #file, function:String = #function,
                            line:Int = #line) {
-        Log(level: "error", file: file, line: line, function: function, message: message)
+        Log(level: .Error, file: file, line: line, function: function, message: message)
     }
 }

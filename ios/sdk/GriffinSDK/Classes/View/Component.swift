@@ -221,7 +221,7 @@ extension ViewComponent {
 // MARK: -Register Event
 extension ViewComponent {
     func register(event: String, callBack: JSValue) {
-        Log.LogInfo("register \(event), withCallBack: \(callBack)")
+        Log.Info("register \(event), withCallBack: \(callBack)")
         
         if self._events[event] == nil {
             var array: [JSValue] = Array()
@@ -238,7 +238,7 @@ extension ViewComponent {
     }
     
     func unRegister(event: String, callBack: JSValue) {
-        Log.LogInfo("unRegister \(event), withCallBack: \(callBack)")
+        Log.Info("unRegister \(event), withCallBack: \(callBack)")
         
         guard let eventArr = self._events[event] else {
             return
@@ -270,6 +270,10 @@ extension ViewComponent {
     }
     
     @objc func handleTap(_ sender: UITapGestureRecognizer) {
-        JSBridgeContext.instance.dispatchEventToJs(rootviewId: self.rootViewId!, data: ["nodeId":self.ref, "event": "click"])
+        guard let rootViewId = self.rootViewId else {
+            Log.Error("handleTap while self.rootviewid == nil")
+            return
+        }
+        JSBridgeContext.instance.dispatchEventToJs(rootviewId: rootViewId, data: ["nodeId":self.ref, "event": "click"])
     }
 }

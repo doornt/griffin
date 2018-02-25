@@ -16,9 +16,11 @@ class ComponentWrap : ViewComponent {
     }()
     
     required init(ref:String,styles:Dictionary<String,Any>,props:Dictionary<String,Any>) {
-        
-        
-        super.init(ref: ref, styles: ["heigh":"100%", "width":"100%", "max-height":"100%","flex-grow":Float(1.0)], props:props)
+        Log.Info("componentWrap Style \(styles)")
+        var mStyle = styles
+        mStyle.merge(["heigh":"100%", "width":"100%", "max-height":"100%","flex-grow":Float(1.0)]) { (current, _) in current}
+        Log.Info("componentWrap Style after merged \(mStyle)")
+        super.init(ref: ref, styles: mStyle, props: props)
     }
     
     override func loadView() -> UIView {
@@ -29,7 +31,11 @@ class ComponentWrap : ViewComponent {
         super.viewDidLoad()
         
         JSBridgeContext.instance.performOnJSThread {
-            JSBridgeContext.instance.dispatchEventToJs(rootviewId: (RootComponentManager.instance.topComponent?.ref)!, data: ["nodeId":self.ref, "event": "onAdded"])
+            guard let rootviewId = self.rootViewId else {
+                Log.Error("ComponentWrap DidLoad while rootviewId == nil")
+                return
+            }
+            JSBridgeContext.instance.dispatchEventToJs(rootviewId: rootviewId, data: ["nodeId":self.ref, "event": "onAdded"])
         }
     }
     

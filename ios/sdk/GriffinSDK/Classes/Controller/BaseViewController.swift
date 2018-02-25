@@ -27,8 +27,8 @@ class BaseViewController : UIViewController {
             return _rootView
         }
         set {
+            _rootView?.removeFromSuperview()
             _rootView = newValue
-            
             self.view.addSubview(newValue!)
         }
     }

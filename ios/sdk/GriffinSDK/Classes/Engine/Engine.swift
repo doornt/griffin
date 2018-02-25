@@ -16,6 +16,8 @@ public class Engine {
     
     public func initSDK(){
         
+        Log.logLevel = .Info
+        
         initSDKEnviroment()
         
         NotificationCenter.default.addObserver(self, selector: #selector(handleFileChanged(_:)), name: NSNotification.Name(rawValue: "FileChanged"), object: nil)

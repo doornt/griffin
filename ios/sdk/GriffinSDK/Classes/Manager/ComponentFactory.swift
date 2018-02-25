@@ -28,7 +28,7 @@ class ComponentFactory {
         
         componentType = _componentConfigs[tag] as? ViewComponent.Type
         if componentType == nil {
-            Log.LogError("\(tag) does not registered with any class")
+            Log.Error("\(tag) does not registered with any class")
         }
         
         return componentType
@@ -44,7 +44,7 @@ class ComponentFactory {
         
         let component = _componentConfigs[tag] as? ViewComponent.Type
         if component != nil {
-            Log.LogWarning("\(tag) has already been registered with class \(className)")
+            Log.Warning("\(tag) has already been registered with class \(className)")
         }
         
         _componentConfigs[tag] = className

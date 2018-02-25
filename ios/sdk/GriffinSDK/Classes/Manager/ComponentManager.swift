@@ -34,7 +34,7 @@ class ComponentManager: NSObject {
     }
     
     func setRootController(root:BaseViewController){
-        Log.LogInfo("Init RootController \(root)")
+        Log.Info("Init RootController \(root)")
         self._rootController = root
     }
 
@@ -276,12 +276,12 @@ extension ComponentManager {
         assert(Thread.current == self._componentThread, "_buildComponent should be called in _componentThread")
         
         guard let type = Utils.any2String(data["type"]) else {
-            Log.LogError("type cannot be nil")
+            Log.Error("type cannot be nil")
             return nil
         }
         
         guard let typeClass = ComponentFactory.instance.component(withTag:type) as? ViewComponent.Type else {
-            Log.LogError("cannot get class for \(type)")
+            Log.Error("cannot get class for \(type)")
             return nil
         }
         
@@ -296,10 +296,10 @@ extension ComponentManager {
         
         assert(Thread.current == self._componentThread, "register should be called in _componentThread")
         
-        Log.LogInfo("register \(instanceId) for \(event), withCallBack: \(callBack)")
+        Log.Info("register \(instanceId) for \(event), withCallBack: \(callBack)")
         
         guard let component = RootComponentManager.instance.getComponent(rootComponentRef: rootViewId, componentRef: instanceId) else {
-            Log.LogError("register failed! Cannot find instance \(instanceId)")
+            Log.Error("register failed! Cannot find instance \(instanceId)")
             return
         }
         
@@ -310,10 +310,10 @@ extension ComponentManager {
         
         assert(Thread.current == self._componentThread, "unRegister should be called in _componentThread")
         
-        Log.LogInfo("unRegister \(instanceId) for \(event), withCallBack: \(callBack)")
+        Log.Info("unRegister \(instanceId) for \(event), withCallBack: \(callBack)")
         
         guard let component = RootComponentManager.instance.getComponent(rootComponentRef: rootViewId, componentRef: instanceId)  else {
-            Log.LogError("unRegister failed! Cannot find instance \(instanceId)")
+            Log.Error("unRegister failed! Cannot find instance \(instanceId)")
             return
         }
         component.unRegister(event: event, callBack: callBack)
