@@ -20,17 +20,20 @@ class Label: ViewComponent {
     private var _textColorString: String = "#333333"
     private var _fontSize: CGFloat?
     
-    private var _lastSize: CGSize = CGSize.zero
+    private var _lastSize: CGSize = CGSize.init(width: -1, height: -1)
     
-    private var _originSize: CGSize = CGSize.zero
+//    private var _originSize: CGSize = CGSize.zero
 
-    private var _sizeSetted:Bool = false
+//    private var _sizeSetted:Bool = false
+    
+    private var _originWidth: YGValue?
+    private var _originHeight: YGValue?
     
     required init(ref:String,styles:Dictionary<String,Any>,props:Dictionary<String,Any>) {
         super.init(ref: ref, styles: styles,props: props)
-        if Utils.any2YGValue(styles["width"]) != nil{
-            _sizeSetted = true
-        }
+//        if Utils.any2YGValue(styles["width"]) != nil{
+//            _sizeSetted = true
+//        }
         _config(styles: styles)
     }
     
@@ -44,16 +47,16 @@ class Label: ViewComponent {
         _text = Utils.any2String(props["text"]) ?? ""
     }
     
-    func rejustView(){
-        _originSize = _label.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude))
-
-        if !_sizeSetted  {
-            layout.width = YGValue(_originSize.width)
-            layout.height = YGValue(_originSize.height)
-        }
-        self._needsLayout = true
-
-    }
+//    func rejustView(){
+//        _originSize = _label.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude))
+//
+//        if !_sizeSetted  {
+//            layout.width = YGValue(_originSize.width)
+//            layout.height = YGValue(_originSize.height)
+//        }
+//        self._needsLayout = true
+//
+//    }
     
     override func loadView() -> UIView {
         return self._label
@@ -81,7 +84,7 @@ class Label: ViewComponent {
             label.layer.masksToBounds = true
         }
         
-        self.rejustView()
+//        self.rejustView()
     }
 
     override func updateWithStyle(_ styles: Dictionary<String, Any>) {
@@ -98,29 +101,35 @@ class Label: ViewComponent {
             return
         }
         _lastSize = newSize
-        
-        let frame = self.layout.requestFrame
 
+        if _originWidth == nil {
+            _originWidth = self.layout.width
+        }
+        if _originHeight == nil {
+            _originHeight = self.layout.height
+        }
+        
+        guard let originW = _originWidth, let originH = _originHeight else {
+            return
+        }
         var (constraintW, constraintH) = (CGFloat(self.layout.width.value), CGFloat(self.layout.height.value))
 
         if let parentW = self.parent?.layout.requestFrame.width {
-            if self.layout.width.unit == YGUnitPercent {
-                constraintW = CGFloat(self.layout.width.value / 100.0) * parentW
+            if originW.unit == YGUnitPercent {
+                constraintW = CGFloat(originW.value / 100.0) * parentW
             }
         }
         if let parentH = self.parent?.layout.requestFrame.height {
-            if self.layout.height.unit == YGUnitPercent {
-                constraintH = CGFloat(self.layout.height.value / 100.0) * parentH
+            if originH.unit == YGUnitPercent {
+                constraintH = CGFloat(originH.value / 100.0) * parentH
             }
         }
 
         let size = _label.sizeThatFits(CGSize(width: constraintW, height: constraintH))
 
-
         self.layout.width = YGValue(size.width)
         self.layout.height = YGValue(size.height)
-
-        _label.frame = CGRect(x:frame.origin.x,y:frame.origin.y,width:size.width,height:size.height)
+        
         self._needsLayout = true
     }
 }
