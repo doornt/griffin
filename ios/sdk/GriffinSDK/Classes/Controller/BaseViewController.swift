@@ -21,6 +21,8 @@ enum ViewControllerLifeCycle: String {
 
 class BaseViewController : UIViewController {
     
+    var rootComponent: ViewComponent?
+    
     private var _rootView: UIView?
     var rootView: UIView? {
         get {

@@ -460,6 +460,50 @@ class LayoutStyle{
         return true
     }
     
+    static func YGSanitizeMeasurement(_ constrainedSize:CGFloat,_ measuredSize:CGFloat,
+                                      _ measureMode:YGMeasureMode)->CGFloat{
+        var result:CGFloat
+        if (measureMode == YGMeasureModeExactly) {
+            result = constrainedSize
+        } else if (measureMode == YGMeasureModeAtMost) {
+            result = min(constrainedSize, measuredSize)
+        } else {
+            result = measuredSize;
+        }
+        return result
+    }
+    
+
+//    static func YGMeasureView(_ node: YGNodeRef,_ width: Float,_ widthMode:YGMeasureMode,_ height:Float, _ heightMode:YGMeasureMode) -> YGSize {
+//        let constrainedWidth = (widthMode == YGMeasureModeUndefined) ?  Float.greatestFiniteMagnitude: width
+//        let constrainedHeight = (heightMode == YGMeasureModeUndefined) ? Float.greatestFiniteMagnitude: height
+//
+////    UIView *view = (__bridge UIView*) YGNodeGetContext(node);
+////    const CGSize sizeThatFits = [view sizeThatFits:(CGSize) {
+////    .width = constrainedWidth,
+////    .height = constrainedHeight,
+////    }];
+//
+//        let sizeThatFits:CGSize = CGSize.init(width: 100, height: 100)
+//        return YGSize.init(width: Float(YGSanitizeMeasurement(CGFloat(constrainedWidth), sizeThatFits.width, widthMode)), height: Float(YGSanitizeMeasurement(CGFloat(constrainedHeight), sizeThatFits.height, heightMode)))
+//    }
+    
+    static let YGMeasureView :@convention(c)(YGNodeRef,Float,YGMeasureMode,Float,YGMeasureMode) -> YGSize = {
+        (node, width,widthMode,height,heightMode) in
+        
+        let constrainedWidth = (widthMode == YGMeasureModeUndefined) ?  Float.greatestFiniteMagnitude: width
+        let constrainedHeight = (heightMode == YGMeasureModeUndefined) ? Float.greatestFiniteMagnitude: height
+        
+        //    UIView *view = (__bridge UIView*) YGNodeGetContext(node);
+        //    const CGSize sizeThatFits = [view sizeThatFits:(CGSize) {
+        //    .width = constrainedWidth,
+        //    .height = constrainedHeight,
+        //    }];
+        
+        let sizeThatFits:CGSize = CGSize.init(width: 100, height: 100)
+        return YGSize.init(width: Float(YGSanitizeMeasurement(CGFloat(constrainedWidth), sizeThatFits.width, widthMode)), height: Float(YGSanitizeMeasurement(CGFloat(constrainedHeight), sizeThatFits.height, heightMode)))
+        
+    }
     
     static func YGAttachNodesFromViewHierachy(_ layout:LayoutStyle){
         let node = layout.node
@@ -467,7 +511,9 @@ class LayoutStyle{
         // Only leaf nodes should have a measure function
         if (layout.isLeaf) {
             LayoutStyle.YGRemoveAllChildren(node);
-//            YGNodeSetMeasureFunc(node, LayoutStyle.YGMeasureView);
+            
+            YGNodeSetMeasureFunc(node, unsafeBitCast(LayoutStyle.YGMeasureView,to: AnyObject.self) as! YGMeasureFunc);
+            
         } else {
             YGNodeSetMeasureFunc(node, nil);
             var subviewsToInclude:[LayoutStyle] = []

@@ -20,8 +20,6 @@ class ComponentManager: NSObject {
     private var _displayLink: CADisplayLink?
     private var _noTaskTickCount = 0
     
-    private var _rootController:BaseViewController?
-    
     func unload() {
         assert(Thread.current == self._componentThread, "unload should be called in _componentThread")
         DispatchQueue.main.sync {
@@ -31,11 +29,6 @@ class ComponentManager: NSObject {
             }
             _uiTaskQueue.removeAll()
         }
-    }
-    
-    func setRootController(root:BaseViewController){
-        Log.Info("Init RootController \(root)")
-        self._rootController = root
     }
 
     private override init() {
@@ -76,11 +69,6 @@ class ComponentManager: NSObject {
     }
 
     
-    func addUITask(_ block: @escaping () -> Void) {
-        assert(Thread.current == self._componentThread, "_addUITask should be called in _componentThread")
-        _uiTaskQueue.append(block)
-    }
-    
     private func _layoutAndSyncUI() {
         assert(Thread.current == self._componentThread, "_layoutAndSyncUI should be called in _componentThread")
         _layout()
@@ -111,7 +99,7 @@ class ComponentManager: NSObject {
             return
         }
         
-        guard let root = RootComponentManager.instance.topComponent else {
+        guard let root = RootComponentManager.instance.topRootComponent else {
             return
         }
 
@@ -180,14 +168,12 @@ extension ComponentManager {
 //MARK: - Elements Operations
 extension ComponentManager {
     
-    
     func createRootView(_ instanceId:String) -> Void {
         assert(Thread.current == self._componentThread, "createRootView should be called in _componentThread")
         
         let component = DivView.init(ref: instanceId, styles: ["background-color":"#FFFFFF",
                                                                "height":Environment.instance.screenHeight,
                                                                "width":Environment.instance.screenWidth,
-    
                                                                "top":0,
                                                                "left":0],props: [:])
         component.rootViewId = instanceId
@@ -195,11 +181,6 @@ extension ComponentManager {
         RootComponentManager.instance.pushRootComponent(component)
         RootComponentManager.instance.addComponent(rootComponentRef: instanceId, componentRef: instanceId, component: component)
         
-        if RootComponentManager.instance.allRootComponents.count == 1 {
-            _addUITask {
-                RootComponentManager.instance.topViewController = self._rootController
-            }
-        }
         _awakeDisplayLink()
     }
     
@@ -219,9 +200,11 @@ extension ComponentManager {
         assert(Thread.current == self._componentThread, "removeChildren should be called in _componentThread")
         
         guard let component = RootComponentManager.instance.getComponent(rootComponentRef: rootViewId, componentRef: instanceId) else {
+            Log.Error("remove children while canmpy get child \(instanceId) in rootview \(rootViewId)")
             return
         }
         component.removeChildren()
+        
         _awakeDisplayLink()
     }
     
@@ -230,6 +213,7 @@ extension ComponentManager {
         assert(Thread.current == self._componentThread, "updateElement should be called in _componentThread")
         
         guard let component = RootComponentManager.instance.getComponent(rootComponentRef: rootViewId, componentRef: instanceId) else {
+            Log.Error("updateElement while cannot get child \(instanceId) in rootview \(rootViewId)")
             return
         }
         component.updateWithStyle(data["styles"] as![String:Any])
@@ -245,6 +229,8 @@ extension ComponentManager {
         
         guard let superComponent = RootComponentManager.instance.getComponent(rootComponentRef: rootViewId, componentRef: parentId),
             let childComponent = RootComponentManager.instance.getComponent(rootComponentRef: rootViewId, componentRef: childId) else {
+                
+                Log.Error("addElement while cannot get child \(childId) or parent \(parentId) in rootview \(rootViewId)")
                 return
         }
         _addUITask {
@@ -258,6 +244,7 @@ extension ComponentManager {
         assert(Thread.current == self._componentThread, "addElement should be called in _componentThread")
 
         guard let superComponent = RootComponentManager.instance.getComponent(rootComponentRef: rootViewId, componentRef: parentId) else {
+                Log.Error("addElements while cannot parent \(parentId) in rootview \(rootViewId)")
                 return
         }
         let childrenComponents = childIds.map { (childId) -> ViewComponent? in

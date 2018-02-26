@@ -16,6 +16,8 @@
 		3A47036020302BEA0038A9A0 /* JSCoreBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A47035F20302BEA0038A9A0 /* JSCoreBridge.swift */; };
 		3A470363203043740038A9A0 /* Navigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A470362203043740038A9A0 /* Navigator.swift */; };
 		3AA6A23A2019AD5C00AEFC9C /* DebugManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA6A2392019AD5C00AEFC9C /* DebugManager.swift */; };
+		3ADC81972043E2CD007AF1EB /* GnThreadSafeDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADC81962043E2CD007AF1EB /* GnThreadSafeDictionary.swift */; };
+		3ADC81992043E2DA007AF1EB /* GnThreadSafeArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADC81982043E2DA007AF1EB /* GnThreadSafeArray.swift */; };
 		A36387B9200790C0009FA82F /* GriffinSDK-Bridging-Header.h in Headers */ = {isa = PBXBuildFile; fileRef = A36387B8200790C0009FA82F /* GriffinSDK-Bridging-Header.h */; };
 		DB0427912014D80400285A06 /* Slider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0427902014D80400285A06 /* Slider.swift */; };
 		DB2FFE30200712DC001C4908 /* JSBridgeContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2FFDFC200712DC001C4908 /* JSBridgeContext.swift */; };
@@ -71,6 +73,8 @@
 		3A47035F20302BEA0038A9A0 /* JSCoreBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSCoreBridge.swift; sourceTree = "<group>"; };
 		3A470362203043740038A9A0 /* Navigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigator.swift; sourceTree = "<group>"; };
 		3AA6A2392019AD5C00AEFC9C /* DebugManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugManager.swift; sourceTree = "<group>"; };
+		3ADC81962043E2CD007AF1EB /* GnThreadSafeDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GnThreadSafeDictionary.swift; sourceTree = "<group>"; };
+		3ADC81982043E2DA007AF1EB /* GnThreadSafeArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GnThreadSafeArray.swift; sourceTree = "<group>"; };
 		A36387B8200790C0009FA82F /* GriffinSDK-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GriffinSDK-Bridging-Header.h"; sourceTree = "<group>"; };
 		DB0427902014D80400285A06 /* Slider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Slider.swift; sourceTree = "<group>"; };
 		DB2FFDD12007126E001C4908 /* GriffinSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GriffinSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -213,6 +217,8 @@
 				DB6CC19E2014CF1000F783FF /* DictionaryExtension.swift */,
 				3AA6A2392019AD5C00AEFC9C /* DebugManager.swift */,
 				3A18683F2032EBE600F36118 /* GnTimer.swift */,
+				3ADC81962043E2CD007AF1EB /* GnThreadSafeDictionary.swift */,
+				3ADC81982043E2DA007AF1EB /* GnThreadSafeArray.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -402,11 +408,13 @@
 				DB2FFE6F2007159C001C4908 /* YGLayout.m in Sources */,
 				3A470363203043740038A9A0 /* Navigator.swift in Sources */,
 				3A37126C203C564D004055E7 /* ScrollComponent.swift in Sources */,
+				3ADC81992043E2DA007AF1EB /* GnThreadSafeArray.swift in Sources */,
 				DB0427912014D80400285A06 /* Slider.swift in Sources */,
 				DB2FFE47200712DD001C4908 /* Engine.swift in Sources */,
 				3A37126A203859D5004055E7 /* List.swift in Sources */,
 				DB2FFE30200712DC001C4908 /* JSBridgeContext.swift in Sources */,
 				3A37126E203C619D004055E7 /* ComponentWrap.swift in Sources */,
+				3ADC81972043E2CD007AF1EB /* GnThreadSafeDictionary.swift in Sources */,
 				DB2FFE682007159C001C4908 /* Yoga.c in Sources */,
 				DB2FFE3A200712DD001C4908 /* Environment.swift in Sources */,
 				3AA6A23A2019AD5C00AEFC9C /* DebugManager.swift in Sources */,

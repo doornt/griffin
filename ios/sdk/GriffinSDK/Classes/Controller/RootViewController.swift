@@ -13,7 +13,7 @@ public class RootViewController : UINavigationController, UIGestureRecognizerDel
     convenience init() {
         let root = BaseViewController.init()
         self.init(rootViewController: root)
-        ComponentManager.instance.setRootController(root: root)
+        RootComponentManager.instance.rootController = root
     }
     
     public convenience init(withSourceURL url: String) {

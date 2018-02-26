@@ -8,39 +8,88 @@
 
 import Foundation
 
+class RootComponent {
+    private var _rootviewId:String
+    var rootComponent: ViewComponent
+    private var _components: GnThreadSafeDictionary<String, ViewComponent> = GnThreadSafeDictionary<String, ViewComponent>()
+    
+    init(rootComponent: ViewComponent) {
+        self._rootviewId = rootComponent.ref
+        self.rootComponent = rootComponent
+    }
+    func addComponent(_ componentRef:String, component: ViewComponent) {
+        _components[componentRef] = component
+    }
+    
+    func getComponent(_ componentRef: String) -> ViewComponent? {
+        return _components[componentRef]
+    }
+    
+    var allChildrenComponent:[ViewComponent] {
+        return _components.values
+    }
+}
+
+
 class RootComponentManager {
     
-    private var rootComponentsId:[String] = [String]()
-    private var rootComponents: [String:ViewComponent] = [String:ViewComponent]()
-    private var components: [String:[String: ViewComponent]] = [String: [String:ViewComponent]]()
-    private var _viewControllers: [UIViewController] = [UIViewController]()
+    private var _rootController:BaseViewController?
+    var rootController: BaseViewController? {
+        get {
+            assert(Thread.current == Thread.main, "get rootController should be called in main thread")
+            return _rootController
+        }
+        set {
+            assert(Thread.current == Thread.main, "set rootController should be called in main thread")
+            _rootController = newValue
+        }
+    }
     
+    private var _addedComponentLock: NSLock = NSLock()
     private var _addedComponents: [ViewComponent] = [ViewComponent]()
     var addedComponents: [ViewComponent] {
+        _addedComponentLock.lock()
+        defer {
+            _addedComponentLock.unlock()
+        }
         return _addedComponents
     }
+    
     func registerAddedComponent(_ component: ViewComponent) {
+        _addedComponentLock.lock()
         _addedComponents.append(component)
+        _addedComponentLock.unlock()
     }
+    
+    private var _componentsLock: NSLock = NSLock()
+    private var _components: [String:RootComponent] = [String: RootComponent]()
+    
+    private var _viewControllersLock: NSLock = NSLock()
+    private var _viewControllers: [BaseViewController] = [BaseViewController]()
     
     
     var allRootComponents:[ViewComponent] {
-        return Array(rootComponents.values)
+        _componentsLock.lock()
+        defer {
+            _componentsLock.unlock()
+        }
+        return _components.values.map { (r) -> ViewComponent in r.rootComponent}
     }
     
     func pushRootComponent(_ root: ViewComponent) {
-        rootComponentsId.append(root.ref)
-        rootComponents[root.ref] = root
+        _componentsLock.lock()
+        _components[root.ref] = RootComponent.init(rootComponent: root)
+        _componentsLock.unlock()
     }
     
     func addComponent(rootComponentRef: String,componentRef: String, component: ViewComponent) {
-        if components[rootComponentRef] == nil {
-            var componentDic = [String:ViewComponent]()
-            componentDic[componentRef] = component
-            components[rootComponentRef] = componentDic
-        } else {
-            components[rootComponentRef]![componentRef] = component
+        _componentsLock.lock()
+        guard let rComponent = _components[rootComponentRef] else {
+            _componentsLock.unlock()
+            return
         }
+        _componentsLock.unlock()
+        rComponent.addComponent(componentRef, component: component)
     }
     
     func removeChildren(componentRef: String) {
@@ -48,76 +97,81 @@ class RootComponentManager {
     }
     
     func getComponent(rootComponentRef: String, componentRef: String) -> ViewComponent? {
-        guard let component = components[rootComponentRef] else {
+        _componentsLock.lock()
+        guard let component = _components[rootComponentRef] else {
+            _componentsLock.unlock()
             return nil
         }
-        
-        return component[componentRef]
+        _componentsLock.unlock()
+        return component.getComponent(componentRef)
     }
     
-    func pop() -> ViewComponent {
-        _viewControllers.removeLast()
-        _topViewController = _viewControllers.last as? BaseViewController
-        components.removeValue(forKey: rootComponentsId.last!)
-        return rootComponents.removeValue(forKey: rootComponentsId.removeLast())!
-    }
-    
-    var topComponent: ViewComponent? {
-        guard let id = rootComponentsId.last else {
-            return nil
+    var topRootComponent: ViewComponent? {
+        _viewControllersLock.lock()
+        defer {
+            _viewControllersLock.unlock()
         }
-        return rootComponents[id]
+        return _viewControllers.last?.rootComponent
+    }
+    
+    var topRootViewId: String? {
+        return topRootComponent?.ref
     }
     
     var topChildrenComponent: [ViewComponent]? {
-        guard let id = rootComponentsId.last, let componentDic = components[id] else {
+        _componentsLock.lock()
+        guard let component = _components[topRootViewId!] else {
+            _componentsLock.unlock()
             return nil
         }
-        return Array(componentDic.values)
+        _componentsLock.unlock()
+        return component.allChildrenComponent
     }
     
-    private var _topViewController: BaseViewController?
-    var topViewController: BaseViewController? {
-        get {
-            return _topViewController
-        }
-        set {
-            _topViewController = newValue
-            if _stashRootViewId != nil {
-                pushViewController(withId: _stashRootViewId!, animated: false)
-                _stashRootViewId = nil
-            }
-        }
-    }
-    
-    private var _stashRootViewId: String?
     
     func pushViewController(withId: String, animated: Bool) {
+        assert(Thread.current == Thread.main, "pushViewController should be called in main thread")
         
-        if _topViewController != nil {
-            if _viewControllers.count == 0 {
-                _topViewController?.rootView = rootComponents[withId]?.view
-                registerAddedComponent(rootComponents[withId]!)
-                _viewControllers.append(_topViewController!)
-                return
-            }
-        } else {
-            _stashRootViewId = withId
+        guard let rootVC = _rootController, let rootComponent = _components[withId] else {
+            Log.Error("rootController cannot be nil, there must be some fatal error")
+            return
+        }
+        if _viewControllers.count == 0 {
+            push(rootVC, withRootComponent: rootComponent.rootComponent)
             return
         }
         
+        
         let vc = BaseViewController()
-        _viewControllers.append(vc)
-        vc.rootView = rootComponents[withId]?.view
-        registerAddedComponent(rootComponents[withId]!)
-        _topViewController?.navigationController?.pushViewController(vc, animated: animated)
-        _topViewController = vc
+        push(vc, withRootComponent: rootComponent.rootComponent)
+        rootVC.navigationController?.pushViewController(vc, animated: animated)
     }
     
     func popViewController(animated: Bool) {
-        
+        assert(Thread.current == Thread.main, "popViewController should be called in main thread")
+        guard let rootVC = _rootController else {
+            Log.Error("rootController cannot be nil, there must be some fatal error")
+            return
+        }
+    
         let _ = pop()
-        _topViewController?.navigationController?.popViewController(animated: animated)
+        
+        rootVC.navigationController?.popViewController(animated: animated)
+    }
+    
+    private func push(_ vc: BaseViewController, withRootComponent rootComponent: ViewComponent) {
+        assert(Thread.current == Thread.main, "pop should be called in main thread")
+        _viewControllers.append(vc)
+        vc.rootView = rootComponent.view
+        vc.rootComponent = rootComponent
+        registerAddedComponent(rootComponent)
+    }
+    
+    func pop() -> ViewComponent {
+        assert(Thread.current == Thread.main, "pop should be called in main thread")
+        _viewControllers.removeLast()
+        let rComponent = _components.removeValue(forKey: topRootViewId!)
+        return (rComponent?.rootComponent)!
     }
     
     static let instance = RootComponentManager()
