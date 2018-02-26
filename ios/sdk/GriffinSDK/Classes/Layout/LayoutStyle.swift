@@ -290,6 +290,7 @@ class LayoutStyle{
     init(styles:Dictionary<String,Any>,owner:ViewComponent) {
         self._owner = owner
         self._node = YGNodeNewWithConfig(LayoutStyle._layoutConifg)
+        YGNodeSetContext(self._node, unsafeBitCast(self._owner, to: UnsafeMutableRawPointer.self))
         
         self.display = YGDisplayFlex
         
@@ -473,35 +474,24 @@ class LayoutStyle{
         return result
     }
     
-
-//    static func YGMeasureView(_ node: YGNodeRef,_ width: Float,_ widthMode:YGMeasureMode,_ height:Float, _ heightMode:YGMeasureMode) -> YGSize {
-//        let constrainedWidth = (widthMode == YGMeasureModeUndefined) ?  Float.greatestFiniteMagnitude: width
-//        let constrainedHeight = (heightMode == YGMeasureModeUndefined) ? Float.greatestFiniteMagnitude: height
-//
-////    UIView *view = (__bridge UIView*) YGNodeGetContext(node);
-////    const CGSize sizeThatFits = [view sizeThatFits:(CGSize) {
-////    .width = constrainedWidth,
-////    .height = constrainedHeight,
-////    }];
-//
-//        let sizeThatFits:CGSize = CGSize.init(width: 100, height: 100)
-//        return YGSize.init(width: Float(YGSanitizeMeasurement(CGFloat(constrainedWidth), sizeThatFits.width, widthMode)), height: Float(YGSanitizeMeasurement(CGFloat(constrainedHeight), sizeThatFits.height, heightMode)))
-//    }
-    
-    static let YGMeasureView :@convention(c)(YGNodeRef,Float,YGMeasureMode,Float,YGMeasureMode) -> YGSize = {
-        (node, width,widthMode,height,heightMode) in
+    static let YGMeasureView:@convention(c) (Optional<OpaquePointer>,Float,YGMeasureMode,Float,YGMeasureMode) -> YGSize = {
+        (node, width,widthMode,height,heightMode) -> YGSize in
         
         let constrainedWidth = (widthMode == YGMeasureModeUndefined) ?  Float.greatestFiniteMagnitude: width
-        let constrainedHeight = (heightMode == YGMeasureModeUndefined) ? Float.greatestFiniteMagnitude: height
+        var constrainedHeight = (heightMode == YGMeasureModeUndefined) ? Float.greatestFiniteMagnitude: height
         
-        //    UIView *view = (__bridge UIView*) YGNodeGetContext(node);
-        //    const CGSize sizeThatFits = [view sizeThatFits:(CGSize) {
-        //    .width = constrainedWidth,
-        //    .height = constrainedHeight,
-        //    }];
+        let owner = YGNodeGetContext(node)
         
-        let sizeThatFits:CGSize = CGSize.init(width: 100, height: 100)
-        return YGSize.init(width: Float(YGSanitizeMeasurement(CGFloat(constrainedWidth), sizeThatFits.width, widthMode)), height: Float(YGSanitizeMeasurement(CGFloat(constrainedHeight), sizeThatFits.height, heightMode)))
+        let label: Label = unsafeBitCast(owner, to: Label.self)
+        
+        let dic = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: label.fontSize ?? 20)]
+        
+        
+        let rect:CGSize = label.text.boundingRect(with: CGSize.init(width: CGFloat(constrainedWidth), height: CGFloat.greatestFiniteMagnitude), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: dic, context: nil).size
+        
+//        print("jjjj", widthMode, heightMode,label.text, rect, constrainedWidth, constrainedHeight)
+        
+        return YGSize.init(width: Float(YGSanitizeMeasurement(CGFloat(constrainedWidth), rect.width, widthMode)), height: Float(YGSanitizeMeasurement(CGFloat(constrainedHeight), rect.height, heightMode)))
         
     }
     
@@ -512,7 +502,9 @@ class LayoutStyle{
         if (layout.isLeaf) {
             LayoutStyle.YGRemoveAllChildren(node);
             
-            YGNodeSetMeasureFunc(node, unsafeBitCast(LayoutStyle.YGMeasureView,to: AnyObject.self) as! YGMeasureFunc);
+            if layout._owner is Label {
+                YGNodeSetMeasureFunc(node, LayoutStyle.YGMeasureView);
+            }
             
         } else {
             YGNodeSetMeasureFunc(node, nil);
