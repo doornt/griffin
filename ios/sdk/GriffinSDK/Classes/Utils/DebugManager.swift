@@ -38,7 +38,7 @@ class DebugManager {
         let urlString = "http://127.0.0.1:8081/bundle.js"
         
         if isFirst == "0" {
-            print("live reload view")
+            Log.Info("live reload view")
         }
         
         NetworkManager.instance.downloadFile(url: urlString, completionHandler: {

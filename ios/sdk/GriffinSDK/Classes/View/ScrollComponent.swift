@@ -49,7 +49,7 @@ class ScrollComponent: DivView {
         }
         
         _scrollView?.contentSize = CGSize.init(width: totalW, height: totalH)
-        print("iii", self.layout.requestFrame, _scrollView?.contentSize)
+//        print("iii", self.layout.requestFrame, _scrollView?.contentSize)
     }
 }
 

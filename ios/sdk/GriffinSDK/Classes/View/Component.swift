@@ -25,11 +25,13 @@ class ViewComponent {
     var _layout:LayoutStyle?
     
     private var _ref:String
+    
     var ref: String {
         get {
             return _ref
         }
     }
+    
     private var _events:Dictionary<String, Array<JSValue>> = Dictionary<String, Array<JSValue>>()
     
     private var _backgroundColor:String?
@@ -177,13 +179,16 @@ extension ViewComponent {
     }
     
     func removeChildren(){
-        _children.removeAll()
+        assert(Thread.current == Thread.main, "removeChildren must be in main thread")
         
-        DispatchQueue.main.async {
-            for view in self.view.subviews {
-                view.removeFromSuperview()
-            }
+        RootComponentManager.instance.unregisterAddedComponents(_children)
+        
+        _children.removeAll()
+        for view in self.view.subviews {
+            view.removeFromSuperview()
         }
+    
+        self._needsLayout = true
     }
 }
 
@@ -233,7 +238,9 @@ extension ViewComponent {
         }
         
         if event == "click" {
-            addTapGesture()
+            DispatchQueue.main.async {
+                self.addTapGesture()
+            }
         }
     }
     
@@ -246,7 +253,9 @@ extension ViewComponent {
         self._events[event] = eventArr.filter { $0 != callBack }
         
         if event == "click" {
-            removeTapGesuture()
+            DispatchQueue.main.async {
+                self.removeTapGesuture()
+            }
         }
     }
 }
@@ -255,18 +264,16 @@ extension ViewComponent {
 extension ViewComponent {
     
     func addTapGesture() {
-        DispatchQueue.main.async {
-            self.view.isUserInteractionEnabled = true
-            // add tap gensture
-            let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
-            self.view.addGestureRecognizer(tap)
-        }
+        
+        self.view.isUserInteractionEnabled = true
+        // add tap gensture
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
+        self.view.addGestureRecognizer(tap)
+
     }
     
     func removeTapGesuture() {
-        DispatchQueue.main.async {
-            self.view.isUserInteractionEnabled = false
-        }
+        self.view.isUserInteractionEnabled = false
     }
     
     @objc func handleTap(_ sender: UITapGestureRecognizer) {

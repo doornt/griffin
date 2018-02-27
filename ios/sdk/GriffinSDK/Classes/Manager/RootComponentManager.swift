@@ -46,20 +46,30 @@ class RootComponentManager {
     }
     
     private var _addedComponentLock: NSLock = NSLock()
-    private var _addedComponents: [ViewComponent] = [ViewComponent]()
+    private var _addedComponentDic: [String:ViewComponent] = [String:ViewComponent]()
     var addedComponents: [ViewComponent] {
         _addedComponentLock.lock()
         defer {
             _addedComponentLock.unlock()
         }
-        return _addedComponents
+        return Array(_addedComponentDic.values)
     }
     
     func registerAddedComponent(_ component: ViewComponent) {
         _addedComponentLock.lock()
-        _addedComponents.append(component)
+        _addedComponentDic[component.ref] = component
         _addedComponentLock.unlock()
     }
+    
+    func unregisterAddedComponents(_ components: [ViewComponent]) {
+        _addedComponentLock.lock()
+        
+        for c in components {
+            _addedComponentDic.removeValue(forKey: c.ref)
+        }
+        _addedComponentLock.unlock()
+    }
+    
     
     private var _componentsLock: NSLock = NSLock()
     private var _components: [String:RootComponent] = [String: RootComponent]()
@@ -80,11 +90,13 @@ class RootComponentManager {
         _componentsLock.lock()
         _components[root.ref] = RootComponent.init(rootComponent: root)
         _componentsLock.unlock()
+        addComponent(rootComponentRef: root.ref, componentRef: root.ref, component: root)
     }
     
     func addComponent(rootComponentRef: String,componentRef: String, component: ViewComponent) {
         _componentsLock.lock()
         guard let rComponent = _components[rootComponentRef] else {
+            Log.Error("Cannot find rootcomponent \(rootComponentRef) in _components")
             _componentsLock.unlock()
             return
         }
@@ -92,9 +104,6 @@ class RootComponentManager {
         rComponent.addComponent(componentRef, component: component)
     }
     
-    func removeChildren(componentRef: String) {
-    
-    }
     
     func getComponent(rootComponentRef: String, componentRef: String) -> ViewComponent? {
         _componentsLock.lock()

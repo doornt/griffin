@@ -44,7 +44,7 @@ class ImageView : ViewComponent {
     }
     
     override func loadView() -> UIView {
-        return self._imageView;
+        return self._imageView
     }
     
     override func viewDidLoad() {

@@ -36,7 +36,7 @@ public class Engine {
         
         ComponentManager.instance.performOnComponentThread {
             
-//            ComponentManager.instance.unload()
+            ComponentManager.instance.unload()
 
             JSBridgeContext.instance.performOnJSThread {
                 JSBridgeContext.instance.executeJavascript(script: script)

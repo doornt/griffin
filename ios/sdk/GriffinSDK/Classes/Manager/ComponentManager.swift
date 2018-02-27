@@ -87,8 +87,10 @@ class ComponentManager: NSObject {
     private func _layout() {
         assert(Thread.current == self._componentThread, "_layout should be called in _componentThread")
         
+        let components = RootComponentManager.instance.addedComponents
+        
         var needsLayout = false
-        for o in RootComponentManager.instance.addedComponents {
+        for o in components {
             if o.needsLayout {
                 needsLayout = true
                 break
@@ -104,9 +106,9 @@ class ComponentManager: NSObject {
         }
 
         root.applyLayout()
-    
-        for o in RootComponentManager.instance.addedComponents {
-            _addUITask {
+        
+        _addUITask {
+            for o in components {
                 o.layoutFinish()
             }
         }
@@ -139,7 +141,6 @@ extension ComponentManager {
     }
     
     private func _awakeDisplayLink() {
-
         assert(Thread.current == self._componentThread, "_awakeDisplayLink should be called in _componentThread")
     
         if (_displayLink != nil && _displayLink?.isPaused == true) {
@@ -179,8 +180,7 @@ extension ComponentManager {
         component.rootViewId = instanceId
 
         RootComponentManager.instance.pushRootComponent(component)
-        RootComponentManager.instance.addComponent(rootComponentRef: instanceId, componentRef: instanceId, component: component)
-        
+
         _awakeDisplayLink()
     }
     
@@ -191,8 +191,8 @@ extension ComponentManager {
         if let component = _buildComponent(instanceId, withData:componentData) {
             component.rootViewId = rootViewId
             RootComponentManager.instance.addComponent(rootComponentRef: rootViewId, componentRef: instanceId, component: component)
+            _awakeDisplayLink()
         }
-        _awakeDisplayLink()
     }
     
     func removeChildren(rootViewId: String,instanceId: String) {
@@ -203,7 +203,9 @@ extension ComponentManager {
             Log.Error("remove children while canmpy get child \(instanceId) in rootview \(rootViewId)")
             return
         }
-        component.removeChildren()
+        _addUITask {
+            component.removeChildren()
+        }
         
         _awakeDisplayLink()
     }
@@ -216,6 +218,7 @@ extension ComponentManager {
             Log.Error("updateElement while cannot get child \(instanceId) in rootview \(rootViewId)")
             return
         }
+        // 目前 updateWithStyle 没有触发layout
         component.updateWithStyle(data["styles"] as![String:Any])
         _addUITask {
             component.refresh()
