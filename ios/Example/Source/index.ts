@@ -26,7 +26,7 @@ export class TestAComponent extends BaseComponent {
         // console.log("TestAComponent onAdded")
         super.onAdded()
         // // this.setState({})        
-        fetch('http://api.yatessss.com:8888/news-at/api/4/news/latest').then(resp => resp.json()).then(data => {
+        fetch('http://news-at.zhihu.com/api/4/news/latest').then(resp => resp.json()).then(data => {
             this.stories = (data.stories || []).map(story => ({
                 image: story.images[0],
                 title: story.title,
