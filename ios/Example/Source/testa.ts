@@ -1,11 +1,10 @@
 
-import { BaseComponent } from 'griffin-render'
+import { BaseComponent } from 'griffin-render';
 
-import { router } from './app'
 
 let pugJson = require(__dirname + '/template/index.pug')
 
-declare var modal: any;
+
 
 export class TestAComponent extends BaseComponent {
 
@@ -19,7 +18,6 @@ export class TestAComponent extends BaseComponent {
 
     jumpToDetail() {
         console.log('jump to detail')
-        router.push({ name: "testb" })
     }
 
     onAdded() {
@@ -48,14 +46,5 @@ export class TestAComponent extends BaseComponent {
 
 
         }).catch(err => console.error(err))
-
-
-        // console.log("setTimeout")
-
-        // setTimeout(() => {
-        //     console.log("setTimeout")
-        // }, 1000);
     }
 }
-
-// launchWithComponent(new TestAComponent())

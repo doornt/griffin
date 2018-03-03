@@ -1,16 +1,10 @@
 
-import { TestAComponent } from './index';
-import { TestBComponent } from './detail';
+import  GN from "griffin-render"
 
+import router from './router';
 
-import { Router } from "griffin-render"
+const app = new GN()
 
-export let router = new Router({
-    routes: [{
-        name: "testa",
-        component: TestAComponent
-    }],
-    default: "testa"
-})
+app.use(router)
 
-router.run()
+app.run()

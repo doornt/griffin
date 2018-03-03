@@ -197,6 +197,7 @@ extension JSBridgeContext {
             let obj = o as! Dictionary<String,Any>
             self.callJs(method: obj["method"] as! String, args: obj["args"] as! Array<Any>)
         }
+        callJs(method: "runtimeLoadedResponse", args: [])
     }
     
     private func initGlobalFunctions(){
