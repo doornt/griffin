@@ -162,8 +162,6 @@ class RootComponentManager {
             Log.Error("rootController cannot be nil, there must be some fatal error")
             return
         }
-    
-        let _ = pop()
         
         rootVC.navigationController?.popViewController(animated: animated)
     }
@@ -178,8 +176,8 @@ class RootComponentManager {
     
     func pop() -> ViewComponent {
         assert(Thread.current == Thread.main, "pop should be called in main thread")
-        _viewControllers.removeLast()
         let rComponent = _components.removeValue(forKey: topRootViewId!)
+        _viewControllers.removeLast()
         return (rComponent?.rootComponent)!
     }
     

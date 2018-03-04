@@ -10,8 +10,21 @@ import UIKit
 
 class Environment {
     
-    let screenWidth  = UIScreen.main.bounds.size.width
-    let screenHeight = UIScreen.main.bounds.size.height
+    lazy var screenSize: CGSize = {
+        var size = UIScreen.main.bounds.size
+        if UIDevice.current.model !=  "iPad" {
+            size = CGSize.init(width: min(size.width, size.height), height: max(size.width, size.height))
+        }
+        return size
+    }()
+    
+    var screenWidth: CGFloat {
+        return screenSize.width
+    }
+    var screenHeight: CGFloat {
+        return screenSize.height
+    }
+    
     let screenScale = Float(UIScreen.main.scale)
     
     lazy var homePath = {
