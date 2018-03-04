@@ -1,6 +1,5 @@
 
 import { BaseComponent } from 'griffin-render'
-import { router } from './app'
 
 let pugJson = require(__dirname + '/template/detail.pug')
 
@@ -14,8 +13,7 @@ export class TestBComponent extends BaseComponent {
     }
 
     clickclick() {
-        router.pop()
+        this.goback()
+        console.log('click go back')
     }
 }
-
-// launchWithComponent(new TestBComponent())

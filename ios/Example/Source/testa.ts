@@ -17,7 +17,7 @@ export class TestAComponent extends BaseComponent {
     }
 
     jumpToDetail() {
-        console.log('jump to detail')
+        this.openUrl('/detail',null)
     }
 
     onAdded() {

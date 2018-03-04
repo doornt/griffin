@@ -14,7 +14,7 @@
     "chokidar": "^2.0.1",
     "express": "^4.16.2",
     "griffin-loader": "latest",
-    "griffin-render": "latest",
+    "griffin-render": "0.0.14",
     "gulp": "^3.9.1",
     "gulp-tsc": "^1.3.2",
     "gulp-typescript": "^3.2.4",
