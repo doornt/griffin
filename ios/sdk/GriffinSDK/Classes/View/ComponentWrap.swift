@@ -30,7 +30,7 @@ class ComponentWrap : ViewComponent {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        JSBridgeContext.instance.performOnJSThread {
+        GnThreadPool.instance.performOnJSThread {
             guard let rootviewId = self.rootViewId else {
                 Log.Error("ComponentWrap DidLoad while rootviewId == nil")
                 return

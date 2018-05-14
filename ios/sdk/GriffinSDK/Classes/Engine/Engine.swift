@@ -34,14 +34,7 @@ public class Engine {
             return
         }
         
-        ComponentManager.instance.performOnComponentThread {
-            
-            ComponentManager.instance.unload()
-
-            JSBridgeContext.instance.performOnJSThread {
-                JSBridgeContext.instance.executeJavascript(script: script)
-            }
-        }
+        GnDispatchCenter.instance.handleFileChange(script)
     }
     
     private func initSDKEnviroment(){
@@ -55,7 +48,6 @@ private extension Engine {
     func registerDefault() {
         registerComponents()
         registerComponents2JS()
-        registerModules()
     }
     
     // MARK: - Register Components
@@ -76,20 +68,6 @@ private extension Engine {
     
     // MARK: - Register Components to JS
     func registerComponents2JS() {
-        JSBridgeContext.instance.performOnJSThread {
-            JSBridgeContext.instance.registerComponent2JS("scrollView")
-        }
-    }
-    // MARK: - Regsiter Modules
-    func registerModules(){
-        JSBridgeContext.instance.performOnJSThread {
-            
-            JSBridgeContext.instance.register(method: {
-                url in
-                return WebSocket.init(url)
-            } as @convention(block) (String) -> WebSocket, script: "WebSocket")
-            
-            JSBridgeContext.instance.register(method: { return Navigator.init() } as @convention(block) () -> Navigator, script: "Navigator")
-        }
+        GnDispatchCenter.instance.registerComponent2JS("scrollView")
     }
 }

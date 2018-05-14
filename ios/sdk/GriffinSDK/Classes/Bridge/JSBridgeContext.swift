@@ -11,77 +11,51 @@ import JavaScriptCore
 
 extension JSValue {
     func callWithoutArguments() {
-        JSBridgeContext.instance.performOnJSThread {
-            call(withArguments: [])
-        }
+        call(withArguments: [])
     }
     
     func callWithDictionary(_ arguments: Dictionary<String, Any>?) {
-        JSBridgeContext.instance.performOnJSThread {
-            call(withArguments: arguments != nil ? [arguments!] : [])
-        }
+        call(withArguments: arguments != nil ? [arguments!] : [])
     }
     
     func callWithAny(_ arguments: Any?) {
         let arg = arguments != nil ? [arguments!] : []
-        JSBridgeContext.instance.performOnJSThread {
-            call(withArguments: arg)
-        }
+        call(withArguments: arg)
     }
 }
 
 extension JSBridgeContext {
     
     func executeJavascript(script:String) {
-        performOnJSThread {
-            let _ = _jsBridge.executeJavascript(script: script)
-        }
+        let _ = _jsBridge.executeJavascript(script: script)
     }
     
     func executeJavascript(script:String, withSourceUrl url:URL) {
-        performOnJSThread {
-            let _ = _jsBridge.executeJavascript(script: script, withSourceUrl: url)
-        }
+        let _ = _jsBridge.executeJavascript(script: script, withSourceUrl: url)
     }
     
     func register<T>(method:T,script:String){
-        performOnJSThread {
-            _jsBridge.register(method: method, script: script)
-        }
+        _jsBridge.register(method: method, script: script)
     }
     
     func registerComponent2JS(_ component: String) {
-        performOnJSThread {
-            callJs(method: "registerNativeComponent", args: [component])
-        }
+        callJs(method: "registerNativeComponent", args: [component])
     }
     
     func dispatchEventToJs(rootviewId instanceId: String, data: [String: Any?]) {
-        performOnJSThread {
-            callJs(method: "dispatchEventToJs", args: [instanceId, data])
-        }
+        callJs(method: "dispatchEventToJs", args: [instanceId, data])
     }
     
     func callJs(method:String,args:Array<Any>){
-        performOnJSThread {
-            if _loaded{
-                let _ = _jsBridge.callJsMethod(dict: ["method" :method, "args": args])
-            }else{
-                self._methodQueue.append(["method":method,"args":args])
-            }
-        }
-    }
-    
-    @objc func performOnJSThread(block: @convention(block)() -> Void ) {
-        if Thread.current === self._thread {
-            block()
-        } else {
-            self.perform(#selector(self.performOnJSThread(block:)), on: self._thread!, with: block, waitUntilDone: false)
+        if _loaded {
+            let _ = _jsBridge.callJsMethod(dict: ["method" :method, "args": args])
+        }else{
+            self._methodQueue.append(["method":method,"args":args])
         }
     }
 }
 
-class JSBridgeContext: NSObject {
+class JSBridgeContext {
     
     static let instance:JSBridgeContext = {
         return JSBridgeContext()
@@ -92,100 +66,60 @@ class JSBridgeContext: NSObject {
         return jsBridge
     }()
     
-    private var _thread: Thread?
-    
     private var _loaded = false
-
-    private let _stopRunning = false
     
     private var _methodQueue:[Any] = []
     
-    private override init() {
-        
-        super.init()
-
-        _thread = Thread.init(target: self, selector: #selector(self.run), object: nil)
-        _thread?.name = JSBridgeThreadName
-        _thread?.start()
-        
-        performOnJSThread {
-            initGlobalFunctions()
-        }
-    }
-    
-    @objc private func run() {
-        RunLoop.current.add(Port.init(), forMode: RunLoopMode.defaultRunLoopMode)
-        while (!_stopRunning && RunLoop.current.run(mode: .defaultRunLoopMode, before: Date.distantFuture)){}
+    init() {
+        initGlobalFunctions()
     }
     
     // MARK: - Component
     private let _createRootView:@convention(block)(String)-> Void = {
         obj in
-        ComponentManager.instance.performOnComponentThread {
-            ComponentManager.instance.createRootView(obj)
-        }
+        GnDispatchCenter.instance.createRootView(obj)
     }
     
     private let _createElementBlock:@convention(block)(String, String, Dictionary<String,Any>) -> Void = {
         rootViewId, instanceId, obj in
-        ComponentManager.instance.performOnComponentThread {
-            ComponentManager.instance.createElement(rootViewId: rootViewId, instanceId: instanceId, withData: obj)
-        }
+        GnDispatchCenter.instance.createElement(rootViewId: rootViewId, instanceId: instanceId, withData: obj)
     }
     
     private let _removeChildrenBlock:@convention(block)(String,String) -> Void = {
         rootViewId,instanceId in
-        ComponentManager.instance.performOnComponentThread {
-            ComponentManager.instance.removeChildren(rootViewId: rootViewId,instanceId: instanceId)
-        }
+        GnDispatchCenter.instance.removeChildren(rootViewId: rootViewId, instanceId: instanceId)
     }
     
     private let _addSubview:@convention(block)(String, String, String)-> Void = {
         rootViewId, parentId, childId in
-        ComponentManager.instance.performOnComponentThread {
-            ComponentManager.instance.addElement(rootViewId: rootViewId, parentId: parentId, childId: childId)
-        }
+        GnDispatchCenter.instance.addElement(rootViewId: rootViewId, parentId: parentId, childId: childId)
     }
     
     private let _addViews:@convention(block)(String, String, [String])-> Void = {
         rootViewId, parentId, childIds in
-        ComponentManager.instance.performOnComponentThread {
-            ComponentManager.instance.addElements(rootViewId: rootViewId, parentId: parentId, childIds: childIds)
-        }
+        GnDispatchCenter.instance.addElements(rootViewId: rootViewId, parentId: parentId, childIds: childIds)
     }
     
     private let _updateElement:@convention(block)(String, String, Dictionary<String,Any>)-> Void = {
         rootViewId, instanceId, data in
-        ComponentManager.instance.performOnComponentThread {
-            ComponentManager.instance.updateElement(rootViewId: rootViewId, instanceId: instanceId, data: data)
-        }
+        GnDispatchCenter.instance.updateElement(rootViewId: rootViewId, instanceId: instanceId, data: data)
     }
     
     // MARK: - Event
     private let _registerEvent:@convention(block)(String, String, String, JSValue)-> Void = {
         rootViewId, instanceId, event, callBack in
-        ComponentManager.instance.performOnComponentThread {
-            ComponentManager.instance.register(event: event, rootViewId: rootViewId, instanceId: instanceId, callBack: callBack)
-        }
+        GnDispatchCenter.instance.register(event: event, rootViewId: rootViewId, instanceId: instanceId, callBack: callBack)
     }
     
     private let _unRegisterEvent:@convention(block)(String, String, String, JSValue)-> Void = {
         rootViewId, instanceId, event, callBack in
-        ComponentManager.instance.performOnComponentThread {
-            ComponentManager.instance.unRegister(event: event, rootViewId: rootViewId, instanceId: instanceId, callBack: callBack)
-        }
+        GnDispatchCenter.instance.unRegister(event: event, rootViewId: rootViewId, instanceId: instanceId, callBack: callBack)
     }
     
     // MARK: - Network
     private let _fetch:@convention(block)(String, [String: String], JSValue)-> Void = {
         url, params, callback in
-        JSBridgeContext.instance.performOnJSThread {
-            NetworkManager.instance.get(url: url, params: params) {
-                (data, error) in
-//                callback.callWithDictionary(data as? Dictionary<String, Any>)
-                callback.callWithAny(data)
-            }
-        }
+        GnDispatchCenter.instance.fetch(url, params:params, callback:callback)
     }
 }
 
@@ -193,7 +127,7 @@ class JSBridgeContext: NSObject {
 extension JSBridgeContext {
     private func onRuntimeLoadFinish(){
         _loaded = true
-        for o in self._methodQueue{
+        for o in self._methodQueue {
             let obj = o as! Dictionary<String,Any>
             self.callJs(method: obj["method"] as! String, args: obj["args"] as! Array<Any>)
         }
@@ -219,5 +153,14 @@ extension JSBridgeContext {
         
         // MARK: Network
         _jsBridge.register(method: _fetch, script: "nativeFetch")
+        
+        // MARK: WebSocket
+        _jsBridge.register(method: {
+            url in
+            return WebSocket.init(url)
+            } as @convention(block) (String) -> WebSocket, script: "WebSocket")
+        
+        // MARK: Navigator
+        _jsBridge.register(method: { return Navigator.init() } as @convention(block) () -> Navigator, script: "Navigator")
     }
 }

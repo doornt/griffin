@@ -18,6 +18,8 @@
 		3AA6A23A2019AD5C00AEFC9C /* DebugManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA6A2392019AD5C00AEFC9C /* DebugManager.swift */; };
 		3AB2764E204531CD0028D279 /* LayoutStyleComputedProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB2764D204531CD0028D279 /* LayoutStyleComputedProperty.swift */; };
 		3AB27650204533070028D279 /* LayoutStyleCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB2764F204533070028D279 /* LayoutStyleCore.swift */; };
+		3ADB090220A9879600393A9B /* GnDispatchCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADB090120A9879600393A9B /* GnDispatchCenter.swift */; };
+		3ADB090420A99E3F00393A9B /* GnThreadPool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADB090320A99E3F00393A9B /* GnThreadPool.swift */; };
 		3ADC81972043E2CD007AF1EB /* GnThreadSafeDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADC81962043E2CD007AF1EB /* GnThreadSafeDictionary.swift */; };
 		3ADC81992043E2DA007AF1EB /* GnThreadSafeArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADC81982043E2DA007AF1EB /* GnThreadSafeArray.swift */; };
 		A36387B9200790C0009FA82F /* GriffinSDK-Bridging-Header.h in Headers */ = {isa = PBXBuildFile; fileRef = A36387B8200790C0009FA82F /* GriffinSDK-Bridging-Header.h */; };
@@ -77,6 +79,8 @@
 		3AA6A2392019AD5C00AEFC9C /* DebugManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugManager.swift; sourceTree = "<group>"; };
 		3AB2764D204531CD0028D279 /* LayoutStyleComputedProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutStyleComputedProperty.swift; sourceTree = "<group>"; };
 		3AB2764F204533070028D279 /* LayoutStyleCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutStyleCore.swift; sourceTree = "<group>"; };
+		3ADB090120A9879600393A9B /* GnDispatchCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GnDispatchCenter.swift; sourceTree = "<group>"; };
+		3ADB090320A99E3F00393A9B /* GnThreadPool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GnThreadPool.swift; sourceTree = "<group>"; };
 		3ADC81962043E2CD007AF1EB /* GnThreadSafeDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GnThreadSafeDictionary.swift; sourceTree = "<group>"; };
 		3ADC81982043E2DA007AF1EB /* GnThreadSafeArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GnThreadSafeArray.swift; sourceTree = "<group>"; };
 		A36387B8200790C0009FA82F /* GriffinSDK-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GriffinSDK-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -278,6 +282,8 @@
 			isa = PBXGroup;
 			children = (
 				DB2FFE1A200712DC001C4908 /* Engine.swift */,
+				3ADB090120A9879600393A9B /* GnDispatchCenter.swift */,
+				3ADB090320A99E3F00393A9B /* GnThreadPool.swift */,
 			);
 			path = Engine;
 			sourceTree = "<group>";
@@ -435,6 +441,7 @@
 				DB2FFE722007159C001C4908 /* YGLayoutExtensions.swift in Sources */,
 				DB2FFE46200712DD001C4908 /* ImageView.swift in Sources */,
 				DB8DB74D2025828300A38314 /* WebSocket.swift in Sources */,
+				3ADB090420A99E3F00393A9B /* GnThreadPool.swift in Sources */,
 				DB71DF88202592BD00A49408 /* Defines.swift in Sources */,
 				DB2FFE31200712DC001C4908 /* LayoutStyle.swift in Sources */,
 				3A47036020302BEA0038A9A0 /* JSCoreBridge.swift in Sources */,
@@ -450,6 +457,7 @@
 				3AB27650204533070028D279 /* LayoutStyleCore.swift in Sources */,
 				DB2FFE37200712DD001C4908 /* GriffinLinkedMap.swift in Sources */,
 				DB2FFE40200712DD001C4908 /* RootViewController.swift in Sources */,
+				3ADB090220A9879600393A9B /* GnDispatchCenter.swift in Sources */,
 				DB2FFE38200712DD001C4908 /* GriffinDiskCache.swift in Sources */,
 				DB71DF8420258C4200A49408 /* WebSocketError.swift in Sources */,
 				DB2FFE692007159C001C4908 /* YGNodeList.c in Sources */,
