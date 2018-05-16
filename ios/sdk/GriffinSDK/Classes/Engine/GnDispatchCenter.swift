@@ -12,12 +12,12 @@ import JavaScriptCore
 class GnDispatchCenter {
     
     public func handleFileChange(_ script: String) {
-        GnThreadPool.instance.performOnComponentThread {
+        GnThreadPool.instance.performOnComponentThreadSync {
             ComponentManager.instance.unload()
-            
-            GnThreadPool.instance.performOnJSThread {
-                JSBridgeContext.instance.executeJavascript(script: script)
-            }
+        }
+        
+        GnThreadPool.instance.performOnJSThread {
+            JSBridgeContext.instance.executeJavascript(script: script)
         }
     }
     
@@ -90,9 +90,16 @@ extension GnDispatchCenter {
     }
 }
 extension GnDispatchCenter {
-    public func registerComponent2JS(_ component: String) {
-        GnThreadPool.instance.performOnJSThread {
+    func registerComponent2JS(_ component: String) {
+        GnThreadPool.instance.performOnJSThreadSync {
             JSBridgeContext.instance.registerComponent2JS(component)
+        }
+    }
+    
+    func register<T>(method:T,script:String){
+        GnThreadPool.instance.performOnJSThreadSync {
+
+            JSBridgeContext.instance.register(method: method, script: script)
         }
     }
 }

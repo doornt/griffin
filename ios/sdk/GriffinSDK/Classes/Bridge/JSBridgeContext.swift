@@ -71,60 +71,9 @@ class JSBridgeContext {
     private var _methodQueue:[Any] = []
     
     init() {
-        initGlobalFunctions()
+        _jsBridge.register(method: { self.onRuntimeLoadFinish() } as @convention(block)()-> Void, script: "onRuntimeLoadFinish")
     }
     
-    // MARK: - Component
-    private let _createRootView:@convention(block)(String)-> Void = {
-        obj in
-        GnDispatchCenter.instance.createRootView(obj)
-    }
-    
-    private let _createElementBlock:@convention(block)(String, String, Dictionary<String,Any>) -> Void = {
-        rootViewId, instanceId, obj in
-        GnDispatchCenter.instance.createElement(rootViewId: rootViewId, instanceId: instanceId, withData: obj)
-    }
-    
-    private let _removeChildrenBlock:@convention(block)(String,String) -> Void = {
-        rootViewId,instanceId in
-        GnDispatchCenter.instance.removeChildren(rootViewId: rootViewId, instanceId: instanceId)
-    }
-    
-    private let _addSubview:@convention(block)(String, String, String)-> Void = {
-        rootViewId, parentId, childId in
-        GnDispatchCenter.instance.addElement(rootViewId: rootViewId, parentId: parentId, childId: childId)
-    }
-    
-    private let _addViews:@convention(block)(String, String, [String])-> Void = {
-        rootViewId, parentId, childIds in
-        GnDispatchCenter.instance.addElements(rootViewId: rootViewId, parentId: parentId, childIds: childIds)
-    }
-    
-    private let _updateElement:@convention(block)(String, String, Dictionary<String,Any>)-> Void = {
-        rootViewId, instanceId, data in
-        GnDispatchCenter.instance.updateElement(rootViewId: rootViewId, instanceId: instanceId, data: data)
-    }
-    
-    // MARK: - Event
-    private let _registerEvent:@convention(block)(String, String, String, JSValue)-> Void = {
-        rootViewId, instanceId, event, callBack in
-        GnDispatchCenter.instance.register(event: event, rootViewId: rootViewId, instanceId: instanceId, callBack: callBack)
-    }
-    
-    private let _unRegisterEvent:@convention(block)(String, String, String, JSValue)-> Void = {
-        rootViewId, instanceId, event, callBack in
-        GnDispatchCenter.instance.unRegister(event: event, rootViewId: rootViewId, instanceId: instanceId, callBack: callBack)
-    }
-    
-    // MARK: - Network
-    private let _fetch:@convention(block)(String, [String: String], JSValue)-> Void = {
-        url, params, callback in
-        GnDispatchCenter.instance.fetch(url, params:params, callback:callback)
-    }
-}
-
-
-extension JSBridgeContext {
     private func onRuntimeLoadFinish(){
         _loaded = true
         for o in self._methodQueue {
@@ -132,35 +81,5 @@ extension JSBridgeContext {
             self.callJs(method: obj["method"] as! String, args: obj["args"] as! Array<Any>)
         }
         callJs(method: "runtimeLoadedResponse", args: [])
-    }
-    
-    private func initGlobalFunctions(){
-        _jsBridge.register(method: { self.onRuntimeLoadFinish() } as @convention(block)()-> Void, script: "onRuntimeLoadFinish")
-        
-        // MARK: Create View
-        _jsBridge.register(method: _createRootView, script: "createRootView")
-        _jsBridge.register(method: _createElementBlock, script: "createElement")
-        _jsBridge.register(method: _removeChildrenBlock, script: "removeChildren")
-        
-        // MARK: Operate View
-        _jsBridge.register(method: _addSubview, script: "addSubview")
-        _jsBridge.register(method: _addViews, script: "addViews")
-        _jsBridge.register(method: _updateElement, script: "updateView")
-        
-        // MARK: Event
-        _jsBridge.register(method: _registerEvent, script: "registerEvent")
-        _jsBridge.register(method: _unRegisterEvent, script: "unRegisterEvent")
-        
-        // MARK: Network
-        _jsBridge.register(method: _fetch, script: "nativeFetch")
-        
-        // MARK: WebSocket
-        _jsBridge.register(method: {
-            url in
-            return WebSocket.init(url)
-            } as @convention(block) (String) -> WebSocket, script: "WebSocket")
-        
-        // MARK: Navigator
-        _jsBridge.register(method: { return Navigator.init() } as @convention(block) () -> Navigator, script: "Navigator")
     }
 }
