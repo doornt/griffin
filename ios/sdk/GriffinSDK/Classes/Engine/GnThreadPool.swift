@@ -45,14 +45,14 @@ extension GnThreadPool {
 
 class GnThreadPool: NSObject {
     
-     lazy var _jsThread: Thread = {
+    private lazy var _jsThread: Thread = {
         let thread = Thread.init(target: self, selector: #selector(self.run), object: nil)
         thread.name = JSBridgeThreadName
         thread.start()
         return thread
     }()
     
-    lazy var _componentThread: Thread = {
+    private lazy var _componentThread: Thread = {
         let thread = Thread.init(target: self, selector: #selector(self.run), object: nil)
         thread.name = ComponentThreadName
         thread.start()

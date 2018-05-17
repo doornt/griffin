@@ -39,15 +39,12 @@ class ComponentManager {
         _uiTaskQueue.append(block)
     }
 
-    
     private func _layoutAndSyncUI() {
-
         _layout()
         if(_uiTaskQueue.count > 0){
             _syncUITasks()
             _noTaskTickCount = 0
         } else {
-            // suspend display link when there's no task for 1 second, in order to save CPU time.
             _noTaskTickCount += 1
             if (_noTaskTickCount > 60) {
                 _suspendDisplayLink()
@@ -93,37 +90,6 @@ class ComponentManager {
             for item in blocks {
                 item()
             }
-        }
-    }
-}
-
-extension ComponentManager {
-    
-    public func startDisplayLink() {
-        
-        if self._displayLink != nil {
-            return
-        }
-        _displayLink = CADisplayLink.init(target: self, selector: #selector(self._handleDisplayLink))
-        _displayLink?.add(to: RunLoop.current, forMode: .defaultRunLoopMode)
-    }
-    
-    private func _awakeDisplayLink() {
-        if (_displayLink != nil && _displayLink?.isPaused == true) {
-            _displayLink?.isPaused = false
-        }
-    }
-
-    private func _stopDisplayLink() {
-        if _displayLink != nil {
-            _displayLink?.invalidate()
-            _displayLink = nil
-        }
-    }
-
-    private func _suspendDisplayLink() {
-        if (_displayLink != nil && _displayLink?.isPaused == false) {
-            _displayLink?.isPaused = true
         }
     }
 }
@@ -255,3 +221,33 @@ extension ComponentManager {
     }
 }
 
+extension ComponentManager {
+    
+    public func startDisplayLink() {
+        
+        if self._displayLink != nil {
+            return
+        }
+        _displayLink = CADisplayLink.init(target: self, selector: #selector(self._handleDisplayLink))
+        _displayLink?.add(to: RunLoop.current, forMode: .defaultRunLoopMode)
+    }
+    
+    private func _awakeDisplayLink() {
+        if (_displayLink != nil && _displayLink?.isPaused == true) {
+            _displayLink?.isPaused = false
+        }
+    }
+    
+    private func _stopDisplayLink() {
+        if _displayLink != nil {
+            _displayLink?.invalidate()
+            _displayLink = nil
+        }
+    }
+    
+    private func _suspendDisplayLink() {
+        if (_displayLink != nil && _displayLink?.isPaused == false) {
+            _displayLink?.isPaused = true
+        }
+    }
+}

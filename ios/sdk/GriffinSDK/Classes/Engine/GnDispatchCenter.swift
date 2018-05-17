@@ -81,10 +81,12 @@ extension GnDispatchCenter {
 
 extension GnDispatchCenter {
     func fetch(_ url: String, params:[String: String], callback:JSValue) {
-        GnThreadPool.instance.performOnJSThread {
+        DispatchQueue.global().async {
             NetworkManager.instance.get(url: url, params: params) {
                 (data, error) in
-                callback.callWithAny(data)
+                GnThreadPool.instance.performOnJSThread {
+                    callback.callWithAny(data)
+                }
             }
         }
     }

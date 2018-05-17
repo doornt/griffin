@@ -51,33 +51,3 @@ class GnThreadSafeDictionary<Key, Value> where Key:Hashable {
         return obj
     }
 }
-
-
-//        - (void)setObject:(id)anObject forKey:(id<NSCopying>)aKey
-//{
-//    aKey = [aKey copyWithZone:NULL];
-//    dispatch_barrier_async(_queue, ^{
-//        _dict[aKey] = anObject;
-//        });
-//    }
-//
-//    - (void)removeObjectForKey:(id)aKey
-//{
-//    dispatch_barrier_async(_queue, ^{
-//        [_dict removeObjectForKey:aKey];
-//        });
-//    }
-//
-//    - (void)removeAllObjects{
-//        dispatch_barrier_async(_queue, ^{
-//            [_dict removeAllObjects];
-//            });
-//        }
-//
-//        - (id)copy{
-//            __block id copyInstance;
-//            dispatch_sync(_queue, ^{
-//                copyInstance = [_dict copy];
-//                });
-//            return copyInstance;
-//}
