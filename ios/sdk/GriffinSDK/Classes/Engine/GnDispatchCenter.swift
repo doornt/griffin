@@ -12,8 +12,10 @@ import JavaScriptCore
 class GnDispatchCenter {
     
     public func handleFileChange(_ script: String) {
-        GnThreadPool.instance.performOnComponentThreadSync {
-            ComponentManager.instance.unload()
+        
+        GnThreadPool.instance.performOnMainThreadSync {
+            RootComponentManager.instance.removeAllRootComponents()
+            ComponentManager.instance.removeAllUITask()
         }
         
         GnThreadPool.instance.performOnJSThread {

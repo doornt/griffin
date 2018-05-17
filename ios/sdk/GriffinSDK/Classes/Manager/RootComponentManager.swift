@@ -33,6 +33,25 @@ class RootComponent {
 
 class RootComponentManager {
     
+    func removeAllRootComponents() {
+        assert(Thread.current == Thread.main, "removeAllRootComponents should be called in main thread")
+        for rootComponent in RootComponentManager.instance.allRootComponents {
+            rootComponent.view.removeFromSuperview()
+            rootComponent.removeChildren()
+        }
+        
+        back2RootPage()
+    }
+    
+    private func back2RootPage() {
+        let vc: BaseViewController? = _viewControllers.first
+        guard let rootVC = vc else {
+            return
+        }
+        _viewControllers.removeAll()
+        rootVC.navigationController?.popToRootViewController(animated: false)
+    }
+    
     private var _rootController:BaseViewController?
     var rootController: BaseViewController? {
         get {

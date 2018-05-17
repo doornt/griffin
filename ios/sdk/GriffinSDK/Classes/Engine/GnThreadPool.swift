@@ -21,7 +21,7 @@ extension GnThreadPool {
         if Thread.current === self._jsThread {
             block()
         } else {
-            self.perform(#selector(self.performOnJSThread(block:)), on: self._jsThread, with: block, waitUntilDone: true)
+            self.perform(#selector(self.performOnJSThreadSync(block:)), on: self._jsThread, with: block, waitUntilDone: true)
         }
     }
     @objc func performOnComponentThread(block:@escaping @convention(block)() -> Void ) {
@@ -38,7 +38,25 @@ extension GnThreadPool {
         if Thread.current === self._componentThread {
             block()
         } else {
-            self.perform(#selector(self.performOnComponentThread(block:)), on: self._componentThread, with: block, waitUntilDone: true)
+            self.perform(#selector(self.performOnComponentThreadSync(block:)), on: self._componentThread, with: block, waitUntilDone: true)
+        }
+    }
+    
+    @objc func performOnMainThread(block:@escaping @convention(block)() -> Void ) {
+        
+        if Thread.current === Thread.main {
+            block()
+        } else {
+            self.perform(#selector(self.performOnMainThread(block:)), on: Thread.main, with: block, waitUntilDone: false)
+        }
+    }
+    
+    @objc func performOnMainThreadSync(block: @convention(block)() -> Void ) {
+        
+        if Thread.current === Thread.main {
+            block()
+        } else {
+            self.perform(#selector(self.performOnMainThreadSync(block:)), on: Thread.main, with: block, waitUntilDone: true)
         }
     }
 }

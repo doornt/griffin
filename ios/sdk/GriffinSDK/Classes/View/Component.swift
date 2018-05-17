@@ -55,7 +55,7 @@ class ViewComponent {
         self.initLayoutWithStyles(styles: styles)
     }
     
-    var styles:Dictionary<String,Any>{
+    var styles:Dictionary<String,Any> {
         set{
             if let bg = newValue.toString(key: "background-color"){
                 self._backgroundColor = bg
@@ -75,8 +75,8 @@ class ViewComponent {
     }
     
     func updateProps(_ props:Dictionary<String,Any>){
-        if props.toBool(key: "clickable") != nil{
-            self._clickable = true
+        if let clickable = props.toBool(key: "clickable") {
+            self._clickable = clickable
         }
     }
 

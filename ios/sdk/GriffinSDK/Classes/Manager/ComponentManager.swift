@@ -16,17 +16,11 @@ class ComponentManager {
     private var _uiTaskQueue = [()->Void]()
     private var _displayLink: CADisplayLink?
     private var _noTaskTickCount = 0
-    
-    func unload() {
-        DispatchQueue.main.sync {
-            for rootComponent in RootComponentManager.instance.allRootComponents {
-                rootComponent.view.removeFromSuperview()
-                rootComponent.removeChildren()
-            }
-            _uiTaskQueue.removeAll()
-        }
-    }
 
+    func removeAllUITask() {
+         _uiTaskQueue.removeAll()
+    }
+    
     init() {
         startDisplayLink()
     }
