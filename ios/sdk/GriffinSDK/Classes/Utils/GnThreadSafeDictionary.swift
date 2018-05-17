@@ -50,4 +50,46 @@ class GnThreadSafeDictionary<Key, Value> where Key:Hashable {
         }
         return obj
     }
+    
+    func removeValue(forKey key: Key) -> Value? {
+        var removed: Value? = nil
+        __dispatch_barrier_sync(_queue) {
+            removed = _dict[key]
+            _dict[key] = nil
+        }
+        return removed
+    }
+    
+    func removeValue(forKeys keys: Array<Key>) -> [Value?] {
+        var removed = [Value?]()
+        __dispatch_barrier_sync(_queue) {
+            for key in keys {
+                removed.append(_dict[key])
+                _dict[key] = nil
+            }
+        }
+        return removed
+    }
+    
+    func removeValueAsync(forKey key: Key) {
+            self[key] = nil
+    }
+    
+    func removeValueAsync(forKeys keys: Array<Key>) {
+        __dispatch_barrier_async(_queue) {
+            for key in keys {
+                self[key] = nil
+            }
+        }
+    }
+    
+    func allKeys() -> [Key] {
+        var keys: [Key] = [Key]()
+        _queue.sync {
+            for item in _dict {
+                keys.append(item.key)
+            }
+        }
+        return keys
+    }
 }
