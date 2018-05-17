@@ -77,6 +77,13 @@ class GnThreadPool: NSObject {
         return thread
     }()
 
+    var componentThread: Thread {
+        return _componentThread
+    }
+    var jsThread: Thread {
+        return _jsThread
+    }
+    
     private let _stopRunning = false
     
     public static let instance: GnThreadPool = {
