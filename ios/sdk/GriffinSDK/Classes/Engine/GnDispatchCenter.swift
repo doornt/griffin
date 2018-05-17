@@ -15,6 +15,9 @@ class GnDispatchCenter {
         
         GnThreadPool.instance.performOnMainThreadSync {
             RootComponentManager.instance.removeAllRootComponents()
+        }
+        
+        GnThreadPool.instance.performOnComponentThreadSync {
             ComponentManager.instance.removeAllUITask()
         }
         
