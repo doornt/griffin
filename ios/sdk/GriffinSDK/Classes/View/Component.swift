@@ -91,8 +91,9 @@ class ViewComponent {
     }
     
     func refresh() {
-        assert(Thread.current == Thread.main, "refresh must be called in main thread")
-        setupView()
+        GnThreadPool.instance.performOnMainThread {
+            
+        }
     }
     
     func viewDidLoad() {}
@@ -110,56 +111,50 @@ class ViewComponent {
             self.addTapGesture()
         }
         
-//        self._view?.clipsToBounds = _isOverflow
-//        self._view?.alpha = _alpha
-        
-//        self._view?.layer.borderWidth = _borderWidth
-        
-//        if Utils.hexString2UIColor(_borderColor) != nil {
-//            self._view?.layer.borderColor = Utils.hexString2UIColor(_borderColor)!.cgColor
-//        }
-        
-//        self._view?.layer.cornerRadius = _cornerRadius
-        
         self.viewDidLoad()
     }
     
     func addChild(_ child:ViewComponent){
         
-        assert(Thread.current == Thread.main, "addChild must be called in main thread")
-        
-        let superView = self.view
-        let subView = child.view
-        
-        superView.addSubview(subView)
-        
         child.parent = self
         self._children.append(child)
         self._needsLayout = true
         RootComponentManager.instance.registerAddedComponent(child)
+        
+        GnThreadPool.instance.performOnMainThread {
+            let superView = self.view
+            let subView = child.view
+            
+            superView.addSubview(subView)
+        }
     }
     
     func addChildren(_ children: [ViewComponent?]) {
-        assert(Thread.current == Thread.main, "addChildren must be called in main thread")
-        
-        let superView = self.view
-        
+
         for c in children {
             if let component = c {
-                let subView = component.view
-                
-                superView.addSubview(subView)
-                
                 component.parent = self
                 self._children.append(component)
                 RootComponentManager.instance.registerAddedComponent(component)
             }
         }
         self._needsLayout = true
+        
+        GnThreadPool.instance.performOnMainThread {
+            
+            let superView = self.view
+            
+            for c in children {
+                if let component = c {
+                    let subView = component.view
+                    superView.addSubview(subView)
+                }
+            }
+        }
     }
     
     func layoutFinish(){
-        assert(Thread.current == Thread.main, "layoutFinish must be called in main thread")
+        GnThreadPool.AssertMainThread(msg: "layoutFinish")
         let view:UIView = self.loadView()
         if !self.ignoreLayout {
             view.frame = self.layout.requestFrame
@@ -179,16 +174,17 @@ extension ViewComponent {
     }
     
     func removeChildren(){
-        assert(Thread.current == Thread.main, "removeChildren must be in main thread")
-        
         RootComponentManager.instance.unregisterAddedComponents(_children)
         
         _children.removeAll()
-        for view in self.view.subviews {
-            view.removeFromSuperview()
-        }
-    
+        
         self._needsLayout = true
+
+        GnThreadPool.instance.performOnMainThread {
+            for view in self.view.subviews {
+                view.removeFromSuperview()
+            }
+        }
     }
 }
 
@@ -281,6 +277,8 @@ extension ViewComponent {
             Log.Error("handleTap while self.rootviewid == nil")
             return
         }
-        JSBridgeContext.instance.dispatchEventToJs(rootviewId: rootViewId, data: ["nodeId":self.ref, "event": "click"])
+        GnThreadPool.instance.performOnJSThread {
+            JSBridgeContext.instance.dispatchEventToJs(rootviewId: rootViewId, data: ["nodeId":self.ref, "event": "click"])
+        }
     }
 }

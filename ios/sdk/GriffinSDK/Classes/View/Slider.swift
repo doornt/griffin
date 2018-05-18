@@ -258,21 +258,28 @@ class SliderView : DivView {
     }
     
     override func addChildren(_ children: [ViewComponent?]) {
-        assert(Thread.current == Thread.main, "addChildren must be called in main thread")
-        
-        var childViews = [UIView]()
         
         for c in children {
             if let component = c {
-                childViews.append(component.view)
                 component.parent = self
                 self.children.append(component)
                 component.ignoreLayout = true
             }
         }
-        _slider?.itemViews = childViews
         
         self._needsLayout = true
+        
+        GnThreadPool.instance.performOnMainThread {
+            
+            var childViews = [UIView]()
+            
+            for c in children {
+                if let component = c {
+                    childViews.append(component.view)
+                }
+            }
+            self._slider?.itemViews = childViews
+        }
     }
     
     override func layoutFinish() {
