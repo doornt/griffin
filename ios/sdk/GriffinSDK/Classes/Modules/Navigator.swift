@@ -17,14 +17,13 @@ import JavaScriptCore
 class Navigator:NSObject, NavigatorProtocol {
     
     func push(_ id: String, _ animated: Bool, _ callback: JSValue) {
-        DispatchQueue.main.async {
+        GnThreadPool.instance.performOnComponentThread {
             RootComponentManager.instance.pushViewController(withId: id, animated: animated)
         }
     }
     
     func pop(_ animated: Bool, _ callback: JSValue) {
-        DispatchQueue.main.async {
-            print(animated)
+        GnThreadPool.instance.performOnComponentThread {
             RootComponentManager.instance.popViewController(animated: animated)
         }
     }

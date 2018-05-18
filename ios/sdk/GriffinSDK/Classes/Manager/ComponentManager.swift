@@ -34,6 +34,7 @@ class ComponentManager {
     }
 
     private func _layoutAndSyncUI() {
+//        Log.Info("\(_noTaskTickCount)")
         _layout()
         if(_uiTaskQueue.count > 0){
             _syncUITasks()
@@ -42,6 +43,7 @@ class ComponentManager {
             _noTaskTickCount += 1
             if (_noTaskTickCount > 60) {
                 _suspendDisplayLink()
+                _noTaskTickCount = 0
             }
         }
     }
@@ -214,7 +216,7 @@ extension ComponentManager {
 extension ComponentManager {
     
     public func startDisplayLink() {
-        
+        Log.Info("startDisplayLink")
         if self._displayLink != nil {
             return
         }
@@ -229,6 +231,7 @@ extension ComponentManager {
     }
     
     private func _stopDisplayLink() {
+        Log.Info("_stopDisplayLink")
         if _displayLink != nil {
             _displayLink?.invalidate()
             _displayLink = nil
@@ -236,6 +239,7 @@ extension ComponentManager {
     }
     
     private func _suspendDisplayLink() {
+        Log.Info("_suspendDisplayLink")
         if (_displayLink != nil && _displayLink?.isPaused == false) {
             _displayLink?.isPaused = true
         }

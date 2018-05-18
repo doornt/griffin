@@ -39,7 +39,9 @@ public class RootViewController : UINavigationController, UIGestureRecognizerDel
     public override func popViewController(animated: Bool) -> UIViewController? {
         let vc = super.popViewController(animated: animated)
         
-        let _ = RootComponentManager.instance.pop()
+        GnThreadPool.instance.performOnComponentThread {
+            let _ = RootComponentManager.instance.pop()
+        }
         
         return vc
     }

@@ -148,7 +148,7 @@ extension RootComponentManager {
 extension RootComponentManager {
     
     func pushViewController(withId: String, animated: Bool) {
-        GnThreadPool.AssertMainThread(msg: "pushViewController")
+        GnThreadPool.AssertComponentThread(msg: "pushViewController")
         guard let rootVC = _rootController else {
             Log.Error("rootController cannot be nil")
             return
@@ -163,32 +163,48 @@ extension RootComponentManager {
             return
         }
         
-        let vc = BaseViewController()
-        push(vc, withRootComponent: rootComponent.rootComponent)
-        rootVC.navigationController?.pushViewController(vc, animated: animated)
+        var vc: BaseViewController? = nil
+        GnThreadPool.instance.performOnMainThreadSync {
+            vc = BaseViewController()
+        }
+        guard let rVc = vc else {
+            return
+        }
+        push(rVc, withRootComponent: rootComponent.rootComponent)
+        
+        GnThreadPool.instance.performOnMainThread {
+            rootVC.navigationController?.pushViewController(rVc, animated: animated)
+        }
     }
     
     func popViewController(animated: Bool) {
-        GnThreadPool.AssertMainThread(msg: "popViewController")
+        GnThreadPool.AssertComponentThread(msg: "popViewController")
 
         guard let rootVC = _rootController else {
             Log.Error("rootController cannot be nil, there must be some fatal error")
             return
         }
         
-        rootVC.navigationController?.popViewController(animated: animated)
+        if _viewControllers.count < 2 { // safe guard
+            return
+        }
+        GnThreadPool.instance.performOnMainThread {
+            rootVC.navigationController?.popViewController(animated: animated)
+        }
     }
     
     private func push(_ vc: BaseViewController, withRootComponent rootComponent: ViewComponent) {
-        GnThreadPool.AssertMainThread(msg: "push")
+        GnThreadPool.AssertComponentThread(msg: "push")
         _viewControllers.append(vc)
-        vc.rootView = rootComponent.view
         vc.rootComponent = rootComponent
         registerAddedComponent(rootComponent)
+        GnThreadPool.instance.performOnMainThread {
+            vc.rootView = rootComponent.view
+        }
     }
     
     func pop() -> ViewComponent {
-        GnThreadPool.AssertMainThread(msg: "pop")
+        GnThreadPool.AssertComponentThread(msg: "pop")
         let rComponent = _rootComponents.removeValue(forKey: topRootViewId!)
         _viewControllers.removeLast()
         return (rComponent?.rootComponent)!
