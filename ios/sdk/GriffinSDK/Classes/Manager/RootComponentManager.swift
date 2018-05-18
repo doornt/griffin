@@ -31,37 +31,16 @@ class RootComponent {
     }
 }
 
-
 class RootComponentManager {
-    // MARK: - unload
-    func removeAllRootComponents() {
-        assert(Thread.current == Thread.main, "removeAllRootComponents should be called in main thread")
-        for rootComponent in RootComponentManager.instance.allRootComponents {
-            rootComponent.view.removeFromSuperview()
-            rootComponent.removeChildren()
-        }
-        
-        back2RootPage()
-    }
-    
-    private func back2RootPage() {
-        let vc: BaseViewController? = _viewControllers.first
-        guard let rootVC = vc else {
-            return
-        }
-        _viewControllers.removeAll()
-        rootVC.navigationController?.popToRootViewController(animated: false)
-    }
-    
     // MARK: - root controller
     private var _rootController:BaseViewController?
     var rootController: BaseViewController? {
         get {
-            assert(Thread.current == Thread.main, "get rootController should be called in main thread")
+            GnThreadPool.AssertMainThread(msg: "get root controller")
             return _rootController
         }
         set {
-            assert(Thread.current == Thread.main, "set rootController should be called in main thread")
+            GnThreadPool.AssertMainThread(msg: "set root controller")
             _rootController = newValue
         }
     }
@@ -69,12 +48,11 @@ class RootComponentManager {
     // MARK: - added component
     private var _addedComponentDic: GnThreadSafeDictionary<String, ViewComponent> = GnThreadSafeDictionary<String, ViewComponent>()
     var addedComponents: [ViewComponent] {
-        assert(Thread.current == GnThreadPool.instance.componentThread, "addedComponents should be called in componentThread thread")
+        GnThreadPool.AssertComponentThread(msg: "addedComponents")
         return _addedComponentDic.values
     }
     
     func registerAddedComponent(_ component: ViewComponent) {
-        assert(Thread.current == Thread.main, "registerAddedComponent should be called in main thread")
         _addedComponentDic[component.ref] = component
     }
     
@@ -95,18 +73,18 @@ class RootComponentManager {
     private var _rootComponents: GnThreadSafeDictionary<String, RootComponent> = GnThreadSafeDictionary<String, RootComponent>()
     
     var allRootComponents:[ViewComponent] {
-        assert(Thread.current == Thread.main, "registerAddedComponent should be called in main thread")
+        GnThreadPool.AssertMainThread(msg: "registerAddedComponent")
         return _rootComponents.values.map { (r) -> ViewComponent in r.rootComponent}
     }
     
     func pushRootComponent(_ root: ViewComponent) {
-        assert(Thread.current == GnThreadPool.instance.componentThread, "addedComponents should be called in componentThread thread")
+        GnThreadPool.AssertComponentThread(msg: "pushRootComponent")
         _rootComponents[root.ref] = RootComponent.init(rootComponent: root)
         addComponent(rootComponentRef: root.ref, componentRef: root.ref, component: root)
     }
     
     func addComponent(rootComponentRef: String,componentRef: String, component: ViewComponent) {
-        assert(Thread.current == GnThreadPool.instance.componentThread, "addedComponents should be called in componentThread thread")
+        GnThreadPool.AssertComponentThread(msg: "addComponent")
         guard let rComponent = _rootComponents[rootComponentRef] else {
             Log.Error("Cannot find rootcomponent \(rootComponentRef) in _components")
             return
@@ -115,7 +93,7 @@ class RootComponentManager {
     }
     
     func getComponent(rootComponentRef: String, componentRef: String) -> ViewComponent? {
-        assert(Thread.current == GnThreadPool.instance.componentThread, "addedComponents should be called in componentThread thread")
+        GnThreadPool.AssertComponentThread(msg: "getComponent")
         guard let component = _rootComponents[rootComponentRef] else {
             return nil
         }
@@ -126,12 +104,10 @@ class RootComponentManager {
     private var _viewControllers:GnThreadSafeArray<BaseViewController> = GnThreadSafeArray<BaseViewController>()
     
     var topRootComponent: ViewComponent? {
-        assert(Thread.current == GnThreadPool.instance.componentThread, "addedComponents should be called in componentThread thread")
         return _viewControllers.last?.rootComponent
     }
     
     var topRootViewId: String? {
-        assert(Thread.current == GnThreadPool.instance.componentThread, "addedComponents should be called in componentThread thread")
         return topRootComponent?.ref
     }
     
@@ -142,10 +118,37 @@ class RootComponentManager {
         return component.allChildrenComponent
     }
 
-    // MARK:- Navigator operation
-    func pushViewController(withId: String, animated: Bool) {
-        assert(Thread.current == Thread.main, "pushViewController should be called in main thread")
+    static let instance = RootComponentManager()
+    private init() {}
+}
+
+// MARK: - unload
+extension RootComponentManager {
+    func removeAllRootComponents() {
+        GnThreadPool.AssertMainThread(msg: "removeAllRootComponents")
+        for rootComponent in RootComponentManager.instance.allRootComponents {
+            rootComponent.view.removeFromSuperview()
+            rootComponent.removeChildren()
+        }
         
+        back2RootPage()
+    }
+    
+    private func back2RootPage() {
+        let vc: BaseViewController? = _viewControllers.first
+        guard let rootVC = vc else {
+            return
+        }
+        _viewControllers.removeAll()
+        rootVC.navigationController?.popToRootViewController(animated: false)
+    }
+}
+
+// MARK:- Navigator operation
+extension RootComponentManager {
+    
+    func pushViewController(withId: String, animated: Bool) {
+        GnThreadPool.AssertMainThread(msg: "pushViewController")
         guard let rootVC = _rootController else {
             Log.Error("rootController cannot be nil")
             return
@@ -166,7 +169,8 @@ class RootComponentManager {
     }
     
     func popViewController(animated: Bool) {
-        assert(Thread.current == Thread.main, "popViewController should be called in main thread")
+        GnThreadPool.AssertMainThread(msg: "popViewController")
+
         guard let rootVC = _rootController else {
             Log.Error("rootController cannot be nil, there must be some fatal error")
             return
@@ -176,7 +180,7 @@ class RootComponentManager {
     }
     
     private func push(_ vc: BaseViewController, withRootComponent rootComponent: ViewComponent) {
-        assert(Thread.current == Thread.main, "pop should be called in main thread")
+        GnThreadPool.AssertMainThread(msg: "push")
         _viewControllers.append(vc)
         vc.rootView = rootComponent.view
         vc.rootComponent = rootComponent
@@ -184,12 +188,9 @@ class RootComponentManager {
     }
     
     func pop() -> ViewComponent {
-        assert(Thread.current == Thread.main, "pop should be called in main thread")
+        GnThreadPool.AssertMainThread(msg: "pop")
         let rComponent = _rootComponents.removeValue(forKey: topRootViewId!)
         _viewControllers.removeLast()
         return (rComponent?.rootComponent)!
     }
-    
-    static let instance = RootComponentManager()
-    private init() {}
 }

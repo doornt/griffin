@@ -48,28 +48,32 @@ class ComponentManager {
     
     private func _layout() {
         
-        let components = RootComponentManager.instance.addedComponents
+        guard let root = RootComponentManager.instance.topRootComponent else {
+            return
+        }
         
         var needsLayout = false
-        for o in components {
-            if o.needsLayout {
-                needsLayout = true
-                break
+        
+        let components = RootComponentManager.instance.addedComponents
+        var shouldLayoutComponents: [ViewComponent] = [ViewComponent]()
+        
+        for c in components {
+            if c.rootViewId != nil &&  c.rootViewId! == root.ref {
+                shouldLayoutComponents.append(c)
+                if c.needsLayout {
+                    needsLayout = true
+                }
             }
         }
         
         if (!needsLayout) {
             return
         }
-        
-        guard let root = RootComponentManager.instance.topRootComponent else {
-            return
-        }
 
         root.applyLayout()
         
         _addUITask {
-            for o in components {
+            for o in shouldLayoutComponents {
                 o.layoutFinish()
             }
         }
@@ -80,7 +84,7 @@ class ComponentManager {
         let blocks = _uiTaskQueue
         _uiTaskQueue = [()->Void]()
         
-        DispatchQueue.main.async {
+        GnThreadPool.instance.performOnMainThread {
             for item in blocks {
                 item()
             }
@@ -120,9 +124,8 @@ extension ComponentManager {
             Log.Error("remove children while canmpy get child \(instanceId) in rootview \(rootViewId)")
             return
         }
-        _addUITask {
-            component.removeChildren()
-        }
+        
+        component.removeChildren()
         
         _awakeDisplayLink()
     }
@@ -135,9 +138,7 @@ extension ComponentManager {
         }
         // 目前 updateWithStyle 没有触发layout
         component.updateWithStyle(data["styles"] as![String:Any])
-        _addUITask {
-            component.refresh()
-        }
+        component.refresh()
         _awakeDisplayLink()
     }
     
@@ -149,9 +150,7 @@ extension ComponentManager {
                 Log.Error("addElement while cannot get child \(childId) or parent \(parentId) in rootview \(rootViewId)")
                 return
         }
-        _addUITask {
-            superComponent.addChild(childComponent)
-        }
+        superComponent.addChild(childComponent)
         _awakeDisplayLink()
     }
     
@@ -165,10 +164,7 @@ extension ComponentManager {
             return RootComponentManager.instance.getComponent(rootComponentRef: rootViewId, componentRef: childId)
         }
 
-
-        _addUITask {
-            superComponent.addChildren(childrenComponents)
-        }
+        superComponent.addChildren(childrenComponents)
         _awakeDisplayLink()
     }
     

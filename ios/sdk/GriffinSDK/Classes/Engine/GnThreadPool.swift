@@ -8,6 +8,7 @@
 
 import Foundation
 
+
 extension GnThreadPool {
     @objc func performOnJSThread(block:@escaping @convention(block)() -> Void ) {
         if Thread.current === self._jsThread {
@@ -61,6 +62,17 @@ extension GnThreadPool {
     }
 }
 
+extension GnThreadPool {
+    class func AssertMainThread(msg: String) {
+        assert(Thread.current == Thread.main, "\(msg) should be called in main thread")
+    }
+    class func AssertComponentThread(msg: String) {
+        assert(Thread.current == GnThreadPool.instance._componentThread, "\(msg) should be called in componentThread")
+    }
+    class func AssertJSThread(msg: String) {
+        assert(Thread.current == GnThreadPool.instance._jsThread, "\(msg) should be called in js thread")
+    }
+}
 class GnThreadPool: NSObject {
     
     private lazy var _jsThread: Thread = {
@@ -77,12 +89,12 @@ class GnThreadPool: NSObject {
         return thread
     }()
 
-    var componentThread: Thread {
-        return _componentThread
-    }
-    var jsThread: Thread {
-        return _jsThread
-    }
+//    var componentThread: Thread {
+//        return _componentThread
+//    }
+//    var jsThread: Thread {
+//        return _jsThread
+//    }
     
     private let _stopRunning = false
     
