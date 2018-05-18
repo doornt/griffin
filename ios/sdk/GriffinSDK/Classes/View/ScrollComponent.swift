@@ -33,8 +33,8 @@ class ScrollComponent: DivView {
         super.updateProps(props)
     }
     
-    override func loadView() -> UIView {
-        return _scrollView!
+    override var view: UIView {
+        return self._scrollView!
     }
     
     override func layoutFinish() {

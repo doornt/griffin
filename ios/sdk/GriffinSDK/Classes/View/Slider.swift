@@ -247,7 +247,7 @@ class SliderView : DivView {
         }
     }
     
-    override func loadView() -> UIView {
+    override var view: UIView {
         return _slider!
     }
     

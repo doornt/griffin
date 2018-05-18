@@ -20,7 +20,7 @@ class DivView : ViewComponent {
         
     }
     
-    override func loadView() -> UIView {
+    override var view: UIView {
         return self._divView
     }
     

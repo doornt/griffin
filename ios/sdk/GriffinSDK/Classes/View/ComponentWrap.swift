@@ -21,7 +21,7 @@ class ComponentWrap : ViewComponent {
         super.init(ref: ref, styles: mStyle, props: props)
     }
     
-    override func loadView() -> UIView {
+    override var view: UIView {
         return self._divView
     }
     

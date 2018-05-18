@@ -43,7 +43,7 @@ class ImageView : ViewComponent {
         }
     }
     
-    override func loadView() -> UIView {
+    override var view: UIView {
         return self._imageView
     }
     

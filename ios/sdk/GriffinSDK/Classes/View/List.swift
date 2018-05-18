@@ -94,7 +94,7 @@ class List: DivView {
 //        }
 //    }
     
-    override func loadView() -> UIView {
-        return _listView!
+    override var view: UIView {
+        return self._listView!
     }
 }

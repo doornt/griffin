@@ -20,7 +20,7 @@ class ViewComponent {
     
     private lazy var _viewLoaded = false
     
-    private var _view:UIView?
+//    private var _view:UIView?
     
     var _layout:LayoutStyle?
     
@@ -53,6 +53,10 @@ class ViewComponent {
         self.updateProps(props)
         
         self.initLayoutWithStyles(styles: styles)
+        
+        GnThreadPool.instance.performOnMainThread {
+            self.viewDidLoad()
+        }
     }
     
     var styles:Dictionary<String,Any> {
@@ -86,7 +90,7 @@ class ViewComponent {
     }
     
 
-    func loadView() -> UIView {
+    var view: UIView {
         preconditionFailure("loadView method must be overridden")
     }
     
@@ -96,22 +100,16 @@ class ViewComponent {
         }
     }
     
-    func viewDidLoad() {}
-    
-    private func setupView() {
+    func viewDidLoad() {
         assert(Thread.current == Thread.main, "setupView must be called in main thread")
         
-        self._view = loadView()
-        
         if _backgroundColor != nil{
-            self._view?.backgroundColor = Utils.hexString2UIColor(_backgroundColor)
+            self.view.backgroundColor = Utils.hexString2UIColor(_backgroundColor)
         }
-   
+        
         if _clickable {
             self.addTapGesture()
         }
-        
-        self.viewDidLoad()
     }
     
     func addChild(_ child:ViewComponent){
@@ -155,7 +153,7 @@ class ViewComponent {
     
     func layoutFinish(){
         GnThreadPool.AssertMainThread(msg: "layoutFinish")
-        let view:UIView = self.loadView()
+        let view:UIView = self.view
         if !self.ignoreLayout {
             view.frame = self.layout.requestFrame
         }
@@ -197,16 +195,6 @@ extension ViewComponent {
         set {
             self._children = newValue
         }
-    }
-    
-    
-    var view: UIView {
-        assert(Thread.current == Thread.main, "get view must be called in main thread")
-        if self._view != nil {
-            return self._view!
-        }
-        setupView()
-        return self._view!
     }
     
     var parent:ViewComponent?{

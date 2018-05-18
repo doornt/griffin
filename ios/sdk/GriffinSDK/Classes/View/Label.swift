@@ -40,7 +40,7 @@ class Label: ViewComponent {
         text = Utils.any2String(props["text"]) ?? ""
     }
     
-    override func loadView() -> UIView {
+    override var view: UIView {
         return self._label
     }
     
