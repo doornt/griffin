@@ -32,6 +32,15 @@ class GnDispatchCenter {
 }
 
 extension GnDispatchCenter {
+    
+    func dispatchEventToJs(rootviewId instanceId: String, data: [String: Any?]) {
+        GnThreadPool.instance.performOnJSThread {
+            JSBridgeContext.instance.dispatchEventToJs(rootviewId: instanceId, data: data)
+        }
+    }
+}
+
+extension GnDispatchCenter {
     public func createRootView(_ instanceId:String) {
         GnThreadPool.instance.performOnComponentThread {
             ComponentManager.instance.createRootView(instanceId)

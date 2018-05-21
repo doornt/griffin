@@ -14,10 +14,12 @@ class ListView: UIView, UITableViewDelegate, UITableViewDataSource {
         let tableView = UITableView.init(frame: self.bounds)
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Key")
+//        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Key")
         tableView.tableFooterView = UIView()
         return tableView
     }
+    
+    var dataSource: [Any] = [Any]()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -33,15 +35,18 @@ class ListView: UIView, UITableViewDelegate, UITableViewDataSource {
     // MARK: - UITableViewDataSource
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return 5
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Key")
+        var cell = tableView.dequeueReusableCell(withIdentifier: "Key")
+        if cell == nil {
+            cell = UITableViewCell.init(style: .default, reuseIdentifier: "Key")
+        }
         cell?.textLabel?.text = "hello"
         
         return cell!
@@ -73,26 +78,6 @@ class List: DivView {
         super.init(ref: ref, styles: styles, props: props)
         
     }
-    
-    
-//    override var styles: Dictionary<String, Any>{
-//        get{
-//            return super.styles
-//        }
-//        set{
-//            super.styles = newValue
-//            
-//            if let interval = newValue.toCGFloat(key: "interval"){
-//                self._interval = interval
-//                _slider?.interval = interval
-//            }
-//            
-//            if let autoplay = newValue.toBool(key: "auto-play"){
-//                self._autoPlay = autoplay
-//                _slider?.autoPlay = autoplay
-//            }
-//        }
-//    }
     
     override var view: UIView {
         return self._listView!

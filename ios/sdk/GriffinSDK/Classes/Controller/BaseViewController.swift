@@ -37,6 +37,8 @@ class BaseViewController : UIViewController {
     
     var sourceUrl: String?
 
+    var tableView = ListView.init(frame: CGRect.init(x: 0, y: 0, width: Environment.instance.screenWidth, height: Environment.instance.screenHeight))
+    
     init() {
         super.init(nibName: nil, bundle: nil)
     }
@@ -57,6 +59,8 @@ class BaseViewController : UIViewController {
         super.viewDidLoad()
 
         if #available(iOS 11.0, *) {} else { self.automaticallyAdjustsScrollViewInsets = false }
+        
+        self.view.addSubview(tableView)
     }
     
     override func viewWillAppear(_ animated: Bool) {

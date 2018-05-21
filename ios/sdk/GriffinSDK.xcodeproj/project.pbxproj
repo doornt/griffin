@@ -176,9 +176,9 @@
 		DB2FFDE1200712DC001C4908 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				3A470361203043550038A9A0 /* Modules */,
 				DB2FFE79200B9F37001C4908 /* GriffinSDK-Swift.h */,
 				A36387B8200790C0009FA82F /* GriffinSDK-Bridging-Header.h */,
+				3A470361203043550038A9A0 /* Modules */,
 				DB8DB74B2025825900A38314 /* WebSocket */,
 				DB2FFE4B2007159C001C4908 /* Yoga */,
 				DB2FFE562007159C001C4908 /* YogaKit */,

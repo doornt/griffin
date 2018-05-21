@@ -265,8 +265,6 @@ extension ViewComponent {
             Log.Error("handleTap while self.rootviewid == nil")
             return
         }
-        GnThreadPool.instance.performOnJSThread {
-            JSBridgeContext.instance.dispatchEventToJs(rootviewId: rootViewId, data: ["nodeId":self.ref, "event": "click"])
-        }
+        GnDispatchCenter.instance.dispatchEventToJs(rootviewId: rootViewId, data:  ["nodeId":self.ref, "event": "click"])
     }
 }
