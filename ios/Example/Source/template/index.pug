@@ -93,51 +93,42 @@ style.
         justify-content:center;
     }
 
-    .parent {
-        background-color: #ff0000;
-        width: 200;
-        height: 300;
-    }
-    .child-1 {
-        width:100;
-        height:100;
-        background-color: #00ff00;
-    }
-    .child-2 {
-        width: 100%;
-        background-color: #0000ff;
-        top:30;
-        color:#ffffff;
-    }
-
     .item-img{
         height:80;
         width:80;
         margin-right:10;
     }
 
+
     
 //- .parent
 //-     .child-2 helloworldhelloworldhelloworldhelloworldhelloworldhelloworldhelloworldhelloworld
 
-.header
-    .nav
-        img.menu-icon(src="assets://ic_menu_white.png" @click="jumpToDetail")
-        .title 首页
-        .space
-        img.message-icon(src="assets://ic_message_white.png")
-        img.more-icon(src="assets://ic_more_white.png")
+//- .header
+//-     .nav
+//-         img.menu-icon(src="assets://ic_menu_white.png" @click="jumpToDetail")
+//-         .title 首页
+//-         .space
+//-         img.message-icon(src="assets://ic_message_white.png")
+//-         img.more-icon(src="assets://ic_more_white.png")
 
 
-slider.slider(interval="3000" auto-play=true)
-    each item in topStories
-        img.slider-img(src=item.image)
-            .top-title #{item.title}
+//- slider.slider(interval="3000" auto-play=true)
+//-     each item in topStories
+//-         img.slider-img(src="item.image")
+//-             .top-title item.title
 
-scrollView.scroll-view
-    each item in stories
-        .li
-            .left
-                .item-title #{item.title}
-            .right
-                img.item-img(src=item.image)
+//- scrollView.scroll-view
+//-     each item in stories
+//-         .li
+//-             .left
+//-                 .item-title #{item.title}
+//-             .right
+//-                 img.item-img(src=item.image)
+
+listView.scroll-view(tag="tag")
+    each item in listData
+        row(tag="A")
+            .row-a #{item.title}
+        row(tag="B")
+            .row-b #{item.title}

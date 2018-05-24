@@ -60,7 +60,7 @@ class BaseViewController : UIViewController {
 
         if #available(iOS 11.0, *) {} else { self.automaticallyAdjustsScrollViewInsets = false }
         
-        self.view.addSubview(tableView)
+//        self.view.addSubview(tableView)
     }
     
     override func viewWillAppear(_ animated: Bool) {

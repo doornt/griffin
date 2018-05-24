@@ -31,6 +31,10 @@ extension Dictionary where Key == String {
         return self[key] as? JSValue
     }
     
+    func toArray(key: String) -> Array<Any>? {
+        return self[key] as? Array
+    }
+    
     func toJsonString() -> String? {
         if !JSONSerialization.isValidJSONObject(self) {
             return nil

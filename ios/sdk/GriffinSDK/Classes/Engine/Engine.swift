@@ -58,11 +58,15 @@ private extension Engine {
         ComponentFactory.instance.registerComponent("$wrapper", withClass: ComponentWrap.self)
         ComponentFactory.instance.registerComponent("slider", withClass: SliderView.self)
         ComponentFactory.instance.registerComponent("scrollView", withClass: ScrollComponent.self)
+        ComponentFactory.instance.registerComponent("listView", withClass: List.self)
+        ComponentFactory.instance.registerComponent("row", withClass: Row.self)
     }
     
     // MARK: - Register Components to JS
     func registerComponents2JS() {
         GnDispatchCenter.instance.registerComponent2JS("scrollView")
+        GnDispatchCenter.instance.registerComponent2JS("listView")
+        GnDispatchCenter.instance.registerComponent2JS("row")
     }
     
     func registerMethod2JS(){

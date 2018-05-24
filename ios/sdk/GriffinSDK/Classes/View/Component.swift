@@ -44,6 +44,7 @@ class ViewComponent {
     var ignoreLayout: Bool = false
     
     var _needsLayout:Bool = true
+    private var _props:Dictionary<String,Any> = [:]
     
     required init(ref:String,styles:Dictionary<String,Any>,props:Dictionary<String,Any>) {
         self._ref = ref
@@ -61,6 +62,7 @@ class ViewComponent {
     
     var styles:Dictionary<String,Any> {
         set{
+            _styles = newValue
             if let bg = newValue.toString(key: "background-color"){
                 self._backgroundColor = bg
             }
@@ -79,6 +81,8 @@ class ViewComponent {
     }
     
     func updateProps(_ props:Dictionary<String,Any>){
+        _props = props
+        
         if let clickable = props.toBool(key: "clickable") {
             self._clickable = clickable
         }
